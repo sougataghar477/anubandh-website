@@ -1,8 +1,10 @@
-import { createBrowserRouter } from "react-router";
+import { createBrowserRouter } from "react-router/dom";
 import { LeadsRoot } from "../pages/leads";
 import AllLeadsPage from "../pages/leads/all";
 import NewLeadPage from "../pages/leads/new";
 import RootLayout from "../components/RootLayout";
+import { UsersRoot } from "../pages/users";
+import CreateUserForm from "../pages/users/new";
 
 export const router = createBrowserRouter([
   {
@@ -23,6 +25,16 @@ export const router = createBrowserRouter([
         }
     ]
       },
+      {
+        path: "users",
+        Component: UsersRoot,
+        children: [
+         {
+          path: "new",
+          Component:CreateUserForm
+         }
+        ]
+      }
     ],
   },
 ]);
