@@ -11,60 +11,55 @@ import UserInput from './common/UserInput';
 import Label from './common/Label';
 import Select from './common/Select';
 import { useParams } from 'react-router';
+import api from '../utils/api';
 interface LeadDetailsFormProps {
   isEditable?: boolean;
 }
-type LeadStatus = "NEW" | "IN_PROGRESS" | "QUALIFIED" | "LOST";
+export type LeadStatus =
+  | "in_progress"
+  | "successful"
+  | "failed";
 
-interface HistoryItem {
-id: string;
-previous_status?: LeadStatus;
-new_status?: LeadStatus;
-comment?: string;
-createdAt: string;
-updatedBy: string;
+export interface LeadHistory {
+  id: string;
+  lead_id: number;
+  status: "in_progress" | "successful" | "failed";
+  comment: string;
+  createdAt: string;
+  previous_status:string;
+  new_status:string;
+  updatedBy:string;
+}
+export interface Lead {
+  id?: number;
+  name: string;
+  phone: string;
+  product: string;
+  description: string;
+  comment:string;
+  status: "in_progress" | "successful" | "failed";
+  createdAt: string;
+  createdBy:string;
+  updated_at: string;
+  history: LeadHistory[];
 }
 export default function LeadDetailsForm({
   isEditable = false,
 }: LeadDetailsFormProps) {
 const { leadId } = useParams<{ leadId: string }>();
 // 2. Dummy Data Array
-const mockHistory: HistoryItem[] = [
-  {
-    id: "3",
-    previous_status: "IN_PROGRESS",
-    new_status: "QUALIFIED",
-    comment: "Client agreed to the proposed pricing and scope.",
-    createdAt: "2026-08-03T10:30:00.000Z",
-    updatedBy: "Sohan Dastidar",
-  },
-  {
-    id: "2",
-    previous_status: "NEW",
-    new_status: "IN_PROGRESS",
-    comment: "Scheduled initial discovery call for next Tuesday.",
-    createdAt: "2026-08-02T14:15:00.000Z",
-    updatedBy: "Sarah Jenkins",
-  },
-  {
-    id: "1",
-    previous_status: undefined,
-    new_status: "NEW",
-    createdAt: "2026-08-01T09:00:00.000Z",
-    updatedBy: "System Import",
-  },
-];
-
+const [lead, setLead] = useState<Lead | null>(null);
+const [loading,setLoading] = useState<boolean>(false)
 // Helper metadata for status colors
-const STATUS_META: Record<LeadStatus, { label: string; color: string }> = {
-  NEW: { label: "New Lead", color: "#3B82F6" },         // Blue
-  IN_PROGRESS: { label: "In Progress", color: "#F59E0B" },// Amber
-  QUALIFIED: { label: "Qualified", color: "#10B981" },  // Emerald
-  LOST: { label: "Lost", color: "#EF4444" },           // Red
-};
+// const STATUS_META: Record<LeadStatus, { label: string; color: string }> = {
+//   NEW: { label: "New Lead", color: "#3B82F6" },         // Blue
+//   IN_PROGRESS: { label: "In Progress", color: "#F59E0B" },// Amber
+//   QUALIFIED: { label: "Qualified", color: "#10B981" },  // Emerald
+//   LOST: { label: "Lost", color: "#EF4444" },           // Red
+// };
 
-const formatStatus = (status?: LeadStatus) => 
-  status ? STATUS_META[status]?.label || status : "";
+const formatStatus = (status?: string) => 
+  status ? status : "";
 
 const formatDateTime = (dateStr: string) => 
   new Date(dateStr).toLocaleString("en-US", {
@@ -91,17 +86,54 @@ const PRODUCT_OPTIONS = [
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setLead((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log('Form Data:', formData);
   };
-useEffect(()=>{
-  if(!leadId)return;
-  console.log("Lead Id ",leadId)
-},[leadId])
+ 
+
+useEffect(() => {
+  let isMounted = true;
+
+  const fetchLead = async () => {
+    try {
+      setLoading(true);
+
+      const response = await api.get(`/leads/${leadId}`);
+
+      if (isMounted) {
+        setLead(response.data.lead);
+      }
+    } catch (error: any) {
+      const errorMessage =
+        error.response?.data?.message ??
+        "Unable to load your leads. Please try again.";
+
+      console.error(errorMessage);
+    } finally {
+      if (isMounted) {
+        setLoading(false);
+      }
+    }
+  };
+
+  if (leadId) {
+    fetchLead();
+  }
+
+  return () => {
+    isMounted = false;
+  };
+}, [leadId]);
+if(loading){
+  return <>Loading...</>
+}
+if(!lead){
+  return <>Lead Not Found</>
+}
   return (
     <main className="flex-1 bg-[#121214] text-[#E1E1E6] min-h-screen p-8 flex flex-col justify-between font-sans">
       <div className="max-w-4xl w-full mx-auto">
@@ -143,7 +175,7 @@ useEffect(()=>{
                   type="text"
                   name="customerName"
                   placeholder="e.g. John Wick"
-                  value={formData.customerName}
+                  value={lead.name}
                   onChange={handleChange}
 />
               </div>
@@ -157,7 +189,7 @@ useEffect(()=>{
               type="tel"
               name="phone"
               placeholder="+1 (555) 000-0000"
-              value={formData.phone}
+              value={lead.phone}
               onChange={handleChange}
               />
             </div>
@@ -169,7 +201,7 @@ useEffect(()=>{
             <Label text="Product Selection"/>
             <Select
       name="product"
-      value={formData.product}
+      value={lead.product}
       onChange={handleChange}
       options={PRODUCT_OPTIONS}
       placeholder="Select a Product"
@@ -181,7 +213,7 @@ useEffect(()=>{
 
             <Select
       name="status"
-      value={formData.status}
+      value={lead.status}
       onChange={handleChange}
       options={PRODUCT_OPTIONS}
       placeholder="Select a Status"
@@ -199,7 +231,7 @@ useEffect(()=>{
               name="description"
               rows={6}
               placeholder="Provide context or specific requirements for this lead..."
-              value={formData.description}
+              value={lead.description}
               onChange={handleChange}
               />
           </div>
@@ -211,7 +243,7 @@ useEffect(()=>{
               name="comment"
               rows={6}
               placeholder="Provide context or specific requirements for this lead..."
-              value={formData.comment}
+              value={lead.comment}
               onChange={handleChange}
               />
           </div>}
@@ -224,7 +256,7 @@ useEffect(()=>{
 {isEditable && <div>
   <h2 className="text-xl font-bold text-white mb-4">Lead History</h2>
   <ul className="space-y-6">
-    {mockHistory.map((h, index) => {
+    {(lead && lead.history.length>0) && lead.history.map((h, index) => {
       const isLast = index === history.length - 1;
 
       return (
@@ -247,10 +279,6 @@ useEffect(()=>{
                 </span>{" "}
                 to{" "}
                 <span
-                  style={{
-                    color:
-                      STATUS_META[h.new_status as LeadStatus]?.color || "#fff",
-                  }}
                 >
                   {formatStatus(h.new_status)}
                 </span>
