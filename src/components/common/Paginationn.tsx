@@ -6,7 +6,7 @@ type PaginationProps = {
   onPageChange: (page: number) => void;
 };
 
-export default function Pagination({ currentPage, totalPages, onPageChange }: PaginationProps) {
+export default function Paginationn({ currentPage, totalPages, onPageChange }: PaginationProps) {
   const pages = Array.from({ length: totalPages }, (_, index) => index + 1);
 
   return (

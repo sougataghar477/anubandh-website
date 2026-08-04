@@ -2,8 +2,8 @@ import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { Plus, ArrowRight } from "lucide-react";
 import Table from "../../components/common/Table";
-import Pagination from "../../components/common/Pagination";
-import ListToolbar from "../../components/common/ListToolbar";
+import Paginationn from "../../components/common/Paginationn";
+import ListToolbarr from "../../components/common/ListToolbarr";
 
 type Lead = {
   id: string;
@@ -206,7 +206,7 @@ export default function AllLeadsPage() {
               <p className="mt-1 text-sm text-gray-400">Filtered results update instantly as you search or change the status.</p>
             </div>
 
-            <ListToolbar
+            <ListToolbarr
               searchValue={searchTerm}
               onSearchChange={setSearchTerm}
               statusValue={statusFilter}
@@ -225,7 +225,7 @@ export default function AllLeadsPage() {
           </div>
 
           <div className="mt-6">
-            <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
+            <Paginationn currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
           </div>
         </section>
       </div>

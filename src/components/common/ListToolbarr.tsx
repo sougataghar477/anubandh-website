@@ -9,7 +9,7 @@ type ListToolbarProps = {
   statusOptions: SelectOption[];
 };
 
-export default function ListToolbar({
+export default function ListToolbarr({
   searchValue,
   onSearchChange,
   statusValue,
