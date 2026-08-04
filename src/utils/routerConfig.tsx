@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router";
+import { createBrowserRouter } from "react-router-dom";
 import { LeadsRoot } from "../pages/leads";
 import AllLeadsPage from "../pages/leads/all";
 import NewLeadPage from "../pages/leads/new";
@@ -10,18 +10,18 @@ export const router = createBrowserRouter([
     Component: RootLayout,
     children: [
       { 
-        path: "leads", 
+        path: "leads-all", 
         Component: LeadsRoot, 
-        children:[
-        {
-            path:"all",
-            Component:AllLeadsPage
-        },
-        {
-            path:"new",
-            Component:NewLeadPage
-        }
-    ]
+        children: [
+          {
+            index: true,
+            Component: AllLeadsPage,
+          },
+          {
+            path: "new",
+            Component: NewLeadPage,
+          },
+        ],
       },
     ],
   },
