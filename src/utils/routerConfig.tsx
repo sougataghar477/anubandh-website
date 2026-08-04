@@ -24,14 +24,15 @@ export const router = createBrowserRouter([
       {
         Component: ProtectedLayout, // Requires authentication
         children: [
-          {
-            index: true,
-            Component: DashboardPage,
-          },
+
           {
             path: "/",
             Component: RootLayout,
             children: [
+                        {
+            index: true,
+            Component: DashboardPage,
+          },
               {
                 path: "leads",
                 Component: LeadsRoot,
