@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { 
   BarChart2, 
   Package, 
@@ -41,7 +42,11 @@ export default function Sidebar() {
           </Link>
 
           <Link
+<<<<<<< HEAD
             to="/users/new"
+=======
+            to="/admin"
+>>>>>>> main
             className="flex items-center gap-3 px-3.5 py-3 rounded-lg text-gray-400 hover:text-gray-200 hover:bg-[#222226] text-sm font-medium transition-colors"
           >
             <ShieldCheck className="w-4 h-4 text-gray-400" />

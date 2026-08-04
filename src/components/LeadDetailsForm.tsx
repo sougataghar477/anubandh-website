@@ -13,11 +13,70 @@ import Label from './common/Label';
 import Select from './common/Select';
 
 export default function LeadDetailsForm() {
+  type LeadStatus = "NEW" | "IN_PROGRESS" | "QUALIFIED" | "LOST";
+
+interface HistoryItem {
+  id: string;
+  previous_status?: LeadStatus;
+  new_status?: LeadStatus;
+  comment?: string;
+  createdAt: string;
+  updatedBy: string;
+}
+
+// 2. Dummy Data Array
+const mockHistory: HistoryItem[] = [
+  {
+    id: "3",
+    previous_status: "IN_PROGRESS",
+    new_status: "QUALIFIED",
+    comment: "Client agreed to the proposed pricing and scope.",
+    createdAt: "2026-08-03T10:30:00.000Z",
+    updatedBy: "Sohan Dastidar",
+  },
+  {
+    id: "2",
+    previous_status: "NEW",
+    new_status: "IN_PROGRESS",
+    comment: "Scheduled initial discovery call for next Tuesday.",
+    createdAt: "2026-08-02T14:15:00.000Z",
+    updatedBy: "Sarah Jenkins",
+  },
+  {
+    id: "1",
+    previous_status: undefined,
+    new_status: "NEW",
+    createdAt: "2026-08-01T09:00:00.000Z",
+    updatedBy: "System Import",
+  },
+];
+
+// Helper metadata for status colors
+const STATUS_META: Record<LeadStatus, { label: string; color: string }> = {
+  NEW: { label: "New Lead", color: "#3B82F6" },         // Blue
+  IN_PROGRESS: { label: "In Progress", color: "#F59E0B" },// Amber
+  QUALIFIED: { label: "Qualified", color: "#10B981" },  // Emerald
+  LOST: { label: "Lost", color: "#EF4444" },           // Red
+};
+
+const formatStatus = (status?: LeadStatus) => 
+  status ? STATUS_META[status]?.label || status : "";
+
+const formatDateTime = (dateStr: string) => 
+  new Date(dateStr).toLocaleString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+  });
   const [formData, setFormData] = useState({
     customerName: '',
     phone: '',
     product: '',
     description: '',
+    comment:'',
+    status:''
   });
 const PRODUCT_OPTIONS = [
   { label: "Enterprise Suite", value: "enterprise-suite" },
@@ -101,23 +160,9 @@ const PRODUCT_OPTIONS = [
           </div>
 
           {/* Product Selection */}
-          <div>
+          <div className='flex  gap-4'>
+          <div className='flex-1'>
             <Label text="Product Selection"/>
-            {/* <div className="relative">
-              <Package className="w-4 h-4 text-gray-500 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
-              <select
-                name="product"
-                value={formData.product}
-                onChange={handleChange}
-                className="w-full bg-[#121214] border border-[#2A2A30] text-gray-200 rounded-lg pl-10 pr-10 py-3 text-sm appearance-none focus:outline-none focus:border-[#F5A986] transition-colors cursor-pointer"
-              >
-                <option value="" disabled>Select a Product</option>
-                <option value="enterprise-suite">Enterprise Suite</option>
-                <option value="crm-pro">CRM Pro</option>
-                <option value="analytics-module">Analytics Module</option>
-              </select>
-              <ChevronDown className="w-4 h-4 text-gray-500 absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
-            </div> */}
             <Select
       name="product"
       value={formData.product}
@@ -127,9 +172,23 @@ const PRODUCT_OPTIONS = [
       icon={<Package/>}
     />
           </div>
+          <div className='flex-1'>
+            <Label text="Lead Status"/>
+
+            <Select
+      name="status"
+      value={formData.status}
+      onChange={handleChange}
+      options={PRODUCT_OPTIONS}
+      placeholder="Select a Product"
+      icon={<Package/>}
+    />
+          </div>
+          </div>
 
           {/* Description */}
-          <div>
+          <div className='flex gap-4'>
+          <div className='flex-1'>
             <Label text="Description"/>
             <UserInput
               element="textarea"
@@ -140,6 +199,91 @@ const PRODUCT_OPTIONS = [
               onChange={handleChange}
               />
           </div>
+          <div className='flex-1'>
+            <Label text="Comment"/>
+            <UserInput
+              element="textarea"
+              name="comment"
+              rows={6}
+              placeholder="Provide context or specific requirements for this lead..."
+              value={formData.comment}
+              onChange={handleChange}
+              />
+          </div>
+          </div>
+<div>
+  <h2 className="text-xl font-bold text-white mb-4">Lead History</h2>
+  <ul className="space-y-6">
+    {mockHistory.map((h, index) => {
+      const isLast = index === history.length - 1;
+
+      return (
+        <li key={h.id} className="relative pb-4 border-b border-slate-800">
+          {/* Timeline Dot */}
+
+          {/* Content */}
+          <div>
+            {/* Action Title */}
+            {!h.previous_status && h.new_status ? (
+              <h3 className="text-white text-base font-bold">
+                New Lead Created
+              </h3>
+            ) : h.previous_status !== h.new_status ? (
+              <h3 className="text-white text-base font-bold">
+                Lead Status Updated From{" "}
+                <span
+                >
+                  {formatStatus(h.previous_status)}
+                </span>{" "}
+                to{" "}
+                <span
+                  style={{
+                    color:
+                      STATUS_META[h.new_status as LeadStatus]?.color || "#fff",
+                  }}
+                >
+                  {formatStatus(h.new_status)}
+                </span>
+              </h3>
+            ) : (
+              <h3 className="text-white text-base font-bold">
+                New Comment Made
+              </h3>
+            )}
+
+            {/* Comment Section */}
+            {!!h.comment && (
+              <div className="mt-3">
+                <span className="text-slate-500 text-xs uppercase font-medium block">
+                  Comment
+                </span>
+                <p className="text-slate-200 mt-1 text-sm">{h.comment}</p>
+              </div>
+            )}
+
+            {/* Activity Time */}
+            <div className="mt-3">
+              <span className="text-slate-500 text-xs uppercase font-medium block">
+                Activity Time
+              </span>
+              <p className="text-slate-300 mt-1 text-sm">
+                {formatDateTime(h.createdAt)}
+              </p>
+            </div>
+
+            {/* Updated / Created By */}
+            <div className="mt-3">
+              <span className="text-slate-500 text-xs uppercase font-medium block">
+                {isLast ? "Created By" : "Updated By"}
+              </span>
+              <p className="text-slate-300 mt-1 text-sm">{h.updatedBy}</p>
+            </div>
+          </div>
+        </li>
+      );
+    })}
+  </ul>
+</div>
         </form>
       </div>
 
