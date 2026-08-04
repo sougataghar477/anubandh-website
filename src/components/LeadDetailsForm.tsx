@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { 
   User, 
   Phone, 
   Package, 
-  ChevronDown, 
   Lock, 
   SlidersHorizontal 
 } from 'lucide-react';
@@ -11,19 +10,24 @@ import Button from './common/Button';
 import UserInput from './common/UserInput';
 import Label from './common/Label';
 import Select from './common/Select';
-
-export default function LeadDetailsForm() {
-  type LeadStatus = "NEW" | "IN_PROGRESS" | "QUALIFIED" | "LOST";
+import { useParams } from 'react-router';
+interface LeadDetailsFormProps {
+  isEditable?: boolean;
+}
+type LeadStatus = "NEW" | "IN_PROGRESS" | "QUALIFIED" | "LOST";
 
 interface HistoryItem {
-  id: string;
-  previous_status?: LeadStatus;
-  new_status?: LeadStatus;
-  comment?: string;
-  createdAt: string;
-  updatedBy: string;
+id: string;
+previous_status?: LeadStatus;
+new_status?: LeadStatus;
+comment?: string;
+createdAt: string;
+updatedBy: string;
 }
-
+export default function LeadDetailsForm({
+  isEditable = false,
+}: LeadDetailsFormProps) {
+const { leadId } = useParams<{ leadId: string }>();
 // 2. Dummy Data Array
 const mockHistory: HistoryItem[] = [
   {
@@ -94,7 +98,10 @@ const PRODUCT_OPTIONS = [
     e.preventDefault();
     console.log('Form Data:', formData);
   };
-
+useEffect(()=>{
+  if(!leadId)return;
+  console.log("Lead Id ",leadId)
+},[leadId])
   return (
     <main className="flex-1 bg-[#121214] text-[#E1E1E6] min-h-screen p-8 flex flex-col justify-between font-sans">
       <div className="max-w-4xl w-full mx-auto">
@@ -109,10 +116,7 @@ const PRODUCT_OPTIONS = [
             </h1>
           </div>
           <div className="flex items-center gap-3">
-            <Button 
-            type="button"
-            label="Save Lead"
-            />
+            
           </div>
         </div>
 
@@ -135,14 +139,13 @@ const PRODUCT_OPTIONS = [
               <Label text="Customer Name"/>
               <div className="relative">
                 <User className="w-4 h-4 text-gray-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
-                <input
+                <UserInput
                   type="text"
                   name="customerName"
                   placeholder="e.g. John Wick"
                   value={formData.customerName}
                   onChange={handleChange}
-                  className="w-full bg-[#121214] border border-[#2A2A30] text-gray-200 placeholder-gray-600 rounded-lg pl-10 pr-4 py-3 text-sm focus:outline-none focus:border-[#F5A986] transition-colors"
-                />
+/>
               </div>
             </div>
 
@@ -152,6 +155,7 @@ const PRODUCT_OPTIONS = [
               element="input"
               icon={<Phone/>}
               type="tel"
+              name="phone"
               placeholder="+1 (555) 000-0000"
               value={formData.phone}
               onChange={handleChange}
@@ -180,7 +184,7 @@ const PRODUCT_OPTIONS = [
       value={formData.status}
       onChange={handleChange}
       options={PRODUCT_OPTIONS}
-      placeholder="Select a Product"
+      placeholder="Select a Status"
       icon={<Package/>}
     />
           </div>
@@ -199,7 +203,8 @@ const PRODUCT_OPTIONS = [
               onChange={handleChange}
               />
           </div>
-          <div className='flex-1'>
+
+          {isEditable && <div className='flex-1'>
             <Label text="Comment"/>
             <UserInput
               element="textarea"
@@ -209,9 +214,14 @@ const PRODUCT_OPTIONS = [
               value={formData.comment}
               onChange={handleChange}
               />
+          </div>}
+          
           </div>
-          </div>
-<div>
+          <Button 
+            type="submit"
+            label="Save Lead"
+            />
+{isEditable && <div>
   <h2 className="text-xl font-bold text-white mb-4">Lead History</h2>
   <ul className="space-y-6">
     {mockHistory.map((h, index) => {
@@ -283,7 +293,7 @@ const PRODUCT_OPTIONS = [
       );
     })}
   </ul>
-</div>
+</div>}
         </form>
       </div>
 

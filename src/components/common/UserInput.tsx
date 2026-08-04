@@ -20,7 +20,7 @@ export default function UserInput(props: UserInputProps) {
 
   const isTextarea = element === "textarea";
   const inputClassName = `
-    w-full bg-[#121214] border border-[#2A2A30] text-gray-200 placeholder-gray-600 rounded-lg py-3 pr-4 text-sm focus:outline-none focus:border-[#F5A986] transition-colors
+    w-full bg-[#121214] border border-[#2A2A30] text-gray-200 placeholder-gray-600 rounded-lg py-3 pr-4 text-sm focus:outline-none focus:border-lime-primary transition-colors
     ${icon ? "pl-10" : "pl-4"}
     ${className}
   `.trim();
