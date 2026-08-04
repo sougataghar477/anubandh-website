@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import { 
   BarChart2, 
   Package, 
@@ -23,13 +24,13 @@ export default function Sidebar() {
 
         {/* Main Navigation */}
         <nav className="space-y-1.5">
-          <a
-            href="#"
+          <Link
+            to="/leads/all"
             className="flex items-center gap-3 px-3.5 py-3 rounded-lg bg-lime-primary/10 text-lime-primary border-l-2 border-lime-primary text-sm font-medium transition-colors"
           >
             <BarChart2 className="w-4 h-4 text-lime" />
             <span>Leads</span>
-          </a>
+          </Link>
 
           <a
             href="#"
