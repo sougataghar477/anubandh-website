@@ -1,5 +1,7 @@
-import React, { useState, ChangeEvent, FormEvent } from 'react';
+import React, { useState } from 'react';
+import type { ChangeEvent, FormEvent } from 'react';
 import { ChevronDown, ShieldCheck, Activity } from 'lucide-react';
+import Button from '../../components/common/Button';
 
 // Form Data Interface
 interface UserFormData {
@@ -197,12 +199,7 @@ export default function CreateUserForm(): React.JSX.Element {
             >
               Discard Changes
             </button>
-            <button
-              type="submit"
-              className="bg-[#F3A47C] hover:bg-[#E08A60] text-[#111111] font-semibold text-sm px-6 py-3 rounded transition-colors"
-            >
-              Create User Identity
-            </button>
+            <Button type="submit" label="Create User Identity" className="w-auto px-6 py-3" />
           </div>
 
         </form>
