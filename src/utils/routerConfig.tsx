@@ -10,6 +10,7 @@ export const router = createBrowserRouter([
     Component: RootLayout,
     children: [
       { 
+        //added
         path: "leads-all", 
         Component: LeadsRoot, 
         children: [
