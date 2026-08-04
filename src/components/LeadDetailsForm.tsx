@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { checkValidation } from '../utils/validation';
 import { 
   User, 
   Phone, 
@@ -12,6 +13,7 @@ import Label from './common/Label';
 import Select from './common/Select';
 import { useParams } from 'react-router';
 import api from '../utils/api';
+import { useAuth } from '../auth/useAuth';
 interface LeadDetailsFormProps {
   isEditable?: boolean;
 }
@@ -36,20 +38,29 @@ export interface Lead {
   phone: string;
   product: string;
   description: string;
-  comment:string;
+  comment?:string;
   status: "in_progress" | "successful" | "failed";
   createdAt: string;
   createdBy:string;
   updated_at: string;
   history: LeadHistory[];
 }
+interface Product {
+  id: number;
+  name: string;
+  created_at: string;
+  updated_at: string | null;
+}
+const statuses : LeadStatus[] = ["in_progress", "successful", "failed"];
 export default function LeadDetailsForm({
   isEditable = false,
 }: LeadDetailsFormProps) {
 const { leadId } = useParams<{ leadId: string }>();
+const {user} = useAuth();
 // 2. Dummy Data Array
 const [lead, setLead] = useState<Lead | null>(null);
-const [loading,setLoading] = useState<boolean>(false)
+const [loading,setLoading] = useState<boolean>(false);
+const [products,setProducts] = useState<Product[]>([]);
 // Helper metadata for status colors
 // const STATUS_META: Record<LeadStatus, { label: string; color: string }> = {
 //   NEW: { label: "New Lead", color: "#3B82F6" },         // Blue
@@ -58,8 +69,13 @@ const [loading,setLoading] = useState<boolean>(false)
 //   LOST: { label: "Lost", color: "#EF4444" },           // Red
 // };
 
-const formatStatus = (status?: string) => 
-  status ? status : "";
+const formatStatus = (status?: string) =>
+  status
+    ? status
+        .split("_")
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" ")
+    : "";
 
 const formatDateTime = (dateStr: string) => 
   new Date(dateStr).toLocaleString("en-US", {
@@ -70,30 +86,109 @@ const formatDateTime = (dateStr: string) =>
     minute: "2-digit",
   });
   const [formData, setFormData] = useState({
-    customerName: '',
+    name: '',
     phone: '',
     product: '',
     description: '',
-    comment:'',
-    status:''
   });
-const PRODUCT_OPTIONS = [
-  { label: "Enterprise Suite", value: "enterprise-suite" },
-  { label: "CRM Pro", value: "crm-pro" },
-  { label: "Analytics Module", value: "analytics-module" },
-];
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-    setLead((prev) => ({ ...prev, [name]: value }));
-  };
 
-  const handleSubmit = (e: React.FormEvent) => {
+const handleChange = (
+  e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+) => {
+  const { name, value } = e.target;
+
+  if (isEditable) {
+    setLead(prev => {
+      if (!prev) return prev;
+
+      return {
+        ...prev,
+        [name]: value,
+      };
+    });
+  } else {
+    console.log(name,value)
+    setFormData(prev => ({
+      ...prev,
+      [name]: value,
+    }));
+  }
+};
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log('Form Data:', formData);
+    try {
+        if(isEditable){
+          if(!lead){
+            return;
+          }
+          const payload = {
+            status: lead.status,
+            comment:lead.comment,
+            leadId,
+          }
+          const response = await api.post(`/leads/${leadId}`,payload);
+          const successMessage = response.data.message ?? "Lead updated successfully.";
+          console.log(successMessage);
+    }
+    else{
+      const hasErrors = [
+        formData.name,
+        formData.phone,
+        formData.description,
+        ].some(field => !checkValidation(field));
+
+    if (hasErrors) return;
+      const payload = {
+        name: formData.name.trim(),
+        phone: formData.phone.trim(),
+        productId:formData.product,
+        description: formData.description.trim(),
+        createdBy: user && Number(user.userId),
+        status:"in_progress"
+      };
+      const response = await api.post("/leads/create",payload);
+      console.log("Success ",response);
+    }
+      } 
+      catch (error) {
+        console.error(error)
+      }
+
   };
  
+useEffect(() => {
+  let isMounted = true;
+
+  const loadProducts = async () => {
+    try {
+      const { data } = await api.get("/products/all");
+
+      if (!isMounted) return;
+
+      setProducts(data.products);
+
+      if (!isEditable && data.products.length > 0) {
+        setFormData(prev => ({
+          ...prev,
+          product: data.products[0].id,
+        }));
+      }
+    } catch (error) {
+      console.error("Failed to load products:", error);
+    } finally {
+      if (isMounted) {
+        setLoading(false);
+      }
+    }
+  };
+
+  loadProducts();
+
+  return () => {
+    isMounted = false;
+  };
+}, []);
 
 useEffect(() => {
   let isMounted = true;
@@ -105,6 +200,7 @@ useEffect(() => {
       const response = await api.get(`/leads/${leadId}`);
 
       if (isMounted) {
+        console.log("TESTING");
         setLead(response.data.lead);
       }
     } catch (error: any) {
@@ -119,7 +215,7 @@ useEffect(() => {
       }
     }
   };
-
+  
   if (leadId) {
     fetchLead();
   }
@@ -128,10 +224,15 @@ useEffect(() => {
     isMounted = false;
   };
 }, [leadId]);
+const productOptions = products.map(product => ({
+  label: product.name,
+  value: product.id,
+}));
+const statusOptions = statuses.map(status => ({label:formatStatus(status),value:status}))
 if(loading){
   return <>Loading...</>
 }
-if(!lead){
+if(!lead && isEditable){
   return <>Lead Not Found</>
 }
   return (
@@ -173,9 +274,9 @@ if(!lead){
                 <User className="w-4 h-4 text-gray-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
                 <UserInput
                   type="text"
-                  name="customerName"
+                  name="name"
                   placeholder="e.g. John Wick"
-                  value={lead.name}
+                  value={(isEditable && lead) ? lead.name : formData.name}
                   onChange={handleChange}
 />
               </div>
@@ -189,7 +290,7 @@ if(!lead){
               type="tel"
               name="phone"
               placeholder="+1 (555) 000-0000"
-              value={lead.phone}
+              value={(isEditable && lead) ? lead.phone : formData.phone}
               onChange={handleChange}
               />
             </div>
@@ -201,25 +302,25 @@ if(!lead){
             <Label text="Product Selection"/>
             <Select
       name="product"
-      value={lead.product}
+      value={(isEditable && lead) ? lead.product : formData.product}
       onChange={handleChange}
-      options={PRODUCT_OPTIONS}
+      options={productOptions}
       placeholder="Select a Product"
       icon={<Package/>}
     />
           </div>
-          <div className='flex-1'>
-            <Label text="Lead Status"/>
+          {(isEditable && lead)  && <div className='flex-1'>
+            <Label text="Update Lead Status"/>
 
             <Select
       name="status"
       value={lead.status}
       onChange={handleChange}
-      options={PRODUCT_OPTIONS}
+      options={statusOptions}
       placeholder="Select a Status"
       icon={<Package/>}
     />
-          </div>
+          </div>}
           </div>
 
           {/* Description */}
@@ -231,13 +332,13 @@ if(!lead){
               name="description"
               rows={6}
               placeholder="Provide context or specific requirements for this lead..."
-              value={lead.description}
+              value={(isEditable && lead) ?lead.description:formData.description}
               onChange={handleChange}
               />
           </div>
 
-          {isEditable && <div className='flex-1'>
-            <Label text="Comment"/>
+          {(isEditable && lead) && <div className='flex-1'>
+            <Label text="Add a New Comment"/>
             <UserInput
               element="textarea"
               name="comment"

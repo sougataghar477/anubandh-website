@@ -44,8 +44,8 @@ export default function Select({
             {placeholder}
           </option>
         )}
-
-        {options.map((option) => (
+        
+        {options.length > 0 ? options.map((option) => (
           <option
             key={option.value}
             value={option.value}
@@ -53,7 +53,7 @@ export default function Select({
           >
             {option.label}
           </option>
-        ))}
+        )):<option value="" disabled selected className="bg-[#121214] text-gray-500">No Available Option</option>}
       </select>
 
       {/* Custom Chevron Indicator */}

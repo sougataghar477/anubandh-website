@@ -37,7 +37,7 @@ export const router = createBrowserRouter([
                 path: "leads",
                 Component: LeadsRoot,
                 children: [
-                  { path: "all", Component: AllLeadsPage },
+                  { index:true, Component: AllLeadsPage },
                   { path: "new", Component: NewLeadPage },
                   { path: ":leadId", Component: LeadDetailsPage },
                 ],
