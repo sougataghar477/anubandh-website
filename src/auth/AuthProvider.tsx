@@ -6,11 +6,11 @@ import {
 } from "react";
 import { useNavigate } from "react-router";
 
+export type UserRole = "admin" | "marketting"
 
 import api,{setAuthFailureHandler} from "../utils/api";
 import { AuthContext } from "./AuthContext";
 
-export type UserRole = "ADMIN" | "MANAGER" | "AGENT";
 
 export interface User {
   userId: string;

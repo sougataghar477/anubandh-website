@@ -1,6 +1,6 @@
 import { createContext } from "react";
 import type { Dispatch, SetStateAction } from "react";
-export type UserRole = "ADMIN" | "MANAGER" | "AGENT";
+export type UserRole = "admin" | "marketting"
 
 export interface User {
   userId: string;
