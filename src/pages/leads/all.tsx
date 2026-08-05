@@ -2,79 +2,44 @@ import { useEffect, useMemo, useState } from "react";
 import LeadsFilterBar from "./components/LeadsFilterBar";
 import LeadsSearchHeader from "./components/LeadsSearchHeader";
 import LeadsSummaryCards from "./components/LeadsSummaryCards";
-import LeadsTable from "./components/LeadsTable";
+import Table from "../../components/common/Table";
+import api from "../../utils/api";
+import { toast } from "react-toastify";
+import axios from "axios";
 
 const PAGE_SIZE = 3;
 
-const LEADS = [
-  {
-    name: "Nova Insights",
-    company: "BrightSpark LLC",
-    value: "$18,400",
-    status: "Qualified",
-    statusColor: "text-emerald-400 bg-emerald-500/10",
-    owner: "Simran",
-  },
-  {
-    name: "Apex Commerce",
-    company: "TradeWave Inc.",
-    value: "$9,200",
-    status: "In Progress",
-    statusColor: "text-amber-300 bg-amber-500/10",
-    owner: "Raman",
-  },
-  {
-    name: "Orion Finance",
-    company: "Pulse Capital",
-    value: "$34,800",
-    status: "New",
-    statusColor: "text-sky-300 bg-sky-500/10",
-    owner: "Aisha",
-  },
-  {
-    name: "Zenith Healthcare",
-    company: "CareFlow Solutions",
-    value: "$12,600",
-    status: "Lost",
-    statusColor: "text-rose-400 bg-rose-500/10",
-    owner: "Nisha",
-  },
-  {
-    name: "Vertex Energy",
-    company: "HelioGrid",
-    value: "$7,400",
-    status: "Qualified",
-    statusColor: "text-emerald-400 bg-emerald-500/10",
-    owner: "Arjun",
-  },
-];
+ 
 
-const STATUS_OPTIONS = ["Qualified", "In Progress", "New", "Lost"];
-const OWNER_OPTIONS = ["Simran", "Raman", "Aisha", "Nisha", "Arjun"];
+const statusOptions = ["in_progress","success","failed"];
 
 type Lead = {
+  id: number;
   name: string;
-  company: string;
-  value: string;
+  phone: string;
+  product: string;
+  description: string;
   status: string;
-  statusColor: string;
-  owner: string;
+  created_by: number;
+  created_at: string;
+  updated_at: string;
 };
 
 export default function AllLeadsPage() {
+  const [allLeads,setAllLeads] = useState<Lead[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [activeStatusFilters, setActiveStatusFilters] = useState<string[]>([]);
-  const [activeOwnerFilters, setActiveOwnerFilters] = useState<string[]>([]);
+  const [activeOwnerFilters, setActiveOwnerFilters] = useState<number[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
 
   const filteredLeads = useMemo(() => {
     const normalized = searchTerm.trim().toLowerCase();
 
-    return LEADS.filter((lead) => {
+    return allLeads.filter((lead) => {
       const matchesSearch =
         normalized === "" ||
-        [lead.name, lead.company, lead.status, lead.owner, lead.value]
+        [lead.name, lead.product, lead.status, lead.created_by, lead.description]
           .join(" ")
           .toLowerCase()
           .includes(normalized);
@@ -85,11 +50,11 @@ export default function AllLeadsPage() {
 
       const matchesOwner =
         activeOwnerFilters.length === 0 ||
-        activeOwnerFilters.includes(lead.owner);
+        activeOwnerFilters.includes(lead.created_by);
 
       return matchesSearch && matchesStatus && matchesOwner;
     });
-  }, [searchTerm, activeStatusFilters, activeOwnerFilters]);
+  }, [searchTerm, activeStatusFilters, activeOwnerFilters,allLeads]);
 
   const pageCount = Math.max(1, Math.ceil(filteredLeads.length / PAGE_SIZE));
   const startIndex = filteredLeads.length === 0 ? 0 : (currentPage - 1) * PAGE_SIZE + 1;
@@ -123,7 +88,23 @@ export default function AllLeadsPage() {
     setActiveOwnerFilters([]);
     setCurrentPage(1);
   };
-
+useEffect(()=>{
+  const fetchAllLeads = async () => {
+    try {
+        const response = await api.get("/leads/all");
+        console.log(response.data);
+        setAllLeads(response.data.leads);
+    } catch (error) { 
+        if (axios.isAxiosError(error)) {
+    toast.error(error.response?.data?.message || "Error fetching leads");
+  } else {
+    toast.error("Something went wrong");
+  }
+      
+    }
+  }
+  fetchAllLeads();
+},[]);
   return (
     <main className="min-h-screen bg-[#0c0d10] text-gray-100 px-6 py-8 md:px-8 lg:px-10">
       <div className="flex flex-col gap-8">
@@ -155,18 +136,23 @@ export default function AllLeadsPage() {
             <LeadsFilterBar
               filtersOpen={filtersOpen}
               onToggleFilters={() => setFiltersOpen((prev) => !prev)}
-              statusOptions={STATUS_OPTIONS}
-              ownerOptions={OWNER_OPTIONS}
+              statusOptions={statusOptions}
               activeStatusFilters={activeStatusFilters}
-              activeOwnerFilters={activeOwnerFilters}
               onToggleStatus={(status) => toggleArrayValue(status, activeStatusFilters, setActiveStatusFilters)}
-              onToggleOwner={(owner) => toggleArrayValue(owner, activeOwnerFilters, setActiveOwnerFilters)}
               onClearFilters={clearAllFilters}
             />
           </div>
 
-          <LeadsTable
-            leads={currentPageLeads}
+          <Table
+            data={currentPageLeads}
+            pageName={"leads"}
+            columns={[
+  "name",
+  "product",
+  "phone",
+  "status",
+  "description",
+]}
             filteredCount={filteredLeads.length}
             startIndex={startIndex}
             endIndex={endIndex}

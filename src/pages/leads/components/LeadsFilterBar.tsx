@@ -1,12 +1,14 @@
+import { Link } from "react-router";
+
 type LeadsFilterBarProps = {
   filtersOpen: boolean;
   onToggleFilters: () => void;
   statusOptions: string[];
-  ownerOptions: string[];
+  // ownerOptions: number[];
   activeStatusFilters: string[];
-  activeOwnerFilters: string[];
+  // activeOwnerFilters: number[];
   onToggleStatus: (status: string) => void;
-  onToggleOwner: (owner: string) => void;
+  // onToggleOwner: (owner: string) => void;
   onClearFilters: () => void;
 };
 
@@ -14,11 +16,11 @@ export default function LeadsFilterBar({
   filtersOpen,
   onToggleFilters,
   statusOptions,
-  ownerOptions,
+  // ownerOptions,
   activeStatusFilters,
-  activeOwnerFilters,
+  // activeOwnerFilters,
   onToggleStatus,
-  onToggleOwner,
+  // onToggleOwner,
   onClearFilters,
 }: LeadsFilterBarProps) {
   return (
@@ -31,9 +33,12 @@ export default function LeadsFilterBar({
         >
           Filters
         </button>
-        <button className="inline-flex items-center rounded-2xl bg-lime-primary px-4 py-3 text-sm font-semibold text-[#121214] shadow-sm shadow-lime-500/20 transition hover:bg-lime-hover">
+        <Link
+          to="/leads/new"
+          className="inline-flex items-center rounded-2xl bg-lime-primary px-4 py-3 text-sm font-semibold text-[#121214] shadow-sm shadow-lime-500/20 transition hover:bg-lime-hover"
+        >
           Add Lead
-        </button>
+        </Link>
       </div>
 
       {filtersOpen && (
@@ -60,7 +65,7 @@ export default function LeadsFilterBar({
                 </div>
               </div>
 
-              <div>
+              {/* <div>
                 <p className="text-xs uppercase tracking-[0.24em] text-gray-500">Owner</p>
                 <div className="mt-3 flex flex-wrap gap-3">
                   {ownerOptions.map((owner) => (
@@ -78,7 +83,7 @@ export default function LeadsFilterBar({
                     </button>
                   ))}
                 </div>
-              </div>
+              </div> */}
             </div>
 
             <button

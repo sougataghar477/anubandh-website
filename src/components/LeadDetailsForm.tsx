@@ -11,9 +11,11 @@ import Button from './common/Button';
 import UserInput from './common/UserInput';
 import Label from './common/Label';
 import Select from './common/Select';
-import { useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import api from '../utils/api';
 import { useAuth } from '../auth/useAuth';
+import { toast } from 'react-toastify';
+import axios from 'axios';
 interface LeadDetailsFormProps {
   isEditable?: boolean;
 }
@@ -61,6 +63,7 @@ const {user} = useAuth();
 const [lead, setLead] = useState<Lead | null>(null);
 const [loading,setLoading] = useState<boolean>(false);
 const [products,setProducts] = useState<Product[]>([]);
+const navigateTo =  useNavigate();
 // Helper metadata for status colors
 // const STATUS_META: Record<LeadStatus, { label: string; color: string }> = {
 //   NEW: { label: "New Lead", color: "#3B82F6" },         // Blue
@@ -130,6 +133,8 @@ const handleChange = (
           const response = await api.post(`/leads/${leadId}`,payload);
           const successMessage = response.data.message ?? "Lead updated successfully.";
           console.log(successMessage);
+          toast.success(successMessage);
+          navigateTo("/leads");
     }
     else{
       const hasErrors = [
@@ -149,10 +154,20 @@ const handleChange = (
       };
       const response = await api.post("/leads/create",payload);
       console.log("Success ",response);
+      const successMessage = response.data.message ?? "Lead updated successfully.";
+      toast.success(successMessage);
+      navigateTo("/leads");
     }
       } 
       catch (error) {
-        console.error(error)
+        console.error(error);
+        console.error("Failed to load lead:", error);
+        if(axios.isAxiosError(error)){
+        toast.error((error.response && error.response.data.message) || "Failed to load Lead")
+      }
+        else{
+        toast.error("Something went wrong")
+        }
       }
 
   };
@@ -176,11 +191,13 @@ useEffect(() => {
       }
     } catch (error) {
       console.error("Failed to load products:", error);
-    } finally {
-      if (isMounted) {
-        setLoading(false);
+      if(axios.isAxiosError(error)){
+        toast.error((error.response && error.response.data.message) || "Failed to load products")
       }
-    }
+      else{
+        toast.error("Something went wrong")
+      }
+    } 
   };
 
   loadProducts();
@@ -203,11 +220,15 @@ useEffect(() => {
         console.log("TESTING");
         setLead(response.data.lead);
       }
-    } catch (error: any) {
+    } catch (error) {
       const errorMessage =
-        error.response?.data?.message ??
-        "Unable to load your leads. Please try again.";
-
+      console.error("Failed to load products:", error);
+      if(axios.isAxiosError(error)){
+        toast.error((error.response && error.response.data.message) || "Failed to load lead")
+      }
+      else{
+        toast.error("Something went wrong")
+      }
       console.error(errorMessage);
     } finally {
       if (isMounted) {

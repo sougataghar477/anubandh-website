@@ -1,3 +1,5 @@
+import { Link } from "react-router";
+
 type LeadsSearchHeaderProps = {
   searchTerm: string;
   onSearchChange: (value: string) => void;
@@ -18,9 +20,12 @@ export default function LeadsSearchHeader({
           className="w-full bg-transparent text-sm text-gray-100 placeholder:text-gray-500 outline-none"
         />
       </div>
-      <button className="inline-flex items-center justify-center rounded-2xl bg-lime-primary px-5 py-3 text-sm font-semibold text-[#121214] shadow-sm shadow-lime-500/20 transition hover:bg-lime-hover">
+      <Link
+        to="/leads/new"
+        className="inline-flex items-center justify-center rounded-2xl bg-lime-primary px-5 py-3 text-sm font-semibold text-[#121214] shadow-sm shadow-lime-500/20 transition hover:bg-lime-hover"
+      >
         New Lead
-      </button>
+      </Link>
     </div>
   );
 }

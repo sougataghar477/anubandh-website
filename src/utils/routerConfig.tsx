@@ -8,6 +8,7 @@ import AuthLayout from "../auth/AuthLayout";
 import ProtectedLayout from "../auth/ProtectedLayout";
 import DashboardPage from "../pages/dashboard";
 import LoginPage from "../pages/login";
+import ProductsPage from "../pages/products";
 
 
 
@@ -42,6 +43,11 @@ export const router = createBrowserRouter([
                   { path: ":leadId", Component: LeadDetailsPage },
                 ],
               },
+              {
+                path:"products",
+                Component:ProductsPage,
+                index:true
+              }
             ],
           },
         ],

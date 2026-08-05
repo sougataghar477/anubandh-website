@@ -1,10 +1,15 @@
+import { Link } from "react-router";
+
 type Lead = {
+  id: string;
   name: string;
   company: string;
   value: string;
   status: string;
   statusColor: string;
   owner: string;
+  phone?: string;
+  createdAt?: string;
 };
 
 type LeadsTableProps = {
@@ -33,8 +38,8 @@ export default function LeadsTable({
           <thead className="bg-[#141418] text-xs uppercase tracking-[0.24em] text-gray-500">
             <tr>
               <th className="px-6 py-4">Lead</th>
-              <th className="px-6 py-4">Company</th>
-              <th className="px-6 py-4">Value</th>
+              <th className="px-6 py-4">Product</th>
+              <th className="px-6 py-4">Phone</th>
               <th className="px-6 py-4">Status</th>
               <th className="px-6 py-4">Owner</th>
               <th className="px-6 py-4 text-right">Actions</th>
@@ -42,10 +47,13 @@ export default function LeadsTable({
           </thead>
           <tbody className="divide-y divide-[#2A2A30]">
             {leads.map((lead) => (
-              <tr key={lead.name} className="bg-[#111115]">
-                <td className="whitespace-nowrap px-6 py-5 font-semibold text-white">{lead.name}</td>
+              <tr key={lead.id} className="bg-[#111115]">
+                <td className="whitespace-nowrap px-6 py-5">
+                  <div className="font-semibold text-white">{lead.name}</div>
+                  <div className="mt-1 text-xs text-gray-500">{lead.createdAt ? new Date(lead.createdAt).toLocaleDateString() : "Recently added"}</div>
+                </td>
                 <td className="px-6 py-5 text-gray-400">{lead.company}</td>
-                <td className="px-6 py-5 text-white">{lead.value}</td>
+                <td className="px-6 py-5 text-white">{lead.phone || "—"}</td>
                 <td className="px-6 py-5">
                   <span className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${lead.statusColor}`}>
                     {lead.status}
@@ -53,9 +61,12 @@ export default function LeadsTable({
                 </td>
                 <td className="px-6 py-5 text-gray-300">{lead.owner}</td>
                 <td className="px-6 py-5 text-right">
-                  <button className="rounded-full border border-[#2A2A30] bg-white/5 px-4 py-2 text-xs font-semibold text-gray-200 transition hover:border-lime-primary hover:text-white">
+                  <Link
+                    to={`/leads/${lead.id}`}
+                    className="rounded-full border border-[#2A2A30] bg-white/5 px-4 py-2 text-xs font-semibold text-gray-200 transition hover:border-lime-primary hover:text-white"
+                  >
                     View
-                  </button>
+                  </Link>
                 </td>
               </tr>
             ))}
