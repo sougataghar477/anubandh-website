@@ -11,9 +11,9 @@ import LoginPage from "../pages/login";
 import ProductsPage from "../pages/products";
 import CreateUser from "../pages/users/create";
 import UserLayout from "../pages/users/UsersLayout";
-import AdminRoute from "../pages/admin/AdminLayout";
 import AllUsers from "../pages/users";
 import UserDetailsPage from "../pages/users/details";
+import AdminRoute from "../pages/admin/AdminLayout";
 
 
 
