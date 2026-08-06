@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 
 interface ConfirmationDialogProps {
   type: string;
@@ -25,7 +25,18 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
   onConfirm,
   onCancel,
 }) => {
-  if (!visible) return null;
+  const dialogRef = useRef<HTMLDialogElement>(null);
+
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    if (!dialog) return;
+
+    if (visible && !dialog.open) {
+      dialog.showModal();
+    } else if (!visible && dialog.open) {
+      dialog.close();
+    }
+  }, [visible]);
 
   const titleColor = () => {
     if (type === "success") return "text-green-500";
@@ -33,9 +44,19 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
     return "text-white";
   };
 
+  const handleClose = () => {
+    if (visible) {
+      onCancel();
+    }
+  };
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-6">
-      <div className="w-full max-w-sm rounded-3xl bg-[#111111] p-6 shadow-2xl border border-[#2B2B2B]">
+    <dialog
+      ref={dialogRef}
+      onClose={handleClose}
+      className="rounded-3xl bg-[#111111] p-0 border border-[#2B2B2B] shadow-2xl backdrop:bg-black/60 w-full max-w-sm"
+    >
+      <div className="p-6">
         <h2 className={`text-xl font-bold ${titleColor()}`}>
           {title}
         </h2>
@@ -47,7 +68,10 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
         <div className="mt-8 flex gap-3">
           <button
             type="button"
-            onClick={onCancel}
+            onClick={() => {
+              dialogRef.current?.close();
+              onCancel();
+            }}
             disabled={loading}
             className="flex-1 rounded-2xl border border-gray-600 py-3 font-semibold text-white transition hover:bg-gray-700 disabled:cursor-not-allowed"
           >
@@ -57,7 +81,9 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
           {type === "confirmation" && (
             <button
               type="button"
-              onClick={onConfirm}
+              onClick={() => {
+                onConfirm?.();
+              }}
               disabled={loading}
               style={{ backgroundColor: confirmColor }}
               className="flex-1 rounded-2xl py-3 font-semibold text-white transition hover:opacity-90 disabled:cursor-not-allowed"
@@ -67,7 +93,7 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
           )}
         </div>
       </div>
-    </div>
+    </dialog>
   );
 };
 
