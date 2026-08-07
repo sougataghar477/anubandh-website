@@ -13,7 +13,6 @@ import UserLayout from "../pages/users/UsersLayout";
 import AllUsers from "../pages/users";
 import UserDetailsPage from "../pages/users/details";
 import AdminRoute from "../pages/admin/AdminLayout";
-import UserProfile from "../pages/profile";
 import LeadDetailsPage from "../pages/leads/details";
 import UserProfileLayout from "../pages/profile/UserProfileLayout";
 import UserProfileTest from "../pages/profile";
