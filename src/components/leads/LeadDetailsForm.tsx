@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { checkValidation } from '../utils/validation';
 import { 
   User, 
   Phone, 
@@ -7,15 +6,16 @@ import {
   Lock, 
   SlidersHorizontal 
 } from 'lucide-react';
-import Button from './common/Button';
-import UserInput from './common/UserInput';
-import Label from './common/Label';
-import Select from './common/Select';
 import { useNavigate, useParams } from 'react-router';
-import api from '../utils/api';
-import { useAuth } from '../auth/useAuth';
 import { toast } from 'react-toastify';
 import axios from 'axios';
+import { useAuth } from '../../auth/useAuth';
+import api from '../../utils/api';
+import { checkValidation } from '../../utils/validation';
+import Label from '../common/Label';
+import UserInput from '../common/UserInput';
+import Select from '../common/Select';
+import Button from '../common/Button';
 interface LeadDetailsFormProps {
   isEditable?: boolean;
 }

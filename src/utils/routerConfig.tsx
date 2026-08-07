@@ -3,7 +3,6 @@ import { LeadsRoot } from "../pages/leads";
 import AllLeadsPage from "../pages/leads/all";
 import NewLeadPage from "../pages/leads/new";
 import RootLayout from "../pages/RootLayout";
-import LeadDetailsPage from "../pages/leads/details";
 import AuthLayout from "../auth/AuthLayout";
 import ProtectedLayout from "../auth/ProtectedLayout";
 import DashboardPage from "../pages/dashboard";
@@ -14,6 +13,10 @@ import UserLayout from "../pages/users/UsersLayout";
 import AllUsers from "../pages/users";
 import UserDetailsPage from "../pages/users/details";
 import AdminRoute from "../pages/admin/AdminLayout";
+import UserProfile from "../pages/profile";
+import LeadDetailsPage from "../pages/leads/details";
+import UserProfileLayout from "../pages/profile/UserProfileLayout";
+import UserProfileTest from "../pages/profile";
 
 
 
@@ -38,6 +41,16 @@ export const router = createBrowserRouter([
           {
             index: true,
             Component: DashboardPage,
+          },
+          {
+            path: "profile",
+            Component:UserProfileLayout,
+            children:[
+              {
+                index:true,
+                Component:UserProfileTest
+              }
+            ]
           },
           {
                 path: "leads",

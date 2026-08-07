@@ -1,3 +1,5 @@
+import UserProfile from "../../components/user/UserProfile";
+
 export default function UserDetailsPage(){
-    return <h1>User Details</h1>
+    return <UserProfile isEditable={true} isOwnProfile={false} />
 }

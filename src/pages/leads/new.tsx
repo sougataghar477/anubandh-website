@@ -1,4 +1,4 @@
-import LeadDetailsForm from "../../components/LeadDetailsForm";
+import LeadDetailsForm from "../../components/leads/LeadDetailsForm";
 
 export default function NewLeadPage(){
     return <LeadDetailsForm/>
