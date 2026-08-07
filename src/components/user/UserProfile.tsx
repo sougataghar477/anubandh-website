@@ -110,7 +110,7 @@ export default function UserProfile({ isOwnProfile,isEditable }:UserProfileProps
       
     }
   };
-  
+
  const updateProfile = async (url: string) => {
   const response = await api.post(url, {
     name: formData.name.trim(),
@@ -233,6 +233,8 @@ const passwordsDontMatch =
   password !== confirmPassword;
 
 useEffect(() => {
+  if(!isEditable) return;
+  
   const setUserData = (body: {
     name: string;
     email: string;
@@ -273,7 +275,7 @@ useEffect(() => {
   };
 
   fetchProfile();
-}, [userId, isOwnProfile]);
+}, [userId, isOwnProfile,isEditable]);
 function formHandler(e : React.SubmitEvent<HTMLFormElement>){
   if(isEditable){
     if(isOwnProfile){
@@ -471,6 +473,7 @@ function formHandler(e : React.SubmitEvent<HTMLFormElement>){
               <Button
               type="submit"
               label="Save Profile"
+              icon={<Save/>}
               />
               <Button
               label="Logout"
