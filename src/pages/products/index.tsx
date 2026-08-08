@@ -12,7 +12,7 @@ export interface DropdownOption {
 import UserInput from "../../components/common/UserInput";
 import Label from "../../components/common/Label";
 import Button from "../../components/common/Button";
-import ConfirmationDialog from "../../components/ConfirmationDialog";
+import ConfirmationDialog from "../../components/common/ConfirmationDialog";
 import axios from "axios";
 
 interface Product {
@@ -291,23 +291,7 @@ return (
         </p>
       </div>
               <div className="mb-8 rounded-3xl border border-[#2B2B2B] bg-[#181818] p-5">
-        {/* <div className="relative">
-          <Search
-            size={20}
-            className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500"
-          />
 
-          <input
-            value={searchedProduct}
-            onChange={(e) =>
-              setSearchedProductName(
-                e.target.value
-              )
-            }
-            placeholder="Search products..."
-            className="w-full rounded-2xl border border-[#2B2B2B] bg-[#121212] py-4 pl-12 pr-4 text-white outline-none focus:border-lime-400"
-          />
-        </div> */}
         <UserInput
         element={"input"}
         icon={<Search/>}

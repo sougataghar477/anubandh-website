@@ -44,34 +44,39 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
     return "text-white";
   };
 
+  // Handles Escape key press and backdrop close
   const handleClose = () => {
     if (visible) {
       onCancel();
     }
   };
-
+function testingClickOnOutside(e: React.MouseEvent<HTMLDialogElement>) {
+  if (!(e.target instanceof HTMLElement)) return;
+  const dialog = dialogRef.current;
+  if(!dialog) return;
+  const clickedOutsidePopup =
+    !e.target.parentElement?.closest("#confirmPopup");
+  if(clickedOutsidePopup){
+    dialog.close();
+  }
+}
   return (
     <dialog
+      id = "confirmPopup"
+      onClick={testingClickOnOutside}
       ref={dialogRef}
       onClose={handleClose}
-      className="rounded-3xl bg-[#111111] p-0 border border-[#2B2B2B] shadow-2xl backdrop:bg-black/60 w-full max-w-sm"
+      className="rounded-3xl bg-[#111111] p-0 border border-[#2B2B2B] shadow-2xl backdrop:bg-black/60 w-full max-w-sm m-auto"
     >
       <div className="p-6">
-        <h2 className={`text-xl font-bold ${titleColor()}`}>
-          {title}
-        </h2>
+        <h2 className={`text-xl font-bold ${titleColor()}`}>{title}</h2>
 
-        <p className="mt-3 text-base text-gray-300">
-          {message}
-        </p>
+        <p className="mt-3 text-base text-gray-300">{message}</p>
 
         <div className="mt-8 flex gap-3">
           <button
             type="button"
-            onClick={() => {
-              dialogRef.current?.close();
-              onCancel();
-            }}
+            onClick={onCancel}
             disabled={loading}
             className="flex-1 rounded-2xl border border-gray-600 py-3 font-semibold text-white transition hover:bg-gray-700 disabled:cursor-not-allowed"
           >
@@ -81,9 +86,7 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
           {type === "confirmation" && (
             <button
               type="button"
-              onClick={() => {
-                onConfirm?.();
-              }}
+              onClick={onConfirm}
               disabled={loading}
               style={{ backgroundColor: confirmColor }}
               className="flex-1 rounded-2xl py-3 font-semibold text-white transition hover:opacity-90 disabled:cursor-not-allowed"
