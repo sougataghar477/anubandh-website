@@ -1,3 +1,5 @@
+import { Plus } from "lucide-react";
+import { Link } from "react-router";
 const SUMMARY_CARDS = [
   {
     title: "Total Leads",
@@ -27,7 +29,7 @@ const SUMMARY_CARDS = [
 
 export default function LeadsSummaryCards() {
   return (
-    <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+    <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
       {SUMMARY_CARDS.map((card) => (
         <div
           key={card.title}
@@ -42,6 +44,10 @@ export default function LeadsSummaryCards() {
           </span>
         </div>
       ))}
+      <Link to={"/leads/new"} className="grid place-items-center  rounded-[28px] border border-[#2A2A30] bg-[#16161A] p-6 shadow-[0_30px_60px_rgba(0,0,0,0.2)]">
+       <Plus />
+        Add New Lead
+      </Link>
     </div>
   );
 }

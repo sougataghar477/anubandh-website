@@ -6,6 +6,8 @@ import Table from "../../components/common/Table";
 import api from "../../utils/api";
 import { toast } from "react-toastify";
 import axios from "axios";
+import Label from "../../components/common/Label";
+import Button from "../../components/common/Button";
 
 const PAGE_SIZE = 3;
 
@@ -125,9 +127,29 @@ useEffect(()=>{
         </div>
 
         <LeadsSummaryCards />
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-6 items-stretch overflow-hidden">
+  {/* Download Button */}
+<a href="/template/1_002_-ey4.gif" download>
+<Button
+  label="Download Lead Excel File Template"
+  bgColor="bg-lime-primary hover:bg-lime-hover border border-[#2A2A30]"
+  textColor="text-black"
+/>
+</a>
 
+  {/* Upload Field Container */}
+  <label className="flex h-full w-full cursor-pointer flex-col items-center justify-center rounded-3xl border border-[#2A2A30] bg-[#111115] p-4 text-center text-sm font-semibold text-gray-200 shadow-[0_35px_80px_rgba(0,0,0,0.35)]">
+    <span>Upload Files Here for uploading bulk leads</span>
+
+    <input
+      type="file"
+      accept=".xlsx,.xls"
+      className="hidden"
+    />
+  </label>
+</div>
         <section className="overflow-hidden rounded-[32px] border border-[#2A2A30] bg-[#111115] shadow-[0_35px_80px_rgba(0,0,0,0.35)]">
-          <div className="flex flex-col gap-4 border-b border-[#2A2A30] px-6 py-6 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-col gap-4 border-b border-[#2A2A30] p-6 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <p className="text-sm uppercase tracking-[0.24em] text-gray-500">Lead table</p>
               <h2 className="mt-2 text-2xl font-semibold text-white">All active leads</h2>
