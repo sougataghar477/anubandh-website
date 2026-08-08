@@ -1,11 +1,11 @@
 import { Link } from "react-router";
-import { 
-  BarChart2, 
-  Package, 
-  ShieldCheck, 
-  Settings, 
-  HelpCircle 
-} from 'lucide-react';
+import {
+  BarChart2,
+  Package,
+  ShieldCheck,
+  Settings,
+  HelpCircle,
+} from "lucide-react";
 
 export default function Sidebar() {
   return (
@@ -32,21 +32,21 @@ export default function Sidebar() {
             <span>Leads</span>
           </Link>
 
-          <a
-            href="#"
+          <Link
+            to="/products"
             className="flex items-center gap-3 px-3.5 py-3 rounded-lg text-gray-400 hover:text-gray-200 hover:bg-[#222226] text-sm font-medium transition-colors"
           >
             <Package className="w-4 h-4 text-gray-400" />
             <span>Products</span>
-          </a>
+          </Link>
 
-          <a
-            href="#"
+          <Link
+            to="/users"
             className="flex items-center gap-3 px-3.5 py-3 rounded-lg text-gray-400 hover:text-gray-200 hover:bg-[#222226] text-sm font-medium transition-colors"
           >
             <ShieldCheck className="w-4 h-4 text-gray-400" />
             <span>Administration</span>
-          </a>
+          </Link>
         </nav>
       </div>
 
@@ -62,21 +62,21 @@ export default function Sidebar() {
 
         {/* Secondary Navigation */}
         <nav className="space-y-1 pt-4 border-t border-[#2A2A30]">
-          <a
-            href="#"
+          <Link
+            to="/"
             className="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-gray-400 hover:text-gray-200 hover:bg-[#222226] text-sm font-medium transition-colors"
           >
             <Settings className="w-4 h-4 text-gray-400" />
             <span>Settings</span>
-          </a>
+          </Link>
 
-          <a
-            href="#"
+          <Link
+            to="/"
             className="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-gray-400 hover:text-gray-200 hover:bg-[#222226] text-sm font-medium transition-colors"
           >
             <HelpCircle className="w-4 h-4 text-gray-400" />
             <span>Support</span>
-          </a>
+          </Link>
         </nav>
       </div>
     </aside>

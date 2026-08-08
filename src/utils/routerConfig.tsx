@@ -56,6 +56,7 @@ export const router = createBrowserRouter([
                 Component: LeadsRoot,
                 children: [
                   { index:true, Component: AllLeadsPage },
+                  { path: "all", Component: AllLeadsPage },
                   { path: "new", Component: NewLeadPage },
                   { path: ":leadId", Component: LeadDetailsPage },
                 ],
@@ -63,7 +64,6 @@ export const router = createBrowserRouter([
           {
                 path:"products",
                 Component:ProductsPage,
-                index:true
           },
           {
                 Component: AdminRoute,
