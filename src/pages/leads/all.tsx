@@ -11,7 +11,7 @@ const PAGE_SIZE = 3;
 
  
 
-const statusOptions = ["in_progress","success","failed"];
+const statusOptions = ["in_progress","successful","failed"];
 
 type Lead = {
   id: number;

@@ -62,6 +62,13 @@ export default function LeadsFilterBar({
                       {status}
                     </button>
                   ))}
+                    <button
+                        type="button"
+                        onClick={onClearFilters}
+                        className="rounded-2xl border border-[#2A2A30] bg-white/5 px-4 py-3 text-sm font-semibold text-gray-200 transition hover:border-lime-primary hover:text-white"
+                      >
+                        Clear all
+                    </button>
                 </div>
               </div>
 
@@ -86,13 +93,7 @@ export default function LeadsFilterBar({
               </div> */}
             </div>
 
-            <button
-              type="button"
-              onClick={onClearFilters}
-              className="rounded-2xl border border-[#2A2A30] bg-white/5 px-4 py-3 text-sm font-semibold text-gray-200 transition hover:border-lime-primary hover:text-white"
-            >
-              Clear all
-            </button>
+
           </div>
         </div>
       )}
