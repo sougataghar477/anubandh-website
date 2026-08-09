@@ -73,7 +73,7 @@ if (
 
       refreshPromise = axios
         .post(
-          `http://${productionApiIP}:3002/api/auth/refresh`,
+          `http://${localIP}:3002/api/auth/refresh`,
           {
             refreshToken,
           }
