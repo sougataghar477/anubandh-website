@@ -2,7 +2,6 @@ import {
     ArrowUpRight,
     BarChart3,
     FolderKanban,
-    Users,
     TrendingUp,
     Activity,
     Plus,
@@ -11,41 +10,38 @@ import {
     Briefcase,
 } from "lucide-react";
 
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router";
-const stats = [
-    {
-        title: "In Progress",
-        value: "2",
-        change: "+1 Today",
-        icon: Activity,
-        color: "text-amber-400",
-        bg: "bg-amber-400/10",
-    },
-    {
-        title: "Successful",
-        value: "0",
-        change: "Completed",
-        icon: CheckCircle2,
-        color: "text-green-400",
-        bg: "bg-green-400/10",
-    },
-    {
-        title: "Failed",
-        value: "0",
-        change: "Need Attention",
-        icon: XCircle,
-        color: "text-red-400",
-        bg: "bg-red-400/10",
-    },
-    {
-        title: "Total Leads",
-        value: "2",
-        change: "Overall",
-        icon: Briefcase,
-        color: "text-blue-400",
-        bg: "bg-blue-400/10",
-    },
-];
+import axios from "axios";
+import { toast } from "react-toastify";
+import api from "../../utils/api";
+import { formatLabel } from "../../utils/validation";
+
+type Lead = {
+    id: number;
+    name: string;
+    product: string;
+    phone: string;
+    status: string;
+};
+
+const getDisplayStatus = (status: string) => {
+    const normalized = status?.trim().toLowerCase() ?? "";
+
+    if (normalized === "in_progress" || normalized === "in progress" || normalized === "inprogress") {
+        return "In Progress";
+    }
+
+    if (normalized === "successful" || normalized === "successfull" || normalized === "success" || normalized === "completed" || normalized === "complete") {
+        return "Successful";
+    }
+
+    if (normalized === "failed" || normalized === "failure" || normalized === "unsuccessful") {
+        return "Failed";
+    }
+
+    return formatLabel(status || "Pending");
+};
 
 const actions = [
     {
@@ -70,21 +66,110 @@ const actions = [
         link: "/products",
     },
 ];
-const recentLeads = [
-    {
-        name: "Uttam",
-        product: "Test Product to be removed later",
-        phone: "8697293492",
-        status: "In Progress",
-    },
-    {
-        name: "Testing",
-        product: "CRM Software Requirement",
-        phone: "987654321",
-        status: "Successful",
-    },
-];
 export default function DashboardPage() {
+    const [leads, setLeads] = useState<Lead[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        let isMounted = true;
+
+        const fetchLeads = async () => {
+            try {
+                const response = await api.get("/leads/all");
+                const rawLeads = Array.isArray(response.data?.leads)
+                    ? response.data.leads
+                    : Array.isArray(response.data)
+                        ? response.data
+                        : [];
+
+                if (!isMounted) return;
+
+                setLeads(
+                    rawLeads.map((lead: any) => ({
+                        id: Number(lead.id ?? 0),
+                        name: lead.name ?? lead.fullName ?? "Unnamed Lead",
+                        product: lead.product?.name ?? lead.productName ?? lead.product ?? "No product",
+                        phone: lead.phone ?? lead.phoneNumber ?? lead.mobile ?? "—",
+                        status: lead.status ?? "pending",
+                    }))
+                );
+            } catch (error) {
+                console.error("Failed to load dashboard leads:", error);
+                if (isMounted) {
+                    if (axios.isAxiosError(error)) {
+                        toast.error(error.response?.data?.message || "Error fetching leads");
+                    } else {
+                        toast.error("Something went wrong");
+                    }
+                    setLeads([]);
+                }
+            } finally {
+                if (isMounted) {
+                    setLoading(false);
+                }
+            }
+        };
+
+        fetchLeads();
+
+        return () => {
+            isMounted = false;
+        };
+    }, []);
+
+    const stats = useMemo(() => {
+        const inProgress = leads.filter((lead) => getDisplayStatus(lead.status) === "In Progress").length;
+        const successful = leads.filter((lead) => getDisplayStatus(lead.status) === "Successful").length;
+        const failed = leads.filter((lead) => getDisplayStatus(lead.status) === "Failed").length;
+
+        return [
+            {
+                title: "In Progress",
+                value: loading ? "—" : String(inProgress),
+                change: "+1 Today",
+                icon: Activity,
+                color: "text-amber-400",
+                bg: "bg-amber-400/10",
+            },
+            {
+                title: "Successful",
+                value: loading ? "—" : String(successful),
+                change: "Completed",
+                icon: CheckCircle2,
+                color: "text-green-400",
+                bg: "bg-green-400/10",
+            },
+            {
+                title: "Failed",
+                value: loading ? "—" : String(failed),
+                change: "Need Attention",
+                icon: XCircle,
+                color: "text-red-400",
+                bg: "bg-red-400/10",
+            },
+            {
+                title: "Total Leads",
+                value: loading ? "—" : String(leads.length),
+                change: "Overall",
+                icon: Briefcase,
+                color: "text-blue-400",
+                bg: "bg-blue-400/10",
+            },
+        ];
+    }, [leads, loading]);
+
+    const recentLeads = useMemo(
+        () =>
+            leads.slice(0, 5).map((lead) => ({
+                id: lead.id,
+                name: lead.name,
+                product: lead.product,
+                phone: lead.phone,
+                status: getDisplayStatus(lead.status),
+            })),
+        [leads]
+    );
+
     return (
         <div className="min-h-screen bg-[#111111] p-6 text-[#E0E0E0] md:p-10">
             <div className="mx-auto max-w-7xl space-y-6">
@@ -316,10 +401,10 @@ export default function DashboardPage() {
 
                     <div className="space-y-4">
 
-                        {recentLeads.map((lead, index) => (
+                        {recentLeads.map((lead) => (
 
                             <div
-                                key={index}
+                                key={lead.id}
                                 className="rounded-2xl border border-[#2B2B2B] bg-[#121212] p-5 hover:border-lime-400 transition"
                             >
 

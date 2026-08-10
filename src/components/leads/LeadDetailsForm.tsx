@@ -63,6 +63,7 @@ const {user} = useAuth();
 const [lead, setLead] = useState<Lead | null>(null);
 const [loading,setLoading] = useState<boolean>(false);
 const [products,setProducts] = useState<Product[]>([]);
+const [assignees, setAssignees] = useState<Array<{ id: number; name: string; email?: string }>>([]);
 const navigateTo =  useNavigate();
 // Helper metadata for status colors
 // const STATUS_META: Record<LeadStatus, { label: string; color: string }> = {
@@ -92,6 +93,7 @@ const formatDateTime = (dateStr: string) =>
     name: '',
     phone: '',
     product: '',
+    assignedTo: '',
     description: '',
   });
 
@@ -147,7 +149,8 @@ const handleChange = (
       const payload = {
         name: formData.name.trim(),
         phone: formData.phone.trim(),
-        productId:formData.product,
+        productId: formData.product,
+        assignedTo: formData.assignedTo || null,
         description: formData.description.trim(),
         createdBy: user && Number(user.userId),
         status:"in_progress"
@@ -186,7 +189,7 @@ useEffect(() => {
       if (!isEditable && data.products.length > 0) {
         setFormData(prev => ({
           ...prev,
-          product: data.products[0].id,
+          product: String(data.products[0].id),
         }));
       }
     } catch (error) {
@@ -201,6 +204,42 @@ useEffect(() => {
   };
 
   loadProducts();
+
+  return () => {
+    isMounted = false;
+  };
+}, []);
+
+useEffect(() => {
+  let isMounted = true;
+
+  const loadAssignees = async () => {
+    try {
+      const { data } = await api.get("/admin/users");
+      const users = Array.isArray(data?.users)
+        ? data.users
+        : Array.isArray(data)
+          ? data
+          : [];
+
+      if (!isMounted) return;
+
+      setAssignees(
+        users.map((user: any) => ({
+          id: Number(user.id ?? user.userId),
+          name: user.name ?? user.fullName ?? user.email ?? "Unknown",
+          email: user.email,
+        }))
+      );
+    } catch (error) {
+      console.error("Failed to load assignees:", error);
+      if (axios.isAxiosError(error)) {
+        toast.error(error.response?.data?.message || "Failed to load assignees");
+      }
+    }
+  };
+
+  loadAssignees();
 
   return () => {
     isMounted = false;
@@ -248,6 +287,10 @@ useEffect(() => {
 const productOptions = products.map(product => ({
   label: product.name,
   value: product.id,
+}));
+const assigneeOptions = assignees.map((assignee) => ({
+  label: assignee.name,
+  value: assignee.id,
 }));
 const statusOptions = statuses.map(status => ({label:formatStatus(status),value:status}))
 if(loading){
@@ -318,18 +361,34 @@ if(!lead && isEditable){
           </div>
 
           {/* Product Selection */}
-          <div className='flex  gap-4'>
-          <div className='flex-1'>
-            <Label text="Product Selection"/>
-            <Select
-      name="product"
-      value={(isEditable && lead) ? lead.product : formData.product}
-      onChange={handleChange}
-      options={productOptions}
-      placeholder="Select a Product"
-      icon={<Package/>}
-    />
+          <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
+            <div>
+              <Label text="Product Selection"/>
+              <Select
+                name="product"
+                value={(isEditable && lead) ? lead.product : formData.product}
+                onChange={handleChange}
+                options={productOptions}
+                placeholder="Select a Product"
+                icon={<Package/>}
+              />
+            </div>
+
+           
+              <div>
+                <Label text="Assigned Lead To"/>
+                <Select
+                  name="assignedTo"
+                  value={formData.assignedTo}
+                  onChange={handleChange}
+                  options={assigneeOptions}
+                  placeholder="Select an Assignee"
+                  icon={<User/>}
+                />
+              </div>
+            
           </div>
+
           {(isEditable && lead)  && <div className='flex-1'>
             <Label text="Update Lead Status"/>
 
@@ -342,7 +401,6 @@ if(!lead && isEditable){
       icon={<Package/>}
     />
           </div>}
-          </div>
 
           {/* Description */}
           <div className='flex gap-4'>

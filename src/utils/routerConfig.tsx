@@ -16,6 +16,8 @@ import AdminRoute from "../pages/admin/AdminLayout";
 import LeadDetailsPage from "../pages/leads/details";
 import UserProfileLayout from "../pages/profile/UserProfileLayout";
 import UserProfileTest from "../pages/profile";
+import SupportPage from "../pages/support";
+
 
 
 
@@ -51,6 +53,10 @@ export const router = createBrowserRouter([
               }
             ]
           },
+          {
+          path: "support",
+           Component: SupportPage,
+},
           {
                 path: "leads",
                 Component: LeadsRoot,
