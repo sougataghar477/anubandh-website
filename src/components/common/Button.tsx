@@ -1,6 +1,5 @@
 import React from 'react';
-import Loader from './Loader';
-
+import LoadingIcon from './LoadingIcon';
 interface SaveButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   label?: string;
   icon?:React.ReactNode;
@@ -10,11 +9,12 @@ interface SaveButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> 
 export default function Button({icon, label = 'Save Changes', className = '', loading,...props }: SaveButtonProps) {
   const iconRenderer = () => {
     if(loading){
-      return <Loader/>
+      return <LoadingIcon/>
     }
     if(icon){
       return icon;
     }
+    return null;
   }
   return (
     <button
@@ -34,6 +34,7 @@ export default function Button({icon, label = 'Save Changes', className = '', lo
         gap-2 cursor-pointer
         ${className}
       `}
+      disabled={loading}
     >
       {iconRenderer()}
       {label}

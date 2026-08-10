@@ -11,11 +11,12 @@ import { toast } from 'react-toastify';
 import axios from 'axios';
 import { useAuth } from '../../auth/useAuth';
 import api from '../../utils/api';
-import { checkValidation } from '../../utils/helper';
 import Label from '../common/Label';
 import UserInput from '../common/UserInput';
 import Select from '../common/Select';
 import Button from '../common/Button';
+import { checkValidation, formatDateTime, formatLabel } from '../../utils/helper';
+import Loader from '../common/Loader';
 interface LeadDetailsFormProps {
   isEditable?: boolean;
 }
@@ -40,6 +41,7 @@ export interface Lead {
   phone: string;
   product: string;
   description: string;
+  assignedTo:string;
   comment?:string;
   status: "in_progress" | "successful" | "failed";
   createdAt: string;
@@ -53,45 +55,30 @@ interface Product {
   created_at: string;
   updated_at: string | null;
 }
+interface Assignees{
+  id:number;
+  name:string;
+  email:string;
+  role:'admin' | 'marketing;'
+}
 const statuses : LeadStatus[] = ["in_progress", "successful", "failed"];
 export default function LeadDetailsForm({
   isEditable = false,
 }: LeadDetailsFormProps) {
 const { leadId } = useParams<{ leadId: string }>();
-const {user} = useAuth();
+const {user,loading,setLoading} = useAuth();
 // 2. Dummy Data Array
 const [lead, setLead] = useState<Lead | null>(null);
-const [loading,setLoading] = useState<boolean>(false);
 const [products,setProducts] = useState<Product[]>([]);
+const [assignees, setAssignees] = useState<Assignees[]>([]);
 const navigateTo =  useNavigate();
-// Helper metadata for status colors
-// const STATUS_META: Record<LeadStatus, { label: string; color: string }> = {
-//   NEW: { label: "New Lead", color: "#3B82F6" },         // Blue
-//   IN_PROGRESS: { label: "In Progress", color: "#F59E0B" },// Amber
-//   QUALIFIED: { label: "Qualified", color: "#10B981" },  // Emerald
-//   LOST: { label: "Lost", color: "#EF4444" },           // Red
-// };
 
-const formatStatus = (status?: string) =>
-  status
-    ? status
-        .split("_")
-        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(" ")
-    : "";
 
-const formatDateTime = (dateStr: string) => 
-  new Date(dateStr).toLocaleString("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-    hour: "numeric",
-    minute: "2-digit",
-  });
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
     product: '',
+    assignedTo: '',
     description: '',
   });
 
@@ -117,10 +104,11 @@ const handleChange = (
     }));
   }
 };
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault();
     console.log('Form Data:', formData);
     try {
+      setLoading(prev => ({...prev,submitting:true}));
         if(isEditable){
           if(!lead){
             return;
@@ -141,13 +129,15 @@ const handleChange = (
         formData.name,
         formData.phone,
         formData.description,
+        formData.assignedTo
         ].some(field => !checkValidation(field));
 
     if (hasErrors) return;
       const payload = {
         name: formData.name.trim(),
         phone: formData.phone.trim(),
-        productId:formData.product,
+        productId: formData.product,
+        assignedTo: formData.assignedTo || null,
         description: formData.description.trim(),
         createdBy: user && Number(user.userId),
         status:"in_progress"
@@ -169,92 +159,101 @@ const handleChange = (
         toast.error("Something went wrong")
         }
       }
+      finally{
+        setLoading(prev => ({...prev,submitting:false}))
+      }
 
   };
- 
 useEffect(() => {
   let isMounted = true;
 
-  const loadProducts = async () => {
+  const loadData = async () => {
     try {
-      const { data } = await api.get("/products/all");
+      setLoading((prev) => ({
+        ...prev,
+        fetching: true,
+      }));
+
+      const requests = [
+        api.get("/products/all"),
+        api.get("/admin/users"),
+      ];
+
+      if (leadId) {
+        requests.push(api.get(`/leads/${leadId}`));
+      }
+
+      const [productsResponse, assigneesResponse, leadResponse] =
+        await Promise.all(requests);
 
       if (!isMounted) return;
 
-      setProducts(data.products);
+      setProducts(productsResponse.data.products);
 
-      if (!isEditable && data.products.length > 0) {
-        setFormData(prev => ({
-          ...prev,
-          product: data.products[0].id,
-        }));
+      const assigneeData = assigneesResponse.data;
+
+      const users = Array.isArray(assigneeData?.users)
+        ? assigneeData.users
+        : Array.isArray(assigneeData)
+          ? assigneeData
+          : [];
+
+      setAssignees(
+        users.map((user: Assignees) => ({
+          id: Number(user.id),
+          name:user.name,
+          email: user.email,
+        }))
+      );
+
+      if (leadResponse) {
+        setLead(leadResponse.data.lead);
       }
     } catch (error) {
-      console.error("Failed to load products:", error);
-      if(axios.isAxiosError(error)){
-        toast.error((error.response && error.response.data.message) || "Failed to load products")
+      console.error("Failed to load lead form data:", error);
+
+      if (axios.isAxiosError(error)) {
+        toast.error(
+          error.response?.data?.message ||
+            "Failed to load lead form data"
+        );
+      } else {
+        toast.error("Something went wrong");
       }
-      else{
-        toast.error("Something went wrong")
-      }
-    } 
-  };
-
-  loadProducts();
-
-  return () => {
-    isMounted = false;
-  };
-}, []);
-
-useEffect(() => {
-  let isMounted = true;
-
-  const fetchLead = async () => {
-    try {
-      setLoading(true);
-
-      const response = await api.get(`/leads/${leadId}`);
-
-      if (isMounted) {
-        console.log("TESTING");
-        setLead(response.data.lead);
-      }
-    } catch (error) {
-      const errorMessage =
-      console.error("Failed to load products:", error);
-      if(axios.isAxiosError(error)){
-        toast.error((error.response && error.response.data.message) || "Failed to load lead")
-      }
-      else{
-        toast.error("Something went wrong")
-      }
-      console.error(errorMessage);
     } finally {
       if (isMounted) {
-        setLoading(false);
+        setLoading((prev) => ({
+          ...prev,
+          fetching: false,
+        }));
       }
     }
   };
-  
-  if (leadId) {
-    fetchLead();
-  }
+
+  loadData();
 
   return () => {
     isMounted = false;
   };
-}, [leadId]);
+}, [leadId, setLoading]); 
+
 const productOptions = products.map(product => ({
   label: product.name,
   value: product.id,
 }));
-const statusOptions = statuses.map(status => ({label:formatStatus(status),value:status}))
-if(loading){
-  return <>Loading...</>
+const assigneeOptions = assignees.map((assignee) => ({
+  label: assignee.name,
+  value: assignee.id,
+}));
+const statusOptions = statuses.map(status => ({label:formatLabel(status),value:status}))
+if(loading.fetching){
+  return <Loader/>
 }
 if(!lead && isEditable){
-  return <>Lead Not Found</>
+  return <div className="min-h-screen flex items-center justify-center bg-[#0c0d10] text-white gap-2">
+        <span>Lead Not Found</span> 
+        
+      </div>
 }
   return (
     <main className="flex-1 bg-[#121214] text-[#E1E1E6] min-h-screen p-8 flex flex-col justify-between font-sans">
@@ -318,18 +317,34 @@ if(!lead && isEditable){
           </div>
 
           {/* Product Selection */}
-          <div className='flex  gap-4'>
-          <div className='flex-1'>
-            <Label text="Product Selection"/>
-            <Select
-      name="product"
-      value={(isEditable && lead) ? lead.product : formData.product}
-      onChange={handleChange}
-      options={productOptions}
-      placeholder="Select a Product"
-      icon={<Package/>}
-    />
+          <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
+            <div>
+              <Label text="Product Selection"/>
+              <Select
+                name="product"
+                value={(isEditable && lead) ? lead.product : formData.product}
+                onChange={handleChange}
+                options={productOptions}
+                placeholder="Select a Product"
+                icon={<Package/>}
+              />
+            </div>
+
+           
+              <div>
+                <Label text="Assigned Lead To"/>
+                <Select
+                  name="assignedTo"
+                  value={(isEditable && lead) ? lead.assignedTo : formData.assignedTo}
+                  onChange={handleChange}
+                  options={assigneeOptions}
+                  placeholder="Select an Assignee"
+                  icon={<User/>}
+                />
+              </div>
+            
           </div>
+
           {(isEditable && lead)  && <div className='flex-1'>
             <Label text="Update Lead Status"/>
 
@@ -342,7 +357,6 @@ if(!lead && isEditable){
       icon={<Package/>}
     />
           </div>}
-          </div>
 
           {/* Description */}
           <div className='flex gap-4'>
@@ -374,8 +388,9 @@ if(!lead && isEditable){
           <Button 
             type="submit"
             label="Save Lead"
+            loading={loading.submitting}
             />
-{isEditable && <div>
+{isEditable && (lead && lead.history.length>0) && <div>
   <h2 className="text-xl font-bold text-white mb-4">Lead History</h2>
   <ul className="space-y-6">
     {(lead && lead.history.length>0) && lead.history.map((h, index) => {
@@ -397,12 +412,12 @@ if(!lead && isEditable){
                 Lead Status Updated From{" "}
                 <span
                 >
-                  {formatStatus(h.previous_status)}
+                  {formatLabel(h.previous_status)}
                 </span>{" "}
                 to{" "}
                 <span
                 >
-                  {formatStatus(h.new_status)}
+                  {formatLabel(h.new_status)}
                 </span>
               </h3>
             ) : (

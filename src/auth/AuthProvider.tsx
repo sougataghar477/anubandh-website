@@ -6,7 +6,7 @@ import {
 } from "react";
 import { useNavigate } from "react-router";
 
-export type UserRole = "admin" | "marketting"
+export type UserRole = "admin" | "marketing"
 
 import api,{setAuthFailureHandler} from "../utils/api";
 import { AuthContext } from "./AuthContext";
@@ -37,8 +37,11 @@ export function AuthProvider({
   const [token, setToken] =
     useState<string | null>(null);
 
-  const [loading, setLoading] =
-    useState(true);
+const [loading, setLoading] = useState({
+  auth: true,
+  fetching: true,
+  submitting: false,
+});
 
   const isLoggedIn = !!user;
 
@@ -49,7 +52,8 @@ export function AuthProvider({
           localStorage.getItem("accessToken");
 
         if (!accessToken) {
-          setLoading(false);
+          setLoading(prev => ({...prev,auth:true}));
+
           return;
         }
 
@@ -71,7 +75,7 @@ export function AuthProvider({
         setToken(null);
         setUser(null);
       } finally {
-        setLoading(false);
+        setLoading(prev => ({...prev,auth:false}));
       }
     }
 
@@ -157,6 +161,7 @@ export function AuthProvider({
         login,
         logout,
         setUser,
+        setLoading
       }}
     >
       {children}
