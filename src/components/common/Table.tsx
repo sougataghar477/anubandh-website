@@ -16,6 +16,38 @@ type GenericTableProps<T> = {
   onPageChange: (page: number) => void;
 };
 
+const getStatusClasses = (value: string | ReactNode | undefined) => {
+  const normalized = String(value ?? "").trim().toLowerCase();
+
+  if (
+    normalized === "in progress" ||
+    normalized === "in_progress" ||
+    normalized === "inprogress"
+  ) {
+    return "bg-amber-500/20 text-amber-400 border border-amber-500/30";
+  }
+
+  if (
+    normalized === "successful" ||
+    normalized === "successfull" ||
+    normalized === "success" ||
+    normalized === "completed" ||
+    normalized === "complete"
+  ) {
+    return "bg-green-500/20 text-green-400 border border-green-500/30";
+  }
+
+  if (
+    normalized === "failed" ||
+    normalized === "failure" ||
+    normalized === "unsuccessful"
+  ) {
+    return "bg-red-500/20 text-red-400 border border-red-500/30";
+  }
+
+  return "";
+};
+
 export default function Table<T extends Record<string, ReactNode>>({
   data,
   emptyMessage = "No data found.",
@@ -60,14 +92,27 @@ export default function Table<T extends Record<string, ReactNode>>({
             ) : (
               data.map((row, rowIndex) => (
                 <tr key={rowIndex} className="bg-[#111115]">
-                  {columns.map((column) => (
-                    <td
-                      key={String(column)}
-                      className={`px-6 py-5`}
-                    >
-                      {typeof row[column] === "string" ? formatLabel(row[column]) : row[column]}
-                    </td>
-                  ))}
+                  {columns.map((column) => {
+                    const cellValue = row[column];
+                    const isStatusColumn = String(column).toLowerCase() === "status";
+                    const statusClasses = isStatusColumn ? getStatusClasses(cellValue) : "";
+                    const content =
+                      typeof cellValue === "string"
+                        ? isStatusColumn
+                          ? (
+                              <span className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${statusClasses}`}>
+                                {formatLabel(cellValue)}
+                              </span>
+                            )
+                          : formatLabel(cellValue)
+                        : cellValue;
+
+                    return (
+                      <td key={String(column)} className="px-6 py-5">
+                        {content}
+                      </td>
+                    );
+                  })}
                     <td className="px-6 py-5">
     <button
       onClick={() => navigateTo(`/${pageName}/${row.id}`)}

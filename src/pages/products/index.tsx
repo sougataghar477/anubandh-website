@@ -35,7 +35,6 @@ interface Dialog {
 }
 
 export default function ProductsPage() {
-const [loading,setLoading] = useState<boolean>(false)
   const [newProductName, setNewProductName] = useState<DropdownOption>({
     id: "",
     name: "",
@@ -53,15 +52,11 @@ const [loading,setLoading] = useState<boolean>(false)
   const [oldProductName,setOldProductName] = useState<string>("");
 const reloadProducts = async () => {
   try {
-    setLoading(true);
-
     const { data } = await api.get<ProductsResponse>("/products/all");
 
     setProducts(data.products);
   } catch (error) {
     console.error("Failed to load products:", error);
-  } finally {
-    setLoading(false);
   }
 };
       
@@ -72,7 +67,7 @@ const reloadProducts = async () => {
     }
 
     try {
-      const { data } = await api.post("/products/create", {
+      await api.post("/products/create", {
         name: newProductName.name.trim(),
       });
 
@@ -107,7 +102,7 @@ const reloadProducts = async () => {
     }
 
     try {
-      const { data } = await api.post(`/products/edit/${newProductName.id}`, {
+      await api.post(`/products/edit/${newProductName.id}`, {
         id: newProductName.id,
         name:newProductName.name
       });
@@ -174,17 +169,11 @@ const reloadProducts = async () => {
 useEffect(()=>{
   const loadProducts = async () => {
         try {
-          setLoading(true);
           const { data } = await api.get<ProductsResponse>("/products/all");
-
-        
 
           setProducts(data.products);
         } catch (error) {
           console.error("Failed to load products:", error);
-        }
-        finally{
-          setLoading(false);
         }
       };
       loadProducts()
@@ -194,12 +183,13 @@ useEffect(()=>{
 return (
   <div className="min-h-screen bg-[#111111] p-6 text-[#E0E0E0] md:p-10">
     <div className="mx-auto max-w-6xl">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-      <div>
+      <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+      <div className="flex min-h-[360px] items-start justify-center md:min-h-[500px]">
+      <div className="w-full">
       <div className="mb-8">
-        <h1 className="text-4xl font-bold text-white">
+        <h2 className="text-4xl font-bold text-white">
           Add Product
-        </h1>
+        </h2>
 
         <p className="mt-2 text-gray-400">
           Manage your product catalog
@@ -207,7 +197,7 @@ return (
       </div>
 
       {/* Add / Edit Product */}
-      <div className="rounded-3xl border border-[#2B2B2B] bg-[#181818] p-6 shadow-xl">
+      <div className="rounded-3xl border border-[#2B2B2B] bg-[#181818] mt-25 p-16 shadow-xl">
         {/* <label className="mb-2 block text-sm text-gray-400">
           Product Name
         </label> */}
@@ -279,6 +269,7 @@ return (
       {/* Search */}
 
       </div>
+      </div>
       {/* Products */}
       <div>
         <div className="mb-8">
@@ -313,50 +304,52 @@ return (
         </p>
         </div>
 
-        <div className="grid gap-5">
-          {products
-            .filter((product) =>
-              product.name
-                .toLowerCase()
-                .includes(
-                  searchedProduct.toLowerCase()
-                )
-            )
-            .map((product) => (
-              <div
-                key={product.id}
-                onClick={() => {
-                  setNewProductName({
-                    id: product.id,
-                    name: product.name,
-                  });
+        <div className="max-h-[280px] overflow-y-auto pr-2 scrollbar-thin scrollbar-track-[#181818] scrollbar-thumb-lime-500/70 hover:scrollbar-thumb-lime-400">
+          <div className="grid gap-5">
+            {products
+              .filter((product) =>
+                product.name
+                  .toLowerCase()
+                  .includes(
+                    searchedProduct.toLowerCase()
+                  )
+              )
+              .map((product) => (
+                <div
+                  key={product.id}
+                  onClick={() => {
+                    setNewProductName({
+                      id: product.id,
+                      name: product.name,
+                    });
 
-                  setOldProductName(
-                    product.name
-                  );
-                }}
-                className="cursor-pointer rounded-3xl border border-[#2B2B2B] bg-[#181818] p-5 transition hover:border-lime-400"
-              >
-                <div className="flex items-center gap-4">
-                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-lime-500/10">
-                    <Package
-                      size={24}
-                      className="text-lime-400"
-                    />
-                  </div>
+                    setOldProductName(
+                      product.name
+                    );
+                  }}
+                  className="cursor-pointer rounded-3xl border border-[#2B2B2B] bg-[#181818] p-4 transition hover:border-lime-400"
+                >
+                  <div className="flex items-center gap-4">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-lime-500/10">
+                      <Package
+                        size={24}
+                        className="text-lime-400"
+                      />
+                    </div>
 
-                  <div>
-                    <h3 className="text-lg font-semibold text-white">
-                      {product.name}
-                    </h3>
+                    <div>
+                      <h3 className="text-lg font-semibold text-white">
+                        {product.name}
+                      </h3>
 
-                    <p className="text-sm text-gray-400">
-                      Product #{product.id}
-                    </p>
+                      <p className="text-sm text-gray-400">
+                        Product #{product.id}
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+          </div>
         </div>
       </div>
       </div>
