@@ -15,7 +15,7 @@ import { Link } from "react-router";
 import axios from "axios";
 import { toast } from "react-toastify";
 import api from "../../utils/api";
-import { formatLabel } from "../../utils/validation";
+import { formatLabel } from "../../utils/helper";
 
 type Lead = {
     id: number;

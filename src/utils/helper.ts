@@ -9,3 +9,15 @@ export const formatLabel = (value: string) => {
     .replace(/_/g, " ")
     .replace(/\b\w/g, (char) => char.toUpperCase());
 };
+
+export const fileToObject = (file) => {
+  if (!file) return null;
+
+  return {
+    name: file.name,
+    size: file.size,
+    type: file.type,
+    lastModified: file.lastModified,
+    lastModifiedDate: file.lastModifiedDate,
+  };
+};

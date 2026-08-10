@@ -11,7 +11,7 @@ import { toast } from 'react-toastify';
 import axios from 'axios';
 import { useAuth } from '../../auth/useAuth';
 import api from '../../utils/api';
-import { checkValidation } from '../../utils/validation';
+import { checkValidation } from '../../utils/helper';
 import Label from '../common/Label';
 import UserInput from '../common/UserInput';
 import Select from '../common/Select';

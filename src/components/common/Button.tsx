@@ -1,11 +1,21 @@
 import React from 'react';
+import Loader from './Loader';
 
 interface SaveButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   label?: string;
-  icon?:React.ReactNode
+  icon?:React.ReactNode;
+  loading?:boolean
 }
 
-export default function Button({icon, label = 'Save Changes', className = '', ...props }: SaveButtonProps) {
+export default function Button({icon, label = 'Save Changes', className = '', loading,...props }: SaveButtonProps) {
+  const iconRenderer = () => {
+    if(loading){
+      return <Loader/>
+    }
+    if(icon){
+      return icon;
+    }
+  }
   return (
     <button
       {...props}
@@ -21,11 +31,11 @@ export default function Button({icon, label = 'Save Changes', className = '', ..
         flex
         justify-center
         items-center
-        gap-2
+        gap-2 cursor-pointer
         ${className}
       `}
     >
-      {icon}
+      {iconRenderer()}
       {label}
     </button>
   );

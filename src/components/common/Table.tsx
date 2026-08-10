@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { useNavigate } from "react-router";
-import { formatLabel } from "../../utils/validation";
+import { formatLabel } from "../../utils/helper";
 
 
 type GenericTableProps<T> = {
