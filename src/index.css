@@ -4,3 +4,7 @@
   --color-lime-hover: #74b810;
   --color-lime-active: #65a30d;
 }
+html,
+body {
+  background-color: #0c0d10;
+}

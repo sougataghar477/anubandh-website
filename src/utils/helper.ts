@@ -21,3 +21,20 @@ export const fileToObject = (file) => {
     lastModifiedDate: file.lastModifiedDate,
   };
 };
+
+const formatStatus = (status?: string) =>
+  status
+    ? status
+        .split("_")
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" ")
+    : "";
+
+export const formatDateTime = (dateStr: string) => 
+  new Date(dateStr).toLocaleString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+  });
