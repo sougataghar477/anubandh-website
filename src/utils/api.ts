@@ -9,7 +9,13 @@ export function setAuthFailureHandler(handler: () => void) {
 }
 
 const productionApiIP = "72.60.220.34";
-// const localIP = "localhost";
+const localIP = "localhost";
+// Headers Below Incase we need it
+  // headers: {
+  //   "Content-Type": "application/json",
+  // },
+const api = axios.create({
+  baseURL: `http://${productionApiIP}:3002/api`,
 
 // Headers Below Incase we need it
 // headers: {

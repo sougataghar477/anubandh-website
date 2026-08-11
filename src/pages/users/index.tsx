@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import api from "../../utils/api";
 import Table from "../../components/common/Table";
 import UsersSearchHeader from "./components/UsersSearchHeader";
+import { Users } from "lucide-react";
 import UsersSummaryCards from "./components/UsersSummaryCards";
 
 type UserRow = {
@@ -93,16 +94,71 @@ export default function AllUsers() {
     <main className="min-h-screen bg-[#0c0d10] px-6 py-8 text-gray-100 md:px-8 lg:px-10">
       <div className="flex flex-col gap-8">
         <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-          <div className="max-w-2xl">
-            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-gray-500">
-              User Directory
-            </p>
-            <h1 className="mt-4 text-4xl font-semibold tracking-tight text-white">
-              Manage your users with the same polished flow.
+          <div className="max-w-3xl">
+
+            {/* Section Label */}
+            <div className="mb-4 flex items-center gap-2">
+
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-lime-400 opacity-60" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-lime-400 shadow-[0_0_10px_rgba(163,230,53,0.8)]" />
+              </span>
+
+              <span className="inline-flex items-center gap-2 rounded-full bg-lime-500/10 border border-lime-500/20 px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-lime-400">
+                User Directory
+              </span>
+
+
+
+
+            </div>
+
+            {/* Main Heading */}
+            <h1 className="text-4xl font-bold leading-[1.1] tracking-tight text-white md:text-5xl">
+
+              Manage your{" "}
+
+              <span className="bg-gradient-to-r from-lime-300 via-lime-400 to-emerald-400 bg-clip-text text-transparent">
+                users
+              </span>
+
+              {" "}with a smarter{" "}
+
+              <span className="bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">
+                workflow.
+              </span>
+
             </h1>
-            <p className="mt-3 max-w-xl text-sm leading-7 text-gray-400">
-              Browse user accounts, search by role or status, and jump into any profile from one place.
+
+            {/* Description */}
+            <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-400 md:text-[15px]">
+
+              Manage accounts, monitor activity, review roles, and keep your
+              organization connected from one{" "}
+
+              <span className="font-medium text-slate-300">
+                centralized workspace.
+              </span>
+
             </p>
+
+            {/* Small Feature Highlights */}
+            <div className="mt-5 flex flex-wrap items-center gap-3">
+
+              <div className="rounded-xl border border-blue-400/10 bg-blue-400/[0.04] px-3 py-2 text-[11px] font-medium text-blue-300">
+                ● Centralized Directory
+              </div>
+
+              <div className="rounded-xl border border-purple-400/10 bg-purple-400/[0.04] px-3 py-2 text-[11px] font-medium text-purple-300">
+                ● Secure Access
+              </div>
+
+              <div className="rounded-xl border border-lime-400/10 bg-lime-400/[0.04] px-3 py-2 text-[11px] font-medium text-lime-300">
+                ● Live Management
+              </div>
+
+            </div>
+
           </div>
 
           <UsersSearchHeader searchTerm={searchTerm} onSearchChange={setSearchTerm} />
@@ -111,12 +167,31 @@ export default function AllUsers() {
         <UsersSummaryCards users={users} />
 
         <section className="overflow-hidden rounded-[32px] border border-[#2A2A30] bg-[#111115] shadow-[0_35px_80px_rgba(0,0,0,0.35)]">
-          <div className="flex flex-col gap-4 border-b border-[#2A2A30] px-6 py-6 sm:flex-row sm:items-center sm:justify-between">
-            <div>
-              <p className="text-sm uppercase tracking-[0.24em] text-gray-500">User table</p>
-              <h2 className="mt-2 text-2xl font-semibold text-white">All users</h2>
-            </div>
-          </div>
+          <div className="flex flex-col gap-4 border-b border-white/[0.08] bg-white/[0.02] px-6 py-5 sm:flex-row sm:items-center sm:justify-between">
+
+  <div className="flex items-center gap-4">
+
+    {/* Table Icon */}
+    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-lime-400/20 bg-lime-400/[0.06] shadow-[0_0_20px_rgba(163,230,53,0.06)]">
+      <Users className="h-5 w-5 text-lime-300" />
+    </div>
+
+    <div>
+      <p className="text-[11px] font-bold uppercase tracking-[0.24em] text-lime-400/70">
+        User Table
+      </p>
+
+      <h2 className="mt-1 text-2xl font-bold tracking-tight text-white">
+        All{" "}
+        <span className="bg-gradient-to-r from-lime-300 to-emerald-400 bg-clip-text text-transparent">
+          users
+        </span>
+      </h2>
+    </div>
+
+  </div>
+
+</div>
 
           {loading ? (
             <div className="px-6 py-6 text-sm text-gray-400">Loading users...</div>
