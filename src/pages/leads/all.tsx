@@ -10,6 +10,8 @@ import { fileToObject } from "../../utils/helper";
 import Filter from "../../components/common/Filter";
 import { Link } from "react-router";
 import SearchInput from "../../components/common/Search";
+import Tooltip from "../../components/common/TooltipWrapper";
+import TooltipWrapper from "../../components/common/TooltipWrapper";
 const PAGE_SIZE = 3;
 
  const SUMMARY_CARDS = [
@@ -244,7 +246,7 @@ const handleLeadsUpload = async () => {
       </Link>
     </div>
 
-<div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch overflow-hidden">
+<div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
   {/* Download Button */}
   <a href="/template/1_002_-ey4.gif" download className="h-full">
     <Button
@@ -270,19 +272,24 @@ const handleLeadsUpload = async () => {
   ) : (
     selectedFile &&
     fileToObject(selectedFile) && (
-      <div className="group flex h-full min-h-12 w-full items-center justify-between rounded-3xl border border-[#2B2B2B] bg-[#181818] px-5 py-3 text-gray-200 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-lime-400/30 hover:shadow-[0_20px_50px_rgba(163,230,53,0.12)]">
-        <span className="text-sm font-medium text-gray-200 flex gap-2">
+      <div className="relative flex h-full min-h-12 w-full items-center justify-between rounded-3xl border border-[#2A2A30] bg-[#111115] px-5 py-3 text-gray-200 shadow-sm">
+        <span className="text-sm font-medium text-gray-200 flex flex-1 gap-2 w-full">
           <Check color="green"/>
           File Uploaded
         </span>
+        
+
+         
         <button
           type="button"
           onClick={() => setSelectedFile(null)}
-          className="group rounded-full p-1 transition-colors hover:bg-red-500/10"
+          className="group cursor-pointer relative rounded-full p-1 transition-colors hover:bg-red-500/10"
           title="Remove file"
         >
+          <Tooltip text="Remove File" />
           <Trash2 className="h-4 w-4 text-red-400 transition-colors group-hover:text-red-500" />
         </button>
+         
       </div>
     )
   )}
@@ -290,8 +297,8 @@ const handleLeadsUpload = async () => {
   <Button type="button" label="Save Leads" icon={<SaveIcon/>} loading={submitLoading} onClick={handleLeadsUpload}/>
 {/* </div> */}
 </div>
-        <section className="overflow-hidden rounded-4xl border border-[#2A2A30] bg-[#121218] shadow-[0_35px_80px_rgba(0,0,0,0.32)]">
-          <div className="flex flex-col gap-4 border-b border-[#2A2A30] bg-[#111218] px-6 py-6 sm:flex-row sm:items-center sm:justify-between">
+        <section className="overflow-x-hidden rounded-4xl border border-[#2A2A30] bg-[#111115] shadow-[0_35px_80px_rgba(0,0,0,0.35)]">
+          <div className="flex flex-col gap-4 border-b border-[#2A2A30] p-6 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <p className="text-sm uppercase tracking-[0.28em] text-lime-300">Lead table</p>
               <h2 className="mt-2 text-2xl font-semibold text-white">All active leads</h2>
