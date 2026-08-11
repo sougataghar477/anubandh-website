@@ -1,21 +1,20 @@
-import type { HTMLAttributes, ReactElement } from "react";
+import type { HTMLAttributes } from "react";
 
 interface TooltipProps extends HTMLAttributes<HTMLSpanElement> {
-  text:string;
-  children:ReactElement<HTMLAttributes<HTMLElement>>;
+  text: string;
 }
 
-export default function TooltipWrapper({
+export default function Tooltip({
   text,
-  children,
+  className = "",
+  ...props
 }: TooltipProps) {
   return (
-    <div className="relative anchor">
-      {children}
-
-      <span className="tooltip">
-        {text}
-      </span>
-    </div>
+    <span
+      {...props}
+      className={`pointer-events-none absolute left-1/2 -top-9 hidden w-max whitespace-nowrap -translate-x-1/2 rounded-4xl bg-[#111111] font-medium border border-[#333]  px-3 py-1.5 text-center text-sm shadow-xl group-hover:block ${className}`}
+    >
+      {text}
+    </span>
   );
 }

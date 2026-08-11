@@ -221,7 +221,7 @@ const handleLeadsUpload = async () => {
       </Link>
     </div>
 
-<div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch overflow-x-hidden">
+<div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
   {/* Download Button */}
   <a href="/template/1_002_-ey4.gif" download className="h-full">
     <Button
@@ -247,23 +247,24 @@ const handleLeadsUpload = async () => {
   ) : (
     selectedFile &&
     fileToObject(selectedFile) && (
-      <div className="overflow-visible relative flex h-full min-h-12 w-full items-center justify-between rounded-3xl border border-[#2A2A30] bg-[#111115] px-5 py-3 text-gray-200 shadow-sm">
-        <span className="text-sm font-medium text-gray-200 flex gap-2">
+      <div className="relative flex h-full min-h-12 w-full items-center justify-between rounded-3xl border border-[#2A2A30] bg-[#111115] px-5 py-3 text-gray-200 shadow-sm">
+        <span className="text-sm font-medium text-gray-200 flex flex-1 gap-2 w-full">
           <Check color="green"/>
           File Uploaded
         </span>
         
 
-        <TooltipWrapper text="Tooltip" >
+         
         <button
           type="button"
           onClick={() => setSelectedFile(null)}
-          className="group rounded-full p-1 transition-colors hover:bg-red-500/10"
+          className="group cursor-pointer relative rounded-full p-1 transition-colors hover:bg-red-500/10"
           title="Remove file"
         >
+          <Tooltip text="Remove File" />
           <Trash2 className="h-4 w-4 text-red-400 transition-colors group-hover:text-red-500" />
         </button>
-        </TooltipWrapper>
+         
       </div>
     )
   )}
