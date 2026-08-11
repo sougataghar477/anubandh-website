@@ -9,14 +9,15 @@ export function setAuthFailureHandler(handler: () => void) {
 }
 
 const productionApiIP = "72.60.220.34";
-const localIP = "localhost";
-// Headers Below Incase we need it
-  // headers: {
-  //   "Content-Type": "application/json",
-  // },
-const api = axios.create({
-  baseURL: `http://${localIP}:3002/api`,
+// const localIP = "localhost";
 
+// Headers Below Incase we need it
+// headers: {
+//   "Content-Type": "application/json",
+// },
+
+const api = axios.create({
+  baseURL: `http://${productionApiIP}:3002/api`,
   withCredentials: false,
 });
 let isRefreshing : boolean = false;
@@ -73,7 +74,7 @@ if (
 
       refreshPromise = axios
         .post(
-          `http://${localIP}:3002/api/auth/refresh`,
+          `http://${productionApiIP}:3002/api/auth/refresh`,
           {
             refreshToken,
           }

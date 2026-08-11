@@ -63,19 +63,19 @@ export default function Table<T extends Record<string, ReactNode>>({
   const navigateTo = useNavigate();
   return (
     <>
-      <div className="w-full overflow-x-auto">
+      <div className="w-full overflow-x-auto rounded-3xl border border-[#2B2B2B] bg-[#181818] shadow-[0_20px_50px_rgba(0,0,0,0.3)]">
         <table className="min-w-full border-separate border-spacing-0 text-left text-sm">
-          <thead className="bg-[#141418] text-xs uppercase tracking-[0.24em] text-gray-500">
+          <thead className="bg-[#101116] text-xs uppercase tracking-[0.28em] text-gray-400">
             <tr>
               {columns.map((column) => (
                 <th
                   key={String(column)}
-                  className={`px-6 py-4`}
+                  className="px-6 py-4 font-semibold text-gray-300"
                 >
                   {String(column)}
                 </th>
               ))}
-                <th>Show Actions</th>
+                <th className="px-6 py-4 font-semibold text-gray-300">Actions</th>
             </tr>
           </thead>
 
@@ -83,7 +83,7 @@ export default function Table<T extends Record<string, ReactNode>>({
             {data.length === 0 ? (
               <tr className="bg-[#111115]">
                 <td
-                  colSpan={columns.length}
+                  colSpan={columns.length + 1}
                   className="px-6 py-8 text-center text-sm text-gray-400"
                 >
                   {emptyMessage}
@@ -91,7 +91,7 @@ export default function Table<T extends Record<string, ReactNode>>({
               </tr>
             ) : (
               data.map((row, rowIndex) => (
-                <tr key={rowIndex} className="bg-[#111115]">
+                <tr key={rowIndex} className="bg-[#12131a] transition-colors duration-200 hover:bg-[#1c1e27]">
                   {columns.map((column) => {
                     const cellValue = row[column];
                     const isStatusColumn = String(column).toLowerCase() === "status";
@@ -108,7 +108,7 @@ export default function Table<T extends Record<string, ReactNode>>({
                         : cellValue;
 
                     return (
-                      <td key={String(column)} className="px-6 py-5">
+                      <td key={String(column)} className="px-6 py-5 text-sm text-gray-200">
                         {content}
                       </td>
                     );
@@ -116,7 +116,7 @@ export default function Table<T extends Record<string, ReactNode>>({
                     <td className="px-6 py-5">
     <button
       onClick={() => navigateTo(`/${pageName}/${row.id}`)}
-      className="rounded-xl border border-[#2A2A30] bg-[#141418] px-4 py-2 text-sm text-gray-200 hover:border-lime-primary"
+      className="rounded-full border border-[#2A2B2B] bg-gradient-to-r from-lime-500/10 via-transparent to-lime-500/10 px-4 py-2 text-sm font-semibold text-lime-100 transition hover:border-lime-300 hover:bg-[#1a1c1f]"
     >
       View Record
     </button>
@@ -128,7 +128,7 @@ export default function Table<T extends Record<string, ReactNode>>({
         </table>
       </div>
 
-      <div className="flex flex-col gap-4 border-t border-[#2A2A30] px-6 py-5 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-col gap-4 border-t border-[#2B2B2B] bg-[#111116] px-6 py-5 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-sm text-gray-400">
           Showing {startIndex}-{endIndex} of {filteredCount}
         </p>

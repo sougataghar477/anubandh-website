@@ -209,11 +209,11 @@ export default function DashboardPage() {
 
                                 </button>
 
-                                <button className="rounded-2xl border border-[#323232] bg-[#121212] px-6 py-3 text-white transition hover:border-lime-400">
+                                {/* <button className="rounded-2xl border border-[#323232] bg-[#121212] px-6 py-3 text-white transition hover:border-lime-400">
 
                                     View Reports
 
-                                </button>
+                                </button> */}
 
                             </div>
 

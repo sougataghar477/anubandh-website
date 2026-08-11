@@ -86,7 +86,7 @@ export default function SupportPage() {
 
           <Link
             to="/"
-            className="mb-6 inline-flex items-center gap-2 text-sm text-gray-500 transition-colors hover:text-white"
+            className="inline-flex items-center gap-2 rounded-full bg-lime-500/10 border border-lime-500/20 px-4 py-2 mb-6 text-xs font-semibold uppercase tracking-[0.3em] text-lime-400"
           >
             <ArrowLeft className="h-4 w-4" />
             Back to Dashboard
@@ -180,7 +180,7 @@ export default function SupportPage() {
         <section className="mb-9">
 
           <div className="mb-5">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-lime-primary">
+            <p className="inline-flex items-center gap-2 rounded-full bg-lime-500/10 border border-lime-500/20 px-4 py-2  mb-4 text-xs font-semibold uppercase tracking-[0.3em] text-lime-400">
               Direct Assistance
             </p>
 
@@ -198,7 +198,7 @@ export default function SupportPage() {
             {/* =================================================
                 PHONE
             ================================================= */}
-            <div className="group rounded-2xl border border-[#2A2A30] bg-[#17171B] p-5 transition-all duration-200 hover:border-[#3A3A42] hover:bg-[#1A1A1F]">
+            <div className="group rounded-3xl border border-[#2B2B2B] bg-[#181818] p-5 transition-all duration-300 hover:-translate-y-1 hover:border-lime-400/30 hover:shadow-[0_20px_50px_rgba(163,230,53,0.12)]">
 
               <div className="flex items-start justify-between gap-5">
 
@@ -269,7 +269,7 @@ export default function SupportPage() {
             {/* =================================================
                 EMAIL
             ================================================= */}
-            <div className="group rounded-2xl border border-[#2A2A30] bg-[#17171B] p-5 transition-all duration-200 hover:border-[#3A3A42] hover:bg-[#1A1A1F]">
+            <div className="group rounded-3xl border border-[#2B2B2B] bg-[#181818] p-5 transition-all duration-300 hover:-translate-y-1 hover:border-lime-400/30 hover:shadow-[0_20px_50px_rgba(163,230,53,0.12)]">
 
               <div className="flex items-start justify-between gap-5">
 
@@ -359,7 +359,7 @@ export default function SupportPage() {
 
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
 
-            <div className="rounded-2xl border border-[#2A2A30] bg-[#17171B] p-5 transition-colors hover:border-[#3A3A42]">
+            <div className="group rounded-3xl border border-[#2B2B2B] bg-[#181818] p-5 transition-all duration-300 hover:-translate-y-1 hover:border-lime-400/30 hover:shadow-[0_20px_50px_rgba(163,230,53,0.12)]">
               <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-lime-primary/10">
                 <BarChart3 className="h-5 w-5 text-lime-primary" />
               </div>
@@ -373,7 +373,7 @@ export default function SupportPage() {
               </p>
             </div>
 
-            <div className="rounded-2xl border border-[#2A2A30] bg-[#17171B] p-5 transition-colors hover:border-[#3A3A42]">
+            <div className="group rounded-3xl border border-[#2B2B2B] bg-[#181818] p-5 transition-all duration-300 hover:-translate-y-1 hover:border-lime-400/30 hover:shadow-[0_20px_50px_rgba(163,230,53,0.12)]">
               <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-blue-500/10">
                 <Package className="h-5 w-5 text-blue-400" />
               </div>
@@ -387,7 +387,7 @@ export default function SupportPage() {
               </p>
             </div>
 
-            <div className="rounded-2xl border border-[#2A2A30] bg-[#17171B] p-5 transition-colors hover:border-[#3A3A42]">
+            <div className="group rounded-3xl border border-[#2B2B2B] bg-[#181818] p-5 transition-all duration-300 hover:-translate-y-1 hover:border-lime-400/30 hover:shadow-[0_20px_50px_rgba(163,230,53,0.12)]">
               <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-purple-500/10">
                 <Users className="h-5 w-5 text-purple-400" />
               </div>
@@ -401,7 +401,7 @@ export default function SupportPage() {
               </p>
             </div>
 
-            <div className="rounded-2xl border border-[#2A2A30] bg-[#17171B] p-5 transition-colors hover:border-[#3A3A42]">
+            <div className="group rounded-3xl border border-[#2B2B2B] bg-[#181818] p-5 transition-all duration-300 hover:-translate-y-1 hover:border-lime-400/30 hover:shadow-[0_20px_50px_rgba(163,230,53,0.12)]">
               <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-orange-500/10">
                 <ShieldCheck className="h-5 w-5 text-orange-400" />
               </div>
@@ -488,7 +488,7 @@ export default function SupportPage() {
             </p>
           </div>
 
-          <div className="overflow-hidden rounded-2xl border border-[#2A2A30] bg-[#17171B]">
+          <div className="overflow-hidden rounded-3xl border border-[#2B2B2B] bg-[#181818]">
 
             {faqs.map((faq, index) => (
               <div
