@@ -171,9 +171,9 @@ export default function DashboardPage() {
     );
 
     return (
-        <div className="min-h-screen bg-[#111111] p-6 text-[#E0E0E0] md:p-10">
-            <div className="mx-auto max-w-7xl space-y-6">
-                <section className="relative overflow-x-hidden rounded-4xl border border-[#2B2B2B] bg-[#181818] shadow-2xl">
+       <div className="min-h-screen bg-[#111111] p-6 text-[#E0E0E0] md:p-8 lg:p-10">
+    <div className="w-full space-y-6">
+                <section className="relative overflow-x-hidden rounded-[32px] border border-[#2B2B2B] bg-[#181818] shadow-2xl">
 
                     <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(163,230,53,.20),transparent_40%)]" />
 
