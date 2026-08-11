@@ -7,4 +7,17 @@
 html,
 body {
   background-color: #0c0d10;
+  overflow: visible;
 }
+
+/* .tooltip{
+  position: absolute;
+  background-color: red;
+  width: fit-content;
+  left: 50%;
+  top: -30px;
+  transform: translateX(-50%);
+  z-index:50;  
+} */
+
+

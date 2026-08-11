@@ -295,7 +295,7 @@ function formHandler(e : React.SubmitEvent<HTMLFormElement>){
 
       <div className="mx-auto max-w-5xl flex-1">
 
-        <form onSubmit={(e) => formHandler(e)} className="rounded-3xl border border-[#2b2b2b] bg-[#181818] shadow-xl overflow-hidden">
+        <form onSubmit={(e) => formHandler(e)} className="rounded-3xl border border-[#2b2b2b] bg-[#181818] shadow-xl overflow-x-hidden">
 
           {/* Header */}
 
@@ -307,7 +307,7 @@ function formHandler(e : React.SubmitEvent<HTMLFormElement>){
             <div className="flex flex-col items-center">
 
               <div className="relative">
-                    <div className="w-36 h-36 rounded-full border-4 border-lime-400 overflow-hidden">
+                    <div className="w-36 h-36 rounded-full border-4 border-lime-400 overflow-x-hidden">
                     {image ? (
                         <img
                         src={image}

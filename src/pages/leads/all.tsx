@@ -10,6 +10,8 @@ import { fileToObject } from "../../utils/helper";
 import Filter from "../../components/common/Filter";
 import { Link } from "react-router";
 import SearchInput from "../../components/common/Search";
+import Tooltip from "../../components/common/TooltipWrapper";
+import TooltipWrapper from "../../components/common/TooltipWrapper";
 const PAGE_SIZE = 3;
 
  const SUMMARY_CARDS = [
@@ -219,7 +221,7 @@ const handleLeadsUpload = async () => {
       </Link>
     </div>
 
-<div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch overflow-hidden">
+<div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch overflow-x-hidden">
   {/* Download Button */}
   <a href="/template/1_002_-ey4.gif" download className="h-full">
     <Button
@@ -245,11 +247,14 @@ const handleLeadsUpload = async () => {
   ) : (
     selectedFile &&
     fileToObject(selectedFile) && (
-      <div className="flex h-full min-h-12 w-full items-center justify-between rounded-3xl border border-[#2A2A30] bg-[#111115] px-5 py-3 text-gray-200 shadow-sm">
+      <div className="overflow-visible relative flex h-full min-h-12 w-full items-center justify-between rounded-3xl border border-[#2A2A30] bg-[#111115] px-5 py-3 text-gray-200 shadow-sm">
         <span className="text-sm font-medium text-gray-200 flex gap-2">
           <Check color="green"/>
           File Uploaded
         </span>
+        
+
+        <TooltipWrapper text="Tooltip" >
         <button
           type="button"
           onClick={() => setSelectedFile(null)}
@@ -258,6 +263,7 @@ const handleLeadsUpload = async () => {
         >
           <Trash2 className="h-4 w-4 text-red-400 transition-colors group-hover:text-red-500" />
         </button>
+        </TooltipWrapper>
       </div>
     )
   )}
@@ -265,7 +271,7 @@ const handleLeadsUpload = async () => {
   <Button type="button" label="Save Leads" icon={<SaveIcon/>} loading={submitLoading} onClick={handleLeadsUpload}/>
 {/* </div> */}
 </div>
-        <section className="overflow-hidden rounded-4xl border border-[#2A2A30] bg-[#111115] shadow-[0_35px_80px_rgba(0,0,0,0.35)]">
+        <section className="overflow-x-hidden rounded-4xl border border-[#2A2A30] bg-[#111115] shadow-[0_35px_80px_rgba(0,0,0,0.35)]">
           <div className="flex flex-col gap-4 border-b border-[#2A2A30] p-6 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <p className="text-sm uppercase tracking-[0.24em] text-gray-500">Lead table</p>
