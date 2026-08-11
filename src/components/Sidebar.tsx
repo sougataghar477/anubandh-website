@@ -5,6 +5,7 @@ import {
   ShieldCheck,
   Settings,
   HelpCircle,
+  LayoutDashboard,
 } from "lucide-react";
 
 export default function Sidebar() {
@@ -24,6 +25,13 @@ export default function Sidebar() {
 
         {/* Main Navigation */}
         <nav className="space-y-1.5">
+          <Link
+            to="/"
+            className="flex items-center gap-3 px-3.5 py-3 rounded-lg text-gray-400 hover:text-gray-200 hover:bg-[#222226] text-sm font-medium transition-colors"
+          >
+            <LayoutDashboard className="w-4 h-4 text-gray-400" />
+            <span>Dashboard</span>
+          </Link>
           <Link
             to="/leads/all"
             className="flex items-center gap-3 px-3.5 py-3 rounded-lg bg-lime-primary/10 text-lime-primary border-l-2 border-lime-primary text-sm font-medium transition-colors"
@@ -45,7 +53,7 @@ export default function Sidebar() {
             className="flex items-center gap-3 px-3.5 py-3 rounded-lg text-gray-400 hover:text-gray-200 hover:bg-[#222226] text-sm font-medium transition-colors"
           >
             <ShieldCheck className="w-4 h-4 text-gray-400" />
-            <span>Administration</span>
+            <span>User</span>
           </Link>
         </nav>
       </div>
@@ -53,17 +61,17 @@ export default function Sidebar() {
       {/* Bottom Section */}
       <div className="space-y-6">
         {/* Action Button */}
-        <button
+        {/* <button
           type="button"
           className="w-full py-3 px-4 bg-lime-primary hover:bg-lime-hover text-[#121214] font-semibold text-sm rounded-lg transition-colors shadow-sm"
         >
           Create New
-        </button>
+        </button> */}
 
         {/* Secondary Navigation */}
         <nav className="space-y-1 pt-4 border-t border-[#2A2A30]">
           <Link
-            to="/"
+            to="/profile"
             className="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-gray-400 hover:text-gray-200 hover:bg-[#222226] text-sm font-medium transition-colors"
           >
             <Settings className="w-4 h-4 text-gray-400" />
@@ -71,7 +79,7 @@ export default function Sidebar() {
           </Link>
 
           <Link
-            to="/"
+            to="/support"
             className="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-gray-400 hover:text-gray-200 hover:bg-[#222226] text-sm font-medium transition-colors"
           >
             <HelpCircle className="w-4 h-4 text-gray-400" />
