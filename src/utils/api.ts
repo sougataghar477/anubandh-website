@@ -17,6 +17,13 @@ const localIP = "localhost";
 const api = axios.create({
   baseURL: `http://${productionApiIP}:3002/api`,
 
+// Headers Below Incase we need it
+// headers: {
+//   "Content-Type": "application/json",
+// },
+
+const api = axios.create({
+  baseURL: `http://${productionApiIP}:3002/api`,
   withCredentials: false,
 });
 let isRefreshing : boolean = false;

@@ -276,7 +276,7 @@ if(!lead && isEditable){
         {/* Lead Details Card */}
         <form 
           onSubmit={handleSubmit}
-          className="bg-[#18181C] border border-[#2A2A30] rounded-xl p-8 space-y-6 shadow-xl"
+          className="group bg-[#181818] border border-[#2B2B2B] rounded-3xl p-8 space-y-6 shadow-2xl transition-all duration-300 hover:-translate-y-1 hover:border-lime-400/30 hover:shadow-[0_20px_50px_rgba(163,230,53,0.12)]"
         >
           {/* Card Header */}
           <div className="flex items-center gap-3 pb-4 border-b border-[#2A2A30]">

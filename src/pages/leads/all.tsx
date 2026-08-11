@@ -5,7 +5,7 @@ import api from "../../utils/api";
 import { toast } from "react-toastify";
 import axios from "axios";
 import Button from "../../components/common/Button";
-import { Check,  Plus,  SaveIcon,  Trash2, Upload } from "lucide-react";
+import { Check, Plus, SaveIcon, Trash2, Upload, Users, Activity, UserPlus, DollarSign } from "lucide-react";
 import { fileToObject } from "../../utils/helper";
 import Filter from "../../components/common/Filter";
 import { Link } from "react-router";
@@ -20,24 +20,32 @@ const PAGE_SIZE = 3;
     amount: "1,248",
     note: "+12% this month",
     badgeClass: "text-emerald-300",
+    icon: Users,
+    iconBg: "bg-emerald-500/15 text-emerald-300",
   },
   {
     title: "Active Leads",
     amount: "912",
     note: "73% of pipeline",
     badgeClass: "text-sky-300",
+    icon: Activity,
+    iconBg: "bg-sky-500/15 text-sky-300",
   },
   {
     title: "New Leads",
     amount: "314",
     note: "26 added this week",
     badgeClass: "text-amber-300",
+    icon: UserPlus,
+    iconBg: "bg-amber-500/15 text-amber-300",
   },
   {
     title: "Pipeline Value",
     amount: "$124.8k",
     note: "Estimated revenue",
     badgeClass: "text-lime-primary",
+    icon: DollarSign,
+    iconBg: "bg-lime-500/15 text-lime-300",
   },
 ];
 
@@ -182,18 +190,18 @@ const handleLeadsUpload = async () => {
       <div className="flex flex-col gap-8">
         <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-2xl">
-            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-gray-500">
+            <p className="inline-flex items-center gap-2 rounded-full bg-lime-500/10 border border-lime-500/20 px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-lime-400">
               Lead Inventory
             </p>
             <h1 className="mt-4 text-4xl font-semibold text-white tracking-tight">
-              Manage your lead pipeline with clarity.
+              Manage your <span className="bg-gradient-to-r from-lime-400 to-green-500 bg-clip-text text-transparent">leads </span> pipeline with clarity.
             </h1>
             <p className="mt-3 max-w-xl text-sm text-gray-400 leading-7">
               Track lead status, expected deal value, and ownership across your team in a polished, dark dashboard that matches your existing app theme.
             </p>
           </div>
 
-          <SearchInput
+          <SearchInput    
           searchTerm={searchTerm}
           onSearchChange={setSearchTerm}
           placeholder="Search leads..."
@@ -201,23 +209,40 @@ const handleLeadsUpload = async () => {
         </div>
 
        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
-      {SUMMARY_CARDS.map((card) => (
-        <div
-          key={card.title}
-          className="rounded-[28px] border border-[#2A2A30] bg-[#16161A] p-6 shadow-[0_30px_60px_rgba(0,0,0,0.2)]"
-        >
-          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-gray-500">
-            {card.title}
-          </p>
-          <p className="mt-5 text-4xl font-semibold text-white">{card.amount}</p>
-          <span className={`mt-3 inline-flex items-center rounded-full bg-white/5 px-3 py-1 text-xs font-semibold ${card.badgeClass}`}>
-            {card.note}
-          </span>
-        </div>
-      ))}
-      <Link to={"/leads/new"} className="grid place-items-center  rounded-[28px] border border-[#2A2A30] bg-[#16161A] p-6 shadow-[0_30px_60px_rgba(0,0,0,0.2)]">
-       <Plus />
-        Add New Lead
+      {SUMMARY_CARDS.map((card) => {
+        const Icon = card.icon;
+
+        return (
+          <div
+            key={card.title}
+            className="group mk relative overflow-hidden rounded-3xl border border-[#2B2B2B] bg-[#181818] p-5 transition-all duration-300 hover:-translate-y-2 hover:border-lime-400/30 hover:shadow-[0_20px_50px_rgba(163,230,53,0.12)]"
+          >
+            <div className="absolute -right-8 -top-8 h-20 w-20 rounded-full bg-lime-400/5 blur-2xl" />
+            <div className="flex items-center gap-3">
+              <div className={`flex h-10 w-10 items-center justify-center rounded-3xl ${card.iconBg}`}>
+                <Icon size={14} />
+              </div>
+              <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-400 truncate">
+                {card.title}
+              </p>
+            </div>
+            <div className="mt-5">
+              <p className="text-3xl font-semibold text-white text-left">{card.amount}</p>
+            </div>
+            <div className="mt-4">
+              <span className={`inline-flex max-w-full items-center rounded-full bg-white/5 px-3 py-1 text-xs font-semibold ${card.badgeClass} truncate`}>
+                {card.note}
+              </span>
+            </div>
+          </div>
+        );
+      })}
+      <Link
+        to={'/leads/new'}
+        className="group flex items-center justify-center gap-2 rounded-3xl border border-[#2B2B2B] bg-gradient-to-br from-[#141414] via-[#181818] to-[#111111] p-6 text-white transition-all duration-300 hover:-translate-y-2 hover:border-lime-400/30 hover:shadow-[0_20px_50px_rgba(163,230,53,0.12)]"
+      >
+        <Plus className="text-lime-300" />
+        <span className="font-semibold text-white">Add New Lead</span>
       </Link>
     </div>
 
@@ -275,50 +300,57 @@ const handleLeadsUpload = async () => {
         <section className="overflow-x-hidden rounded-4xl border border-[#2A2A30] bg-[#111115] shadow-[0_35px_80px_rgba(0,0,0,0.35)]">
           <div className="flex flex-col gap-4 border-b border-[#2A2A30] p-6 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <p className="text-sm uppercase tracking-[0.24em] text-gray-500">Lead table</p>
+              <p className="text-sm uppercase tracking-[0.28em] text-lime-300">Lead table</p>
               <h2 className="mt-2 text-2xl font-semibold text-white">All active leads</h2>
+              
             </div>
-
-<Filter
-  filtersOpen={filtersOpen}
-  onToggleFilters={() => setFiltersOpen((prev) => !prev)}
-  onClearFilters={clearAllFilters}
-  filterGroups={[
-    {
-      label: "Status",
-      options: statusOptions.map((status) => ({
-        label: status,
-        value: status,
-      })),
-      activeValues: activeStatusFilters,
-      onToggle: (status) =>
-        toggleArrayValue(
-          status,
-          activeStatusFilters,
-          setActiveStatusFilters
-        ),
-    },
-  ]}
-/>
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+              <div className="rounded-3xl border border-lime-primary/30 bg-[#181818] px-4 py-3 text-sm text-gray-200 shadow-[0_15px_40px_rgba(0,0,0,0.15)]">
+                Showing {startIndex}-{endIndex} of {filteredLeads.length}
+              </div>
+              <div>
+                <Filter
+                  filtersOpen={filtersOpen}
+                  onToggleFilters={() => setFiltersOpen((prev) => !prev)}
+                  onClearFilters={clearAllFilters}
+                  filterGroups={[
+                    {
+                      label: "Status",
+                      options: statusOptions.map((status) => ({
+                        label: status,
+                        value: status,
+                      })),
+                      activeValues: activeStatusFilters,
+                      onToggle: (status) =>
+                        toggleArrayValue(
+                          status,
+                          activeStatusFilters,
+                          setActiveStatusFilters
+                        ),
+                    },
+                  ]}
+                />
+              </div>
+            </div>
           </div>
 
-<Table
-  data={currentPageLeads}
-  pageName="leads"
-  columns={[
-    "name",
-    "product",
-    "phone",
-    "status",
-    "description",
-  ]}
-  filteredCount={filteredLeads.length}
-  startIndex={startIndex}
-  endIndex={endIndex}
-  currentPage={effectivePage}
-  pageCount={pageCount}
-  onPageChange={setCurrentPage}
-/>
+          <Table
+            data={currentPageLeads}
+            pageName="leads"
+            columns={[
+              "name",
+              "product",
+              "phone",
+              "status",
+              "description",
+            ]}
+            filteredCount={filteredLeads.length}
+            startIndex={startIndex}
+            endIndex={endIndex}
+            currentPage={effectivePage}
+            pageCount={pageCount}
+            onPageChange={setCurrentPage}
+          />
         </section>
       </div>
     </main>
