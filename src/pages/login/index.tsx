@@ -2,20 +2,43 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import { useAuth } from "../../auth/useAuth";
 import api from "../../utils/api";
-
+import ConfirmationDialog from "../../components/common/ConfirmationDialog";
+import type { ConfirmationType } from "../../components/common/ConfirmationDialog";
+import axios from "axios";
+import Button from "../../components/common/Button";
+interface PopupProps{
+  type:ConfirmationType,
+  visible:boolean;
+  message:string;
+  title:string;
+}
 export default function LoginPage() {
   const navigate = useNavigate();
   const { login } = useAuth();
-
+  const [popupOptions,setPopupOptions] =  useState<PopupProps>({
+  type: "failure",
+  visible: false,
+  message: "",
+  title: "Error",
+});
+const closePopup = () =>{
+  setPopupOptions({
+    type:'failure',
+    visible:false,
+    message:'',
+    title:'Error',
+  })
+}
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [keepSignedIn, setKeepSignedIn] = useState(true);
+  // const [keepSignedIn, setKeepSignedIn] = useState(true);
   const [loading, setLoading] = useState(false);
 
-  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: React.SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
 
     if (!email.trim() || !password.trim()) {
+      setPopupOptions(prev => ({...prev,visible:true,message:"Please enter email and password"}))
       return;
     }
 
@@ -25,6 +48,7 @@ export default function LoginPage() {
       const { data } = await api.post("/auth/login", {
         email,
         password,
+        deviceType:"pc"
       });
       console.log("Successful Login")
       await login(
@@ -35,9 +59,30 @@ export default function LoginPage() {
 
       navigate("/", { replace: true });
     } catch (error) {
-      console.error(error);
-      alert("Invalid email or password.");
-    } finally {
+  if (axios.isAxiosError(error)) {
+    const errorResponse = error.response;
+
+    if (!errorResponse) {
+      setPopupOptions(prev => ({
+        ...prev,
+        message: "Something Went Wrong",
+      }));
+      return;
+    }
+
+    console.error(error);
+
+    setPopupOptions(prev => ({
+      ...prev,
+      visible:true,
+      message: errorResponse.data?.message || "Something Went Wrong",
+    }));
+
+    // toast.error(
+    //   errorResponse.data?.message || "Something Went Wrong"
+    // );
+  }
+} finally {
       setLoading(false);
     }
   }
@@ -96,7 +141,7 @@ export default function LoginPage() {
           </div>
 
           <div className="flex items-center justify-between text-sm text-gray-400">
-            <label className="flex items-center gap-2">
+            {/* <label className="flex items-center gap-2">
               <input
                 type="checkbox"
                 checked={keepSignedIn}
@@ -106,7 +151,7 @@ export default function LoginPage() {
               />
 
               Keep me signed in
-            </label>
+            </label> */}
 
             <button
               type="button"
@@ -119,14 +164,14 @@ export default function LoginPage() {
             </button>
           </div>
 
-          <button
+          {/* <button
             type="submit"
             disabled={loading}
             className="w-full rounded-xl bg-lime-primary px-4 py-3 font-semibold text-black transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
           >
             {loading ? "Signing In..." : "Sign In"}
-          </button>
-
+          </button> */}
+          <Button type="submit" label="Sign In" loading={loading}/>
           <div className="text-center text-sm text-gray-400">
             Don't have an account?{" "}
             <button
@@ -140,6 +185,13 @@ export default function LoginPage() {
             </button>
           </div>
         </form>
+        <ConfirmationDialog 
+        type={popupOptions.type}
+        visible={popupOptions.visible}
+        message={popupOptions.message}
+        title={popupOptions.title}
+        onCancel={closePopup}
+        />
       </div>
     </div>
   );

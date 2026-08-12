@@ -177,9 +177,9 @@ export default function DashboardPage() {
 
                     <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(163,230,53,.20),transparent_40%)]" />
 
-                    <div className="relative grid lg:grid-cols-2 gap-10 p-8 lg:p-12">
+                    <div className="relative grid grid-cols-1 lg:grid-cols-2 gap-10 p-8 lg:p-12">
 
-                        <div>
+                        <div className="w-full">
 
                             <span className="inline-flex items-center gap-2 rounded-full bg-lime-500/10 border border-lime-500/20 px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-lime-400">
                                 CRM Dashboard
@@ -219,7 +219,7 @@ export default function DashboardPage() {
 
                         </div>
 
-                        <div>
+                        <div className="w-full">
 
                             <div className="rounded-3xl border border-lime-400/20 bg-gradient-to-br from-lime-500/15 via-[#202020] to-[#151515] p-8">
 
@@ -247,7 +247,7 @@ export default function DashboardPage() {
 
                                     </div>
 
-                                    <div className="flex h-24 w-24 items-center justify-center rounded-full border-4 border-lime-400 bg-[#111]">
+                                    <div className="hidden md:flex h-24 w-24 items-center justify-center rounded-full border-4 border-lime-400 bg-[#111]">
 
                                         <TrendingUp
                                             className="text-lime-400"

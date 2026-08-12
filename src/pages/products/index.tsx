@@ -197,7 +197,7 @@ return (
       </div>
 
       {/* Add / Edit Product */}
-      <div className="rounded-3xl border border-[#2B2B2B] bg-[#181818] mt-25 p-16 shadow-xl">
+      <div className="rounded-3xl border border-[#2B2B2B] bg-[#181818] md:mt-12 px-12 py-12 shadow-xl">
         {/* <label className="mb-2 block text-sm text-gray-400">
           Product Name
         </label> */}
@@ -211,6 +211,7 @@ return (
             }))
           }
           placeholder="Enter product name"
+          className="my-6"
         />
         {/* <input
           value={newProductName.name}
@@ -358,7 +359,7 @@ return (
 
 
       <ConfirmationDialog
-        type={showDialog.dialogType}
+        type={'confirmation'}
         visible={showDialog.visibility}
         title={showDialog.title}
         message={showDialog.message}

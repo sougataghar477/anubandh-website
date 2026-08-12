@@ -15,7 +15,7 @@ const localIP = "localhost";
   //   "Content-Type": "application/json",
   // },
 const api = axios.create({
-  baseURL: `http://${productionApiIP}:3002/api`,
+  baseURL: `http://${localIP}:3002/api`,
 
   withCredentials: false,
 });
@@ -73,7 +73,7 @@ if (
 
       refreshPromise = axios
         .post(
-          `http://${productionApiIP}:3002/api/auth/refresh`,
+          `http://${localIP}:3002/api/auth/refresh`,
           {
             refreshToken,
           }

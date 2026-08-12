@@ -69,9 +69,7 @@ export default function Sidebar({
       ====================================================== */}
 
       <aside
-        className={`group fixed left-0 top-0 z-50 flex h-screen flex-col border-r border-white/[0.07] bg-[#0D0F12]/95 font-sans shadow-[10px_0_50px_rgba(0,0,0,0.25)] backdrop-blur-2xl transition-all duration-300 ease-in-out ${
-          isCollapsed ? "w-[82px]" : "w-64"
-        }`}
+        className={`group hidden fixed left-0 top-0 z-50 md:flex h-screen flex-col border-r border-white/[0.07] bg-[#0D0F12]/95 font-sans shadow-[10px_0_50px_rgba(0,0,0,0.25)] backdrop-blur-2xl transition-all duration-300 ease-in-out md:w-64`}
       >
         {/* =====================================================
             BACKGROUND GLOW
@@ -138,65 +136,7 @@ export default function Sidebar({
               COLLAPSE BUTTON
           ====================================================== */}
 
-      <button
-  type="button"
-  onClick={() => setIsCollapsed((prev) => !prev)}
-  aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
-  className="
-    group absolute -right-3 top-[76px] z-50
-    flex h-7 w-7 items-center justify-center
-    rounded-full
-    border border-white/[0.10]
-    bg-[#171A1F]
-    text-slate-400
-    shadow-[0_5px_20px_rgba(0,0,0,0.4)]
-    backdrop-blur-xl
-    transition-all duration-500 ease-out
-    hover:scale-110
-    hover:border-lime-400/40
-    hover:bg-lime-400/[0.10]
-    hover:text-lime-300
-    hover:shadow-[0_0_25px_rgba(163,230,53,0.20)]
-  "
->
-  {/* Outer Hover Ring */}
-  <span
-    className="
-      pointer-events-none absolute inset-[-4px]
-      rounded-full border border-transparent
-      opacity-0
-      transition-all duration-500
-      group-hover:scale-110
-      group-hover:border-lime-400/25
-      group-hover:opacity-100
-    "
-  />
-
-  {/* Inner Glow */}
-  <span
-    className="
-      pointer-events-none absolute inset-0
-      rounded-full bg-transparent
-      transition-all duration-500
-      group-hover:bg-lime-400/10
-      group-hover:blur-sm
-    "
-  />
-
-  {/* ONE Arrow - rotates */}
-  <span
-    className={`
-      relative z-10 flex items-center justify-center
-      transition-transform duration-500
-      ease-[cubic-bezier(0.68,-0.55,0.27,1.55)]
-      ${isCollapsed ? "rotate-180" : "rotate-0"}
-      group-hover:scale-125
-    `}
-  >
-    <ChevronLeft className="h-3.5 w-3.5 transition-all duration-300" />
-  </span>
-
-</button>
+      
 
           {/* =====================================================
               MAIN NAVIGATION

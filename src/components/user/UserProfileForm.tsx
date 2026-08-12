@@ -221,10 +221,7 @@ const handleEditProfileByAdmin = async (
     }
   }
 };
-  const logout = () => {
-     
-    navigate("/login");
-  };
+const {logout} = useAuth();
 const { password, confirmPassword } = newPassword;
 
 const passwordsDontMatch =
@@ -476,6 +473,7 @@ function formHandler(e : React.SubmitEvent<HTMLFormElement>){
               icon={<Save/>}
               />
               <Button
+              type="button"
               label="Logout"
               onClick={logout}
               className="bg-transparent border border-red-500 text-red-400 hover:bg-red-500 hover:text-white"

@@ -11,7 +11,6 @@ import Filter from "../../components/common/Filter";
 import { Link } from "react-router";
 import SearchInput from "../../components/common/Search";
 import Tooltip from "../../components/common/TooltipWrapper";
-import TooltipWrapper from "../../components/common/TooltipWrapper";
 const PAGE_SIZE = 3;
 
  const SUMMARY_CARDS = [
@@ -146,7 +145,7 @@ const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     console.log("UPLOAD WORKING")
     setSelectedFile(file);
   } else {
-    alert("Please select a valid Excel file (.xlsx or .xls)");
+    toast.error("Please select a valid Excel file (.xlsx or .xls)");
   }
 };
 
@@ -200,7 +199,7 @@ const handleLeadsUpload = async () => {
         />
         </div>
 
-       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
+       <div className="grid gap-4 grid-cols-1 lg:grid-cols-5">
       {SUMMARY_CARDS.map((card) => (
         <div
           key={card.title}

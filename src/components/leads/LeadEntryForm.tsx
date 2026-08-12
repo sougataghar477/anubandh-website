@@ -17,8 +17,16 @@ import Select from '../common/Select';
 import Button from '../common/Button';
 import { checkValidation, formatDateTime, formatLabel } from '../../utils/helper';
 import Loader from '../common/Loader';
+import type { ConfirmationType } from '../common/ConfirmationDialog';
+import ConfirmationDialog from '../common/ConfirmationDialog';
 interface LeadDetailsFormProps {
   isEditable?: boolean;
+}
+interface PopupProps{
+  type:ConfirmationType,
+  visible:boolean;
+  message:string;
+  title:string;
 }
 export type LeadStatus =
   | "in_progress"
@@ -73,7 +81,12 @@ const [products,setProducts] = useState<Product[]>([]);
 const [assignees, setAssignees] = useState<Assignees[]>([]);
 const navigateTo =  useNavigate();
 
-
+  const [showDialog, setShowDialog] = useState<PopupProps>({
+    type: 'failure',
+    visible: false,
+    message: '',
+    title:''
+  });
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -121,6 +134,12 @@ const handleChange = (
           const response = await api.post(`/leads/${leadId}`,payload);
           const successMessage = response.data.message ?? "Lead updated successfully.";
           console.log(successMessage);
+                  setShowDialog({
+  type: "success",
+  visible: true,
+  title: "Success",
+  message: successMessage,
+});
           toast.success(successMessage);
           navigateTo("/leads");
     }
@@ -129,10 +148,17 @@ const handleChange = (
         formData.name,
         formData.phone,
         formData.description,
-        formData.assignedTo
+        // formData.assignedTo
         ].some(field => !checkValidation(field));
 
-    if (hasErrors) return;
+    if (hasErrors) {
+              setShowDialog({
+  type: "failure",
+  visible: true,
+  title: "Error",
+  message: "Must fill all fields",
+});
+    };
       const payload = {
         name: formData.name.trim(),
         phone: formData.phone.trim(),
@@ -145,7 +171,13 @@ const handleChange = (
       const response = await api.post("/leads/create",payload);
       console.log("Success ",response);
       const successMessage = response.data.message ?? "Lead updated successfully.";
-      toast.success(successMessage);
+      setShowDialog({
+  type: "success",
+  visible: true,
+  title: "Success",
+  message: successMessage,
+});
+      // toast.success(successMessage);
       navigateTo("/leads");
     }
       } 
@@ -153,10 +185,23 @@ const handleChange = (
         console.error(error);
         console.error("Failed to load lead:", error);
         if(axios.isAxiosError(error)){
-        toast.error((error.response && error.response.data.message) || "Failed to load Lead")
+        toast.error((error.response && error.response.data.message) || "Failed to load Lead");
+        setShowDialog({
+  type: "success",
+  visible: true,
+  title: "Success",
+  message: (error.response && error.response.data.message) || "Failed to load Lead",
+});
       }
         else{
-        toast.error("Something went wrong")
+                  setShowDialog({
+  type: "success",
+  visible: true,
+  title: "Success",
+  message:"Something went wrong",
+});
+          
+        // toast.error("Something went wrong")
         }
       }
       finally{
@@ -469,6 +514,24 @@ if(!lead && isEditable){
         <span>•</span>
         <span>LAST SYNCED 2M AGO</span>
       </footer>
+            <ConfirmationDialog
+              type={showDialog.type}
+              visible={showDialog.visible}
+              title={showDialog.title}
+              message={showDialog.message}
+              confirmText="Delete"
+              cancelText="Cancel"
+              confirmColor="#DC2626"
+              onCancel={() =>
+                setShowDialog({
+                  type: "failure",
+                  visible: false,
+                  message: "",
+                  title: "",
+                })
+              }
+              
+            />
     </main>
   );
 }

@@ -14,11 +14,7 @@ export default function RootLayout() {
       />
 
       <div
-        className={`min-h-screen min-w-0 overflow-x-hidden transition-all duration-300 ease-in-out ${
-          isSidebarCollapsed
-            ? "ml-[82px] w-[calc(100%-82px)]"
-            : "ml-64 w-[calc(100%-256px)]"
-        }`}
+        className={`min-h-screen min-w-0 overflow-x-hidden transition-all duration-300 ease-in-out md:ml-64`}
       >
         <Outlet />
       </div>
