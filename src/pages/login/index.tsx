@@ -2,12 +2,12 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import { useAuth } from "../../auth/useAuth";
 import api from "../../utils/api";
-import ConfirmationDialog from "../../components/common/ConfirmationDialog";
-import type { ConfirmationType } from "../../components/common/ConfirmationDialog";
+import type { PopupType } from "../../components/common/Popup";
 import axios from "axios";
 import Button from "../../components/common/Button";
+import Popup from "../../components/common/Popup";
 interface PopupProps{
-  type:ConfirmationType,
+  type:PopupType,
   visible:boolean;
   message:string;
   title:string;
@@ -48,7 +48,7 @@ const closePopup = () =>{
       const { data } = await api.post("/auth/login", {
         email,
         password,
-        deviceType:"pc"
+        deviceType:"phone"
       });
       console.log("Successful Login")
       await login(
@@ -185,7 +185,7 @@ const closePopup = () =>{
             </button>
           </div>
         </form>
-        <ConfirmationDialog 
+        <Popup 
         type={popupOptions.type}
         visible={popupOptions.visible}
         message={popupOptions.message}

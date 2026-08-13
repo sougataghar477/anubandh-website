@@ -17,13 +17,13 @@ import Select from '../common/Select';
 import Button from '../common/Button';
 import { checkValidation, formatDateTime, formatLabel } from '../../utils/helper';
 import Loader from '../common/Loader';
-import type { ConfirmationType } from '../common/ConfirmationDialog';
-import ConfirmationDialog from '../common/ConfirmationDialog';
+import type { PopupType } from '../common/Popup';
+import Popup from '../common/Popup';
 interface LeadDetailsFormProps {
   isEditable?: boolean;
 }
 interface PopupProps{
-  type:ConfirmationType,
+  type:PopupType,
   visible:boolean;
   message:string;
   title:string;
@@ -140,7 +140,7 @@ const handleChange = (
   title: "Success",
   message: successMessage,
 });
-          toast.success(successMessage);
+          // toast.success(successMessage);
           navigateTo("/leads");
     }
     else{
@@ -514,7 +514,7 @@ if(!lead && isEditable){
         <span>•</span>
         <span>LAST SYNCED 2M AGO</span>
       </footer>
-            <ConfirmationDialog
+            <Popup
               type={showDialog.type}
               visible={showDialog.visible}
               title={showDialog.title}

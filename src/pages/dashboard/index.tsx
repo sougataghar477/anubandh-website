@@ -16,6 +16,8 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import api from "../../utils/api";
 import { formatLabel } from "../../utils/helper";
+import type { PopupType } from "../../components/common/Popup";
+import Popup from "../../components/common/Popup";
 
 type Lead = {
     id: number;
@@ -24,7 +26,12 @@ type Lead = {
     phone: string;
     status: string;
 };
-
+interface PopupProps{
+    type:PopupType;
+    visible:boolean;
+    title:string;
+    message:string;
+}
 const getDisplayStatus = (status: string) => {
     const normalized = status?.trim().toLowerCase() ?? "";
 
@@ -69,7 +76,7 @@ const actions = [
 export default function DashboardPage() {
     const [leads, setLeads] = useState<Lead[]>([]);
     const [loading, setLoading] = useState(true);
-
+    const [popupOptions,setPopupOptions] = useState<PopupProps>({type:'failure',visible:false,title:'Error',message:''});
     useEffect(() => {
         let isMounted = true;
 
@@ -97,9 +104,12 @@ export default function DashboardPage() {
                 console.error("Failed to load dashboard leads:", error);
                 if (isMounted) {
                     if (axios.isAxiosError(error)) {
-                        toast.error(error.response?.data?.message || "Error fetching leads");
+                        const errorMessage = error.response?.data?.message || "Error fetching leads";
+                        setPopupOptions(prev => ({...prev,message:errorMessage,visible:true}))
+                        // toast.error(error.response?.data?.message || "Error fetching leads");
                     } else {
-                        toast.error("Something went wrong");
+                        setPopupOptions(prev => ({...prev,message:"Error fetching leads",visible:true}))
+                        // toast.error("Something went wrong");
                     }
                     setLeads([]);
                 }
@@ -169,7 +179,9 @@ export default function DashboardPage() {
             })),
         [leads]
     );
-
+  const closePopup = () => {
+    setPopupOptions(prev => ({...prev,visible:false}))
+  }
     return (
        <div className="min-h-screen bg-[#111111] p-6 text-[#E0E0E0] md:p-8 lg:p-10">
     <div className="w-full space-y-6">
@@ -452,7 +464,13 @@ export default function DashboardPage() {
                         ))}
 
                     </div>
-
+                <Popup
+                type={popupOptions.type}
+                visible={popupOptions.visible}
+                title={popupOptions.title}
+                message={popupOptions.message}
+                onCancel={closePopup}
+                />
                 </section>
             </div>
         </div>

@@ -11,6 +11,7 @@ import Filter from "../../components/common/Filter";
 import { Link } from "react-router";
 import SearchInput from "../../components/common/Search";
 import Tooltip from "../../components/common/TooltipWrapper";
+import Popup from "../../components/common/Popup";
 const PAGE_SIZE = 3;
 
  const SUMMARY_CARDS = [
@@ -53,9 +54,16 @@ type Lead = {
   created_at: string;
   updated_at: string;
 };
+interface PopupProps{
+  type:'failure',
+  visible:boolean,
+  title:'Error',
+  message:''
 
+}
 export default function AllLeadsPage() {
   const [submitLoading,setIsSubmitLoading] = useState<boolean>(false);
+  const [popupOptions,setPopupOptions] = useState<PopupProps>({type:'failure',visible:false,title:'Error',message:''});
   const [allLeads,setAllLeads] = useState<Lead[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filtersOpen, setFiltersOpen] = useState(false);
@@ -128,7 +136,14 @@ useEffect(()=>{
         setAllLeads(response.data.leads);
     } catch (error) { 
         if (axios.isAxiosError(error)) {
-    toast.error(error.response?.data?.message || "Error fetching leads");
+         setPopupOptions({
+          type:'failure',
+          visible:true,
+          title:'Error',
+          message:error.response?.data.message
+         }) 
+          
+    // toast.error(error.response?.data?.message || "Error fetching leads");
   } else {
     toast.error("Something went wrong");
   }
@@ -319,6 +334,21 @@ const handleLeadsUpload = async () => {
   onPageChange={setCurrentPage}
 />
         </section>
+              <Popup
+                type={'failure'}
+                visible={popupOptions.visible}
+                title={popupOptions.title}
+                message={popupOptions.message}
+                cancelText="Exit"
+                onCancel={() =>
+                  setPopupOptions({
+                    type: "failure",
+                    visible: false,
+                    message: "",
+                    title: "Error",
+                  })
+                }
+              />
       </div>
     </main>
   );

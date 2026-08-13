@@ -12,7 +12,7 @@ export interface DropdownOption {
 import UserInput from "../../components/common/UserInput";
 import Label from "../../components/common/Label";
 import Button from "../../components/common/Button";
-import ConfirmationDialog from "../../components/common/ConfirmationDialog";
+import Popup from "../../components/common/Popup";
 import axios from "axios";
 
 interface Product {
@@ -172,7 +172,27 @@ useEffect(()=>{
           const { data } = await api.get<ProductsResponse>("/products/all");
 
           setProducts(data.products);
+
+          
         } catch (error) {
+          if(axios.isAxiosError(error)){
+            setShowDialog({
+        dialogType: "failure",
+        visibility: true,
+        title:'Error',
+        message:
+          error.response?.data?.message || "Failed to delete product.",
+      });
+
+          }
+          else{
+            setShowDialog({
+        dialogType: "failure",
+        visibility: true,
+        title:'Error',
+        message:"Failed to delete product.",
+      });
+          }
           console.error("Failed to load products:", error);
         }
       };
@@ -358,14 +378,12 @@ return (
 
 
 
-      <ConfirmationDialog
-        type={'confirmation'}
+      <Popup
+        type={'failure'}
         visible={showDialog.visibility}
         title={showDialog.title}
         message={showDialog.message}
-        confirmText="Delete"
-        cancelText="Cancel"
-        confirmColor="#DC2626"
+        cancelText="Exit"
         onCancel={() =>
           setShowDialog({
             dialogType: "",
@@ -374,7 +392,6 @@ return (
             title: "",
           })
         }
-        onConfirm={handleDeleteProduct}
       />
     </div>
   </div>

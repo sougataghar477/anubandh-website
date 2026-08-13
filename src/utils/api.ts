@@ -102,16 +102,35 @@ if (
     originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
 
     return api(originalRequest);
-  } catch (refreshError: any) {
-    if (refreshError.response?.status === 401) {
-      localStorage.removeItem("accessToken");
-      localStorage.removeItem("refreshToken");
+  } 
+  // catch (refreshError: any) {
+  //   if (refreshError.response?.status === 401) {
+  //     localStorage.removeItem("accessToken");
+  //     localStorage.removeItem("refreshToken");
 
-      onAuthFailure?.();
-    }
+  //     onAuthFailure?.();
+  //   }
 
-    return Promise.reject(refreshError);
+  //   return Promise.reject(refreshError);
+  // }
+  catch (refreshError: any) {
+  const status = refreshError.response?.status;
+
+  if (status === 401 || status === 403) {
+    console.log("Refresh token is invalid/expired. Logging out.");
+
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+
+    onAuthFailure?.();
+  } else {
+    console.log(
+      "Refresh failed because of network/server issue. Keeping tokens."
+    );
   }
+
+  return Promise.reject(refreshError);
+}
 }
 
     return Promise.reject(error);
