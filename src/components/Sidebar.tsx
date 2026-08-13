@@ -69,7 +69,7 @@ export default function Sidebar({
       ====================================================== */}
 
       <aside
-        className={`group hidden fixed left-0 top-0 z-50 md:flex h-screen flex-col border-r border-white/[0.07] bg-[#0D0F12]/95 font-sans shadow-[10px_0_50px_rgba(0,0,0,0.25)] backdrop-blur-2xl transition-all duration-300 ease-in-out md:w-64`}
+        className={`group hidden fixed left-0 top-0 z-50 lg:flex h-screen flex-col border-r border-white/[0.07] bg-[#0D0F12]/95 font-sans shadow-[10px_0_50px_rgba(0,0,0,0.25)] backdrop-blur-2xl transition-all duration-300 ease-in-out md:w-64`}
       >
         {/* =====================================================
             BACKGROUND GLOW
@@ -305,6 +305,87 @@ export default function Sidebar({
           </div>
         </div>
       </aside>
+
+
+{/* =====================================================
+    MOBILE NAVBAR
+    Visible below 768px
+====================================================== */}
+<nav className="fixed inset-x-0 bottom-0 z-50 flex h-[72px] border-t border-white/[0.07] bg-[#0D0F12]/95 font-sans shadow-[0_-10px_40px_rgba(0,0,0,0.35)] backdrop-blur-2xl lg:hidden">
+
+  {/* Background glows */}
+  <div className="pointer-events-none absolute inset-0 overflow-hidden">
+    <div className="absolute -left-10 -bottom-20 h-40 w-40 rounded-full bg-lime-400/[0.04] blur-[70px]" />
+    <div className="absolute -right-10 -bottom-20 h-40 w-40 rounded-full bg-purple-500/[0.04] blur-[70px]" />
+  </div>
+
+  <div className="relative flex w-full items-center justify-around px-2">
+
+    {mainNavigation.slice(0, 5).map((item) => {
+      const Icon = item.icon;
+
+      return (
+        <NavLink
+          key={item.path}
+          to={item.path}
+          end={item.path === "/"}
+          className={({ isActive }) =>
+            `group relative flex h-full min-w-0 flex-1 flex-col items-center justify-center gap-1 transition-all duration-300 ${
+              isActive
+                ? "text-lime-300"
+                : "text-slate-500 hover:text-slate-300"
+            }`
+          }
+        >
+          {({ isActive }) => (
+            <>
+              {/* Active top glow */}
+              {isActive && (
+                <span className="absolute left-1/2 top-0 h-[2px] w-10 -translate-x-1/2 rounded-full bg-lime-400 shadow-[0_0_12px_rgba(163,230,53,0.9)]" />
+              )}
+
+              {/* Icon */}
+              <div
+                className={`relative flex h-9 w-9 items-center justify-center rounded-xl transition-all duration-300 ${
+                  isActive
+                    ? "bg-lime-400/[0.10] shadow-[0_0_18px_rgba(163,230,53,0.08)]"
+                    : "bg-transparent"
+                }`}
+              >
+                <Icon
+                  className={`h-[18px] w-[18px] transition-all duration-300 ${
+                    isActive
+                      ? "text-lime-300"
+                      : "text-slate-500 group-hover:text-slate-300"
+                  }`}
+                />
+              </div>
+
+              {/* Label */}
+              <span
+                className={`max-w-[64px] truncate text-[9px] font-medium ${
+                  isActive ? "text-lime-300" : "text-slate-500"
+                }`}
+              >
+                {item.label}
+              </span>
+
+              {/* Active dot */}
+              {isActive && (
+                <span className="absolute bottom-1 h-1 w-1 rounded-full bg-lime-400 shadow-[0_0_7px_rgba(163,230,53,0.9)]" />
+              )}
+            </>
+          )}
+        </NavLink>
+      );
+    })}
+
+  </div>
+</nav>
+
+
+
+
     </>
   );
 }

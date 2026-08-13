@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import api from "../../utils/api";
 import Table from "../../components/common/Table";
-import UsersSearchHeader from "./components/UsersSearchHeader";
+import  Search from  "../../components/common/Search";
 import { Users } from "lucide-react";
 import UsersSummaryCards from "./components/UsersSummaryCards";
 import axios from "axios";
@@ -181,7 +181,7 @@ export default function AllUsers() {
 
           </div>
 
-          <UsersSearchHeader searchTerm={searchTerm} onSearchChange={setSearchTerm} />
+          <Search searchTerm={searchTerm} onSearchChange={setSearchTerm} />
         </div>
 
         <UsersSummaryCards users={users} />

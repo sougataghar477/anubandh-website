@@ -14,7 +14,7 @@ export default function RootLayout() {
       />
 
       <div
-        className={`min-h-screen min-w-0 overflow-x-hidden transition-all duration-300 ease-in-out md:ml-64`}
+        className={`min-h-screen min-w-0 overflow-x-hidden transition-all duration-300 ease-in-out lg:ml-64`}
       >
         <Outlet />
       </div>

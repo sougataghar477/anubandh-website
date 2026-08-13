@@ -5,7 +5,7 @@ import api from "../../utils/api";
 import { toast } from "react-toastify";
 import axios from "axios";
 import Button from "../../components/common/Button";
-import { Check, Plus, SaveIcon, Trash2, Upload, Users, Activity, UserPlus, DollarSign } from "lucide-react";
+import { Check, Plus, SaveIcon, Trash2, Upload, Users, Activity, UserPlus, DollarSign, Clock } from "lucide-react";
 import { fileToObject } from "../../utils/helper";
 import Filter from "../../components/common/Filter";
 import { Link } from "react-router";
@@ -30,6 +30,14 @@ const PAGE_SIZE = 3;
     badgeClass: "text-sky-300",
     icon: Activity,
     iconBg: "bg-sky-500/15 text-sky-300",
+  },
+  {
+    title: "Inactive Leads",
+    amount: "336",
+    note: "27% dormant",
+    badgeClass: "text-rose-300",
+    icon: Clock,
+    iconBg: "bg-rose-500/15 text-rose-300",
   },
   {
     title: "New Leads",
@@ -222,7 +230,7 @@ const handleLeadsUpload = async () => {
         />
         </div>
 
-       <div className="grid gap-4 grid-cols-1 lg:grid-cols-5">
+       <div className="grid gap-4 grid-cols-1 md:grid-cols-3 lg:grid-cols-3">
       {SUMMARY_CARDS.map((card) => (
         <div
           key={card.title}
@@ -237,7 +245,7 @@ const handleLeadsUpload = async () => {
           </span>
         </div>
       ))}
-      <Link to={"/leads/new"} className="grid place-items-center  rounded-[28px] border border-[#2A2A30] bg-[#16161A] p-6 shadow-[0_30px_60px_rgba(0,0,0,0.2)]">
+      <Link to={"/leads/new"} className="grid  place-items-center  rounded-[28px] border border-[#2A2A30] bg-[#16161A] p-6 shadow-[0_30px_60px_rgba(0,0,0,0.2)]">
        <Plus />
         Add New Lead
       </Link>
