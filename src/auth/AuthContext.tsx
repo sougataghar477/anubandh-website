@@ -1,6 +1,7 @@
 import { createContext } from "react";
 import type { Dispatch, SetStateAction } from "react";
 export type UserRole = "admin" | "marketing"
+export type authStatusType = "loading" | "authenticated" | "unauthenticated" | "unavailable";
 export interface GlobalLoader{
   auth:boolean;
   fetching:boolean;
@@ -16,6 +17,7 @@ export interface User {
 }
 export interface AuthContextValue {
   user: User | null;
+  authStatus:authStatusType;
   token: string | null;
   isLoggedIn: boolean;
   loading: GlobalLoader;

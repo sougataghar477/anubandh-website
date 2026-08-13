@@ -9,7 +9,7 @@ import { useNavigate } from "react-router";
 export type UserRole = "admin" | "marketing"
 
 import api,{setAuthFailureHandler} from "../utils/api";
-import { AuthContext } from "./AuthContext";
+import { AuthContext, type authStatusType } from "./AuthContext";
 
 
 export interface User {
@@ -21,7 +21,6 @@ export interface User {
   profile_picture:string;
 }
 
-
 interface Props {
   children: ReactNode;
 }
@@ -30,7 +29,7 @@ export function AuthProvider({
   children,
 }: Props) {
   const navigate = useNavigate();
-
+  const [authStatus, setAuthStatus] = useState<authStatusType>("loading");
   const [user, setUser] =
     useState<User | null>(null);
 
@@ -45,42 +44,44 @@ const [loading, setLoading] = useState({
 
   const isLoggedIn = !!user;
 
-  useEffect(() => {
-    async function loadAuth() {
-      try {
-        const accessToken =
-          localStorage.getItem("accessToken");
+useEffect(() => {
+  async function loadAuth() {
+    try {
+      const accessToken =
+        localStorage.getItem("accessToken");
 
-        if (!accessToken) {
-          setLoading(prev => ({...prev,auth:true}));
-
-          return;
-        }
-
-        setToken(accessToken);
-
-        const { data } =
-          await api.get("/auth/checkAuth");
-
-        setUser(data.user);
-      } catch {
-        localStorage.removeItem(
-          "accessToken"
-        );
-
-        localStorage.removeItem(
-          "refreshToken"
-        );
-
-        setToken(null);
-        setUser(null);
-      } finally {
-        setLoading(prev => ({...prev,auth:false}));
+      if (!accessToken) {
+        setAuthStatus("unauthenticated");
+        return;
       }
-    }
 
-    loadAuth();
-  }, []);
+      setToken(accessToken);
+
+      const { data } =
+        await api.get("/auth/checkAuth");
+
+      setUser(data.user);
+      setAuthStatus("authenticated");
+    } catch (error: any) {
+      console.error(
+        "Auth initialization failed:",
+        error
+      );
+
+      // Do NOT clear tokens here.
+      // A network/DB/server failure does not mean
+      // the user's authentication is invalid.
+      setAuthStatus("unavailable");
+    } finally {
+      setLoading(prev => ({
+        ...prev,
+        auth: false,
+      }));
+    }
+  }
+
+  loadAuth();
+}, []);
 
   const login = useCallback(
     async (
@@ -100,6 +101,7 @@ const [loading, setLoading] = useState({
 
       setToken(accessToken);
       setUser(user);
+      setAuthStatus("authenticated");
     },
     []
   );
@@ -130,6 +132,7 @@ const [loading, setLoading] = useState({
         replace: true,
       });
     }
+    setAuthStatus("unauthenticated");
   }, [navigate]);
 
   useEffect(() => {
@@ -144,7 +147,7 @@ const [loading, setLoading] = useState({
 
       setToken(null);
       setUser(null);
-
+      setAuthStatus("unauthenticated");
       navigate("/login", {
         replace: true,
       });
@@ -155,13 +158,14 @@ const [loading, setLoading] = useState({
     <AuthContext.Provider
       value={{
         user,
+        authStatus,
         token,
         isLoggedIn,
         loading,
         login,
         logout,
         setUser,
-        setLoading
+        setLoading,
       }}
     >
       {children}

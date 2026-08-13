@@ -18,6 +18,9 @@ import axios from "axios";
 import api from "../../utils/api";
 import Button from "../common/Button";
 import { useAuth } from "../../auth/useAuth";
+import type { PopupType } from "../common/Popup";
+import Loader from "../common/Loader";
+import Popup from "../common/Popup";
 interface UserProfileProps {
   isEditable: boolean;
   isOwnProfile: boolean;
@@ -35,12 +38,20 @@ const initialFormData: UserFormData = {
   role: 'marketing',
   password:''
 };
-
+interface PopupProps{
+  type:PopupType,
+  visible:boolean;
+  message:string;
+  title:string;
+}
 export default function UserProfile({ isOwnProfile,isEditable }:UserProfileProps) {
     const {userId} = useParams();
-    console.log(userId)
+    const [profileFieldsEdited,setProfileFieldsEdited] = useState<boolean>(false);
+    const [passwordEdited,setPasswordEdited] = useState<boolean>(false);
+    const [submitLoading,setSubmitLoading] = useState<boolean>(false);
+    const [pageLoading,setpageLoading] = useState<boolean>(false);
     const roleOptions = [{label:"Admin",value:"admin"},{label:"Marketing",value:"marketing"}];
-    const navigate = useNavigate();
+    const [popupOptions,setPopupOptions] = useState<PopupProps>({type:'failure',visible:false,title:'',message:''})
     const {user} = useAuth();
     const userRole = user && user.role.toLowerCase();
     const isAdmin : boolean = user ? userRole === "admin" : false;
@@ -50,6 +61,7 @@ export default function UserProfile({ isOwnProfile,isEditable }:UserProfileProps
     const [selectedFile, setSelectedFile] = useState<{
       profilePicture?: string;
     }>({});
+    const closePopup = () => setPopupOptions({type:'failure',visible:false,title:'',message:''})
     const canManageRoles = isAdmin && !isOwnProfile;
     const canChangeOwnPassword = isOwnProfile;
     const canResetOtherPassword = isAdmin && !isOwnProfile;
@@ -60,7 +72,7 @@ export default function UserProfile({ isOwnProfile,isEditable }:UserProfileProps
       if (!file) return;
 
       if (file.size > 5 * 1024 * 1024) {
-        toast.error("Please select an image smaller than 5 MB.");
+        setPopupOptions({type:'failure',visible:true,title:'Error',message:'Please select an image smaller than 5 MB.'})
         return;
       }
 
@@ -78,17 +90,22 @@ export default function UserProfile({ isOwnProfile,isEditable }:UserProfileProps
 
       reader.readAsDataURL(file);
     };
-    const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ): void => {
-    const { name, value } = e.target;
+const handleChange = (
+  e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+): void => {
+  const { name, value } = e.target;
 
-      setFormData((prev) => ({
-        ...prev,
-        [name]: value,
-      }));
-    
-  };
+  setFormData((prev) => ({
+    ...prev,
+    [name]: value,
+  }));
+
+  if (name === "password") {
+    setPasswordEdited(true);
+  } else {
+    setProfileFieldsEdited(true);
+  }
+};
 
   const handleReset = (): void => {
     setFormData(initialFormData);
@@ -98,21 +115,30 @@ export default function UserProfile({ isOwnProfile,isEditable }:UserProfileProps
     e.preventDefault();
     console.log('Form Submitted:', formData);
     try {
+      setSubmitLoading(true)
       const response = await api.post("/auth/register",formData);
       const successMessage = response.data.message;
-      toast.success(successMessage);
+      setPopupOptions({type:'success',visible:true,title:'Success',message:successMessage})
       handleReset();
-    } catch (error) {
+
+    } 
+    catch (error) {
       if(axios.isAxiosError(error)){
         const errorMessage = (error.response && error.response.data.message) || "Failed to Create User";
-        toast.error(errorMessage)
+        setPopupOptions({type:'failure',visible:true,title:'Error',message:errorMessage})
       }
-      
+    }
+    finally{
+      setSubmitLoading(false);
     }
   };
 
- const updateProfile = async (url: string) => {
-  const response = await api.post(url, {
+const updateProfile = async (url: string) => {
+  if (!profileFieldsEdited) {
+    return false;
+  }
+
+  await api.post(url, {
     name: formData.name.trim(),
     email: formData.email,
     ...(selectedFile.profilePicture && {
@@ -120,9 +146,7 @@ export default function UserProfile({ isOwnProfile,isEditable }:UserProfileProps
     }),
   });
 
-  toast.success(
-    response.data.message ?? "Profile updated successfully."
-  );
+  return true;
 };
 
 const updatePassword = async (
@@ -130,10 +154,8 @@ const updatePassword = async (
   payload: object
 ) => {
   const response = await api.post(url, payload);
-
-  toast.success(
-    response.data.message ?? "Password changed successfully."
-  );
+  const successMessage = response.data.message ?? "Password changed successfully."
+  setPopupOptions({type:'success',visible:true,title:'Error',message:successMessage})
 
   setFormData(prev => ({
     ...prev,
@@ -151,80 +173,191 @@ const handleEditProfileByUser = async (
 ) => {
   e.preventDefault();
 
-  const { password: changedPassword, confirmPassword } = newPassword;
+  const currentPassword = formData.password.trim();
+  const changedPassword = newPassword.password.trim();
+  const confirmPassword = newPassword.confirmPassword.trim();
 
-  const currentPassword = formData.password;
+  const hasPasswordInput =
+    currentPassword !== "" ||
+    changedPassword !== "" ||
+    confirmPassword !== "";
 
   const shouldChangePassword =
-    currentPassword.trim() !== "" &&
-    changedPassword &&
-    confirmPassword &&
+    currentPassword !== "" &&
+    changedPassword !== "" &&
+    confirmPassword !== "" &&
     changedPassword === confirmPassword;
 
-  if (
-    (currentPassword || changedPassword || confirmPassword) &&
-    !shouldChangePassword
-  ) {
-    toast.error("Please check your password fields.");
+  // Password validation
+  if (hasPasswordInput && !shouldChangePassword) {
+    setPopupOptions({
+      type: "failure",
+      visible: true,
+      title: "Invalid Password Fields",
+      message: "Please check your password fields.",
+    });
+    return;
+  }
+
+  // Nothing changed
+  if (!profileFieldsEdited && !shouldChangePassword) {
+    setPopupOptions({
+      type: "failure",
+      visible: true,
+      title: "No Changes",
+      message: "No changes detected.",
+    });
     return;
   }
 
   try {
-    await updateProfile("/auth/updateProfile");
+    setSubmitLoading(true);
 
+    // Update profile only when profile fields changed
+    if (profileFieldsEdited) {
+      await updateProfile("/auth/updateProfile");
+    }
+
+    // Change password only when all password fields are valid
     if (shouldChangePassword) {
       await updatePassword("/auth/changePassword", {
         password: currentPassword,
         newPassword: changedPassword,
       });
     }
+
+    // One success popup after everything succeeds
+    setPopupOptions({
+      type: "success",
+      visible: true,
+      title: "Success",
+      message:
+        profileFieldsEdited && shouldChangePassword
+          ? "Profile and password updated successfully."
+          : shouldChangePassword
+          ? "Password updated successfully."
+          : "Profile updated successfully.",
+    });
+
+    // Clear password fields after successful update
+    setFormData((prev) => ({
+      ...prev,
+      password: "",
+    }));
+
+    setNewPassword({
+      password: "",
+      confirmPassword: "",
+    });
   } catch (error) {
     console.error(error);
 
     if (axios.isAxiosError(error)) {
-      toast.error(
-        error.response?.data?.message ??
-          "Request failed."
-      );
+      const errorMessage =
+        error.response?.data?.message ?? "Request failed.";
+
+      setPopupOptions({
+        type: "failure",
+        visible: true,
+        title: "Update Failed",
+        message: errorMessage,
+      });
     } else {
-      toast.error("An unexpected error occurred.");
+      setPopupOptions({
+        type: "failure",
+        visible: true,
+        title: "Error",
+        message: "An unexpected error occurred.",
+      });
     }
+  } finally {
+    setSubmitLoading(false);
+    setProfileFieldsEdited(false);
+    setPasswordEdited(false);
   }
 };
-
 const handleEditProfileByAdmin = async (
   e: React.SubmitEvent<HTMLFormElement>
 ) => {
   e.preventDefault();
 
-  try {
-    await updateProfile(`/admin/users/${userId}`);
+  const newPassword = formData.password.trim();
+  const shouldChangePassword = passwordEdited && newPassword !== "";
 
-    if (formData.password.trim()) {
-      await updatePassword(
-        `/admin/users/${userId}/password`,
-        {
-          newPassword: formData.password.trim(),
-        }
-      );
+  // Nothing changed
+  if (!profileFieldsEdited && !shouldChangePassword) {
+    setPopupOptions({
+      type: "failure",
+      visible: true,
+      title: "No Changes",
+      message: "No changes detected.",
+    });
+    return;
+  }
+
+  try {
+    setSubmitLoading(true);
+
+    // Update profile only if profile fields were changed
+    if (profileFieldsEdited) {
+      await updateProfile(`/admin/users/${userId}`);
+    }
+
+    // Update password only if password was changed
+    if (shouldChangePassword) {
+      await updatePassword(`/admin/users/${userId}/password`, {
+        newPassword,
+      });
+    }
+
+    // One final success popup
+    setPopupOptions({
+      type: "success",
+      visible: true,
+      title: "Success",
+      message:
+        profileFieldsEdited && shouldChangePassword
+          ? "Profile and password updated successfully."
+          : shouldChangePassword
+          ? "Password updated successfully."
+          : "Profile updated successfully.",
+    });
+
+    // Clear password after successful update
+    if (shouldChangePassword) {
+      setFormData((prev) => ({
+        ...prev,
+        password: "",
+      }));
     }
   } catch (error) {
     console.error(error);
 
     if (axios.isAxiosError(error)) {
-      toast.error(
-        error.response?.data?.message ??
-          "Request failed."
-      );
+      const errorMessage =
+        error.response?.data?.message ?? "Request failed.";
+
+      setPopupOptions({
+        type: "failure",
+        visible: true,
+        title: "Update Failed",
+        message: errorMessage,
+      });
     } else {
-      toast.error("An unexpected error occurred.");
+      setPopupOptions({
+        type: "failure",
+        visible: true,
+        title: "Error",
+        message: "An unexpected error occurred.",
+      });
     }
+  } finally {
+    setSubmitLoading(false);
+    setProfileFieldsEdited(false);
+    setPasswordEdited(false);
   }
 };
-  const logout = () => {
-     
-    navigate("/login");
-  };
+const {logout} = useAuth();
 const { password, confirmPassword } = newPassword;
 
 const passwordsDontMatch =
@@ -252,6 +385,7 @@ useEffect(() => {
 
   const fetchProfile = async () => {
     try {
+      setpageLoading(true);
       const url = isOwnProfile
         ? "/auth/profile"
         : `/admin/users/${userId}`;
@@ -265,12 +399,19 @@ useEffect(() => {
       console.error(error);
 
       if (axios.isAxiosError(error)) {
-        toast.error(
-          error.response?.data?.message ?? "Failed to fetch profile."
-        );
+      const errorMessage = error.response?.data?.message ??
+          "Request failed.";
+      setPopupOptions({type:'success',visible:true,title:'Success',message:errorMessage});
+
+
       } else {
-        toast.error("An unexpected error occurred.");
+
+      setPopupOptions({type:'success',visible:true,title:'Success',message:"An unexpected error occurred."});
+
       }
+    }
+    finally{
+      setpageLoading(false);
     }
   };
 
@@ -289,6 +430,9 @@ function formHandler(e : React.SubmitEvent<HTMLFormElement>){
   else{
     handleCreateUserByAdmin(e);
   }
+}
+if(pageLoading){
+  return <Loader/>
 }
   return (
     <div className="min-h-screen bg-[#111111] p-8 text-white flex items-center">
@@ -392,6 +536,7 @@ function formHandler(e : React.SubmitEvent<HTMLFormElement>){
                     value={formData.role}
                     options={canManageRoles?roleOptions:roleOptions.filter(role => role.value === userRole)}
                     onChange={handleChange}
+                    disabled={!canManageRoles}
                     />
                 </Label>
                  
@@ -434,7 +579,10 @@ function formHandler(e : React.SubmitEvent<HTMLFormElement>){
                             icon={<Eye/>}
                             placeholder="Enter New Password"
                             value={newPassword.password}
-                            onChange={e => setNewPassword(prev => ({...prev,password:e.target.value}))}
+                            onChange={e => { 
+                              setPasswordEdited(true);
+                              setNewPassword(prev => ({...prev,password:e.target.value}));
+                            }}
                             />
                         </Label>
                     </div>
@@ -474,8 +622,10 @@ function formHandler(e : React.SubmitEvent<HTMLFormElement>){
               type="submit"
               label="Save Profile"
               icon={<Save/>}
+              loading={submitLoading}
               />
               <Button
+              type="button"
               label="Logout"
               onClick={logout}
               className="bg-transparent border border-red-500 text-red-400 hover:bg-red-500 hover:text-white"
@@ -488,7 +638,13 @@ function formHandler(e : React.SubmitEvent<HTMLFormElement>){
           </div>
 
         </form>
-
+      <Popup
+      type={popupOptions.type}
+      title={popupOptions.title}
+      message={popupOptions.message}
+      visible={popupOptions.visible}
+      onCancel={closePopup}
+      />
       </div>
 
     </div>

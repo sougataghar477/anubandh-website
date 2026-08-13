@@ -11,7 +11,7 @@ import Filter from "../../components/common/Filter";
 import { Link } from "react-router";
 import SearchInput from "../../components/common/Search";
 import Tooltip from "../../components/common/TooltipWrapper";
-import TooltipWrapper from "../../components/common/TooltipWrapper";
+import Popup from "../../components/common/Popup";
 const PAGE_SIZE = 3;
 
  const SUMMARY_CARDS = [
@@ -62,9 +62,16 @@ type Lead = {
   created_at: string;
   updated_at: string;
 };
+interface PopupProps{
+  type:'failure',
+  visible:boolean,
+  title:'Error',
+  message:''
 
+}
 export default function AllLeadsPage() {
   const [submitLoading,setIsSubmitLoading] = useState<boolean>(false);
+  const [popupOptions,setPopupOptions] = useState<PopupProps>({type:'failure',visible:false,title:'Error',message:''});
   const [allLeads,setAllLeads] = useState<Lead[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filtersOpen, setFiltersOpen] = useState(false);
@@ -137,7 +144,14 @@ useEffect(()=>{
         setAllLeads(response.data.leads);
     } catch (error) { 
         if (axios.isAxiosError(error)) {
-    toast.error(error.response?.data?.message || "Error fetching leads");
+         setPopupOptions({
+          type:'failure',
+          visible:true,
+          title:'Error',
+          message:error.response?.data.message
+         }) 
+          
+    // toast.error(error.response?.data?.message || "Error fetching leads");
   } else {
     toast.error("Something went wrong");
   }
@@ -154,7 +168,7 @@ const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     console.log("UPLOAD WORKING")
     setSelectedFile(file);
   } else {
-    alert("Please select a valid Excel file (.xlsx or .xls)");
+    toast.error("Please select a valid Excel file (.xlsx or .xls)");
   }
 };
 
@@ -208,41 +222,24 @@ const handleLeadsUpload = async () => {
         />
         </div>
 
-       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
-      {SUMMARY_CARDS.map((card) => {
-        const Icon = card.icon;
-
-        return (
-          <div
-            key={card.title}
-            className="group mk relative overflow-hidden rounded-3xl border border-[#2B2B2B] bg-[#181818] p-5 transition-all duration-300 hover:-translate-y-2 hover:border-lime-400/30 hover:shadow-[0_20px_50px_rgba(163,230,53,0.12)]"
-          >
-            <div className="absolute -right-8 -top-8 h-20 w-20 rounded-full bg-lime-400/5 blur-2xl" />
-            <div className="flex items-center gap-3">
-              <div className={`flex h-10 w-10 items-center justify-center rounded-3xl ${card.iconBg}`}>
-                <Icon size={14} />
-              </div>
-              <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-400 truncate">
-                {card.title}
-              </p>
-            </div>
-            <div className="mt-5">
-              <p className="text-3xl font-semibold text-white text-left">{card.amount}</p>
-            </div>
-            <div className="mt-4">
-              <span className={`inline-flex max-w-full items-center rounded-full bg-white/5 px-3 py-1 text-xs font-semibold ${card.badgeClass} truncate`}>
-                {card.note}
-              </span>
-            </div>
-          </div>
-        );
-      })}
-      <Link
-        to={'/leads/new'}
-        className="group flex items-center justify-center gap-2 rounded-3xl border border-[#2B2B2B] bg-gradient-to-br from-[#141414] via-[#181818] to-[#111111] p-6 text-white transition-all duration-300 hover:-translate-y-2 hover:border-lime-400/30 hover:shadow-[0_20px_50px_rgba(163,230,53,0.12)]"
-      >
-        <Plus className="text-lime-300" />
-        <span className="font-semibold text-white">Add New Lead</span>
+       <div className="grid gap-4 grid-cols-1 lg:grid-cols-5">
+      {SUMMARY_CARDS.map((card) => (
+        <div
+          key={card.title}
+          className="rounded-[28px] border border-[#2A2A30] bg-[#16161A] p-6 shadow-[0_30px_60px_rgba(0,0,0,0.2)]"
+        >
+          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-gray-500">
+            {card.title}
+          </p>
+          <p className="mt-5 text-4xl font-semibold text-white">{card.amount}</p>
+          <span className={`mt-3 inline-flex items-center rounded-full bg-white/5 px-3 py-1 text-xs font-semibold ${card.badgeClass}`}>
+            {card.note}
+          </span>
+        </div>
+      ))}
+      <Link to={"/leads/new"} className="grid place-items-center  rounded-[28px] border border-[#2A2A30] bg-[#16161A] p-6 shadow-[0_30px_60px_rgba(0,0,0,0.2)]">
+       <Plus />
+        Add New Lead
       </Link>
     </div>
 
@@ -352,6 +349,21 @@ const handleLeadsUpload = async () => {
             onPageChange={setCurrentPage}
           />
         </section>
+              <Popup
+                type={'failure'}
+                visible={popupOptions.visible}
+                title={popupOptions.title}
+                message={popupOptions.message}
+                cancelText="Exit"
+                onCancel={() =>
+                  setPopupOptions({
+                    type: "failure",
+                    visible: false,
+                    message: "",
+                    title: "Error",
+                  })
+                }
+              />
       </div>
     </main>
   );
