@@ -207,7 +207,7 @@ return (
       <div className="flex min-h-[360px] items-start justify-center md:min-h-[500px]">
       <div className="w-full">
       <div className="mb-8">
-        <h2 className="text-4xl font-bold text-white">
+        <h2 className="text-4xl bg-gradient-to-r from-lime-400 to-green-500 bg-clip-text text-transparent font-bold">
           Add Product
         </h2>
 
@@ -294,7 +294,7 @@ return (
       {/* Products */}
       <div>
         <div className="mb-8">
-        <h1 className="text-4xl font-bold text-white">
+        <h1 className="text-4xl font-bold bg-gradient-to-r from-lime-400 to-green-500 bg-clip-text text-transparent">
           Search Existing Products
         </h1>
 
@@ -302,7 +302,7 @@ return (
           Search through your product catalog
         </p>
       </div>
-              <div className="mb-8 rounded-3xl border border-[#2B2B2B] bg-[#181818] p-5">
+              <div className="group mb-8 rounded-3xl border border-[#2B2B2B] bg-[#181818] p-5 transition-all duration-300 hover:-translate-y-1 hover:border-lime-400/30 hover:shadow-[0_20px_50px_rgba(163,230,53,0.12)]">
 
         <UserInput
         element={"input"}

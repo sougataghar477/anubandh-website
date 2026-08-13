@@ -5,7 +5,7 @@ import api from "../../utils/api";
 import { toast } from "react-toastify";
 import axios from "axios";
 import Button from "../../components/common/Button";
-import { Check,  Plus,  SaveIcon,  Trash2, Upload } from "lucide-react";
+import { Check, Plus, SaveIcon, Trash2, Upload, Users, Activity, UserPlus, DollarSign, Clock } from "lucide-react";
 import { fileToObject } from "../../utils/helper";
 import Filter from "../../components/common/Filter";
 import { Link } from "react-router";
@@ -20,24 +20,40 @@ const PAGE_SIZE = 3;
     amount: "1,248",
     note: "+12% this month",
     badgeClass: "text-emerald-300",
+    icon: Users,
+    iconBg: "bg-emerald-500/15 text-emerald-300",
   },
   {
     title: "Active Leads",
     amount: "912",
     note: "73% of pipeline",
     badgeClass: "text-sky-300",
+    icon: Activity,
+    iconBg: "bg-sky-500/15 text-sky-300",
+  },
+  {
+    title: "Inactive Leads",
+    amount: "336",
+    note: "27% dormant",
+    badgeClass: "text-rose-300",
+    icon: Clock,
+    iconBg: "bg-rose-500/15 text-rose-300",
   },
   {
     title: "New Leads",
     amount: "314",
     note: "26 added this week",
     badgeClass: "text-amber-300",
+    icon: UserPlus,
+    iconBg: "bg-amber-500/15 text-amber-300",
   },
   {
     title: "Pipeline Value",
     amount: "$124.8k",
     note: "Estimated revenue",
     badgeClass: "text-lime-primary",
+    icon: DollarSign,
+    iconBg: "bg-lime-500/15 text-lime-300",
   },
 ];
 
@@ -196,25 +212,25 @@ const handleLeadsUpload = async () => {
       <div className="flex flex-col gap-8">
         <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-2xl">
-            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-gray-500">
+            <p className="inline-flex items-center gap-2 rounded-full bg-lime-500/10 border border-lime-500/20 px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-lime-400">
               Lead Inventory
             </p>
             <h1 className="mt-4 text-4xl font-semibold text-white tracking-tight">
-              Manage your lead pipeline with clarity.
+              Manage your <span className="bg-gradient-to-r from-lime-400 to-green-500 bg-clip-text text-transparent">leads </span> pipeline with clarity.
             </h1>
             <p className="mt-3 max-w-xl text-sm text-gray-400 leading-7">
               Track lead status, expected deal value, and ownership across your team in a polished, dark dashboard that matches your existing app theme.
             </p>
           </div>
 
-          <SearchInput
+          <SearchInput    
           searchTerm={searchTerm}
           onSearchChange={setSearchTerm}
           placeholder="Search leads..."
         />
         </div>
 
-       <div className="grid gap-4 grid-cols-1 lg:grid-cols-5">
+       <div className="grid gap-4 grid-cols-1 md:grid-cols-3 lg:grid-cols-3">
       {SUMMARY_CARDS.map((card) => (
         <div
           key={card.title}
@@ -229,7 +245,7 @@ const handleLeadsUpload = async () => {
           </span>
         </div>
       ))}
-      <Link to={"/leads/new"} className="grid place-items-center  rounded-[28px] border border-[#2A2A30] bg-[#16161A] p-6 shadow-[0_30px_60px_rgba(0,0,0,0.2)]">
+      <Link to={"/leads/new"} className="grid  place-items-center  rounded-[28px] border border-[#2A2A30] bg-[#16161A] p-6 shadow-[0_30px_60px_rgba(0,0,0,0.2)]">
        <Plus />
         Add New Lead
       </Link>
@@ -289,50 +305,57 @@ const handleLeadsUpload = async () => {
         <section className="overflow-x-hidden rounded-4xl border border-[#2A2A30] bg-[#111115] shadow-[0_35px_80px_rgba(0,0,0,0.35)]">
           <div className="flex flex-col gap-4 border-b border-[#2A2A30] p-6 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <p className="text-sm uppercase tracking-[0.24em] text-gray-500">Lead table</p>
+              <p className="text-sm uppercase tracking-[0.28em] text-lime-300">Lead table</p>
               <h2 className="mt-2 text-2xl font-semibold text-white">All active leads</h2>
+              
             </div>
-
-<Filter
-  filtersOpen={filtersOpen}
-  onToggleFilters={() => setFiltersOpen((prev) => !prev)}
-  onClearFilters={clearAllFilters}
-  filterGroups={[
-    {
-      label: "Status",
-      options: statusOptions.map((status) => ({
-        label: status,
-        value: status,
-      })),
-      activeValues: activeStatusFilters,
-      onToggle: (status) =>
-        toggleArrayValue(
-          status,
-          activeStatusFilters,
-          setActiveStatusFilters
-        ),
-    },
-  ]}
-/>
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+              <div className="rounded-3xl border border-lime-primary/30 bg-[#181818] px-4 py-3 text-sm text-gray-200 shadow-[0_15px_40px_rgba(0,0,0,0.15)]">
+                Showing {startIndex}-{endIndex} of {filteredLeads.length}
+              </div>
+              <div>
+                <Filter
+                  filtersOpen={filtersOpen}
+                  onToggleFilters={() => setFiltersOpen((prev) => !prev)}
+                  onClearFilters={clearAllFilters}
+                  filterGroups={[
+                    {
+                      label: "Status",
+                      options: statusOptions.map((status) => ({
+                        label: status,
+                        value: status,
+                      })),
+                      activeValues: activeStatusFilters,
+                      onToggle: (status) =>
+                        toggleArrayValue(
+                          status,
+                          activeStatusFilters,
+                          setActiveStatusFilters
+                        ),
+                    },
+                  ]}
+                />
+              </div>
+            </div>
           </div>
 
-<Table
-  data={currentPageLeads}
-  pageName="leads"
-  columns={[
-    "name",
-    "product",
-    "phone",
-    "status",
-    "description",
-  ]}
-  filteredCount={filteredLeads.length}
-  startIndex={startIndex}
-  endIndex={endIndex}
-  currentPage={effectivePage}
-  pageCount={pageCount}
-  onPageChange={setCurrentPage}
-/>
+          <Table
+            data={currentPageLeads}
+            pageName="leads"
+            columns={[
+              "name",
+              "product",
+              "phone",
+              "status",
+              "description",
+            ]}
+            filteredCount={filteredLeads.length}
+            startIndex={startIndex}
+            endIndex={endIndex}
+            currentPage={effectivePage}
+            pageCount={pageCount}
+            onPageChange={setCurrentPage}
+          />
         </section>
               <Popup
                 type={'failure'}
