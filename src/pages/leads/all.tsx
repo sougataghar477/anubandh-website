@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from "react";
 
 import Table from "../../components/common/Table";
 import api from "../../utils/api";
-import { toast } from "react-toastify";
 import axios from "axios";
 import Button from "../../components/common/Button";
 import { Check, Plus, SaveIcon, Trash2, Upload, Users, Activity, UserPlus, DollarSign, Clock } from "lucide-react";
@@ -71,10 +70,10 @@ type Lead = {
   updated_at: string;
 };
 interface PopupProps{
-  type:'failure',
+  type:string,
   visible:boolean,
-  title:'Error',
-  message:''
+  title:string,
+  message:string
 
 }
 export default function AllLeadsPage() {
@@ -157,17 +156,46 @@ useEffect(()=>{
           visible:true,
           title:'Error',
           message:error.response?.data.message
-         }) 
+         }); 
           
-    // toast.error(error.response?.data?.message || "Error fetching leads");
   } else {
-    toast.error("Something went wrong");
+    setPopupOptions({
+          type:'failure',
+          visible:true,
+          title:'Error',
+          message:"Something went wrong"
+         });
   }
       
     }
   }
   fetchAllLeads();
 },[]);
+  const fetchAllLeads = async () => {
+    try {
+        const response = await api.get("/leads/all");
+        console.log(response.data);
+        setAllLeads(response.data.leads);
+    } catch (error) { 
+        if (axios.isAxiosError(error)) {
+         setPopupOptions({
+          type:'failure',
+          visible:true,
+          title:'Error',
+          message:error.response?.data.message
+         }); 
+          
+  } else {
+    setPopupOptions({
+          type:'failure',
+          visible:true,
+          title:'Error',
+          message:"Something went wrong"
+         })
+  }
+      
+    }
+  }
 const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
   const file = e.target.files?.[0];
   if (!file) return;
@@ -176,7 +204,13 @@ const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     console.log("UPLOAD WORKING")
     setSelectedFile(file);
   } else {
-    toast.error("Please select a valid Excel file (.xlsx or .xls)");
+    setPopupOptions({
+          type:'failure',
+          visible:true,
+          title:'Error',
+          message:"Please select a valid Excel file (.xlsx or .xls)"
+         });
+    
   }
 };
 
@@ -184,7 +218,12 @@ const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 const handleLeadsUpload = async () => {
   try {
     if (!selectedFile){
-      toast.warning("Please select a file");
+      setPopupOptions({
+          type:'failure',
+          visible:true,
+          title:'Error',
+          message:"Please select a file"
+         });
       return;
     }
     setIsSubmitLoading(true)
@@ -192,14 +231,34 @@ const handleLeadsUpload = async () => {
     const formData = new FormData();
     formData.append("file", selectedFile);
 
-    const response = await api.post("/leads/upload", formData);
-    
-    toast.success(response.data.message || "Leads uploaded successfully");
+    const leadsUploadResponse = await api.post("/leads/upload", formData);
+    setPopupOptions({
+          type:'success',
+          visible:true,
+          title:'Error',
+          message:leadsUploadResponse.data.message || "Successfully uploaded"
+         });
+    fetchAllLeads();
     setSelectedFile(null);
-    console.log(response);
   } catch (error) {
     console.error(error);
-    toast.error("Failed leads upload");
+    if(axios.isAxiosError(error)){
+    setPopupOptions({
+            type:'failure',
+            visible:true,
+            title:'Error',
+            message:error.response?.data.message
+           });
+    }
+    else{
+      setPopupOptions({
+            type:'failure',
+            visible:true,
+            title:'Error',
+            message:"Something went wrong"
+      });
+    }    
+    
   }
   finally{
     setIsSubmitLoading(false);
@@ -216,7 +275,7 @@ const handleLeadsUpload = async () => {
               Lead Inventory
             </p>
             <h1 className="mt-4 text-4xl font-semibold text-white tracking-tight">
-              Manage your <span className="bg-gradient-to-r from-lime-400 to-green-500 bg-clip-text text-transparent">leads </span> pipeline with clarity.
+              Manage your <span className="bg-linear-to-r from-lime-400 to-green-500 bg-clip-text text-transparent">leads </span> pipeline with clarity.
             </h1>
             <p className="mt-3 max-w-xl text-sm text-gray-400 leading-7">
               Track lead status, expected deal value, and ownership across your team in a polished, dark dashboard that matches your existing app theme.
