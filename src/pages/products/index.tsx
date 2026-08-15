@@ -392,6 +392,7 @@ return (
             title: "",
           })
         }
+        onConfirm={handleDeleteProduct}
       />
     </div>
   </div>

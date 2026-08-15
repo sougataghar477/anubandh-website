@@ -17,6 +17,8 @@ import LeadDetailsPage from "../pages/leads/details";
 import UserProfileLayout from "../pages/profile/UserProfileLayout";
 import UserProfileTest from "../pages/profile";
 import SupportPage from "../pages/support";
+import RegisterPage from "../pages/register";
+import ForgotPasswordPage from "../pages/forgotpassword";
 
 
 
@@ -30,6 +32,14 @@ export const router = createBrowserRouter([
       {
         path: "/login",
         Component: LoginPage,
+      },
+      {
+        path: "/register",
+        Component:RegisterPage
+      },
+            {
+        path: "/forgotpassword",
+        Component:ForgotPasswordPage
       },
       {
         Component: ProtectedLayout, // Requires authentication

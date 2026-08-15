@@ -1,6 +1,6 @@
 
 import React,{  useEffect, useState } from "react";
-import { useNavigate, useParams } from 'react-router';
+import {  useParams } from 'react-router';
 import {
   Camera,
   Mail,
@@ -13,7 +13,6 @@ import {
 import Label from "../common/Label";
 import UserInput from "../common/UserInput";
 import Select from "../common/Select";
-import { toast } from "react-toastify";
 import axios from "axios";
 import api from "../../utils/api";
 import Button from "../common/Button";

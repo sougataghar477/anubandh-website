@@ -10,7 +10,7 @@ export const formatLabel = (value: string) => {
     .replace(/\b\w/g, (char) => char.toUpperCase());
 };
 
-export const fileToObject = (file) => {
+export const fileToObject = (file: File) => {
   if (!file) return null;
 
   return {
@@ -18,17 +18,11 @@ export const fileToObject = (file) => {
     size: file.size,
     type: file.type,
     lastModified: file.lastModified,
-    lastModifiedDate: file.lastModifiedDate,
+    lastModifiedDate: file.lastModified,
   };
 };
 
-const formatStatus = (status?: string) =>
-  status
-    ? status
-        .split("_")
-        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(" ")
-    : "";
+
 
 export const formatDateTime = (dateStr: string) => 
   new Date(dateStr).toLocaleString("en-US", {

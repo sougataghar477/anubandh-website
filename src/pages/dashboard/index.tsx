@@ -13,7 +13,6 @@ import {
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router";
 import axios from "axios";
-import { toast } from "react-toastify";
 import api from "../../utils/api";
 import { formatLabel } from "../../utils/helper";
 import type { PopupType } from "../../components/common/Popup";
@@ -33,19 +32,19 @@ interface PopupProps{
     message:string;
 }
 const getDisplayStatus = (status: string) => {
-    const normalized = status?.trim().toLowerCase() ?? "";
+    // const normalized = status?.trim().toLowerCase() ?? "";
 
-    if (normalized === "in_progress" || normalized === "in progress" || normalized === "inprogress") {
-        return "In Progress";
-    }
+    // if (normalized === "in_progress" || normalized === "in progress" || normalized === "inprogress") {
+    //     return "In Progress";
+    // }
 
-    if (normalized === "successful" || normalized === "successfull" || normalized === "success" || normalized === "completed" || normalized === "complete") {
-        return "Successful";
-    }
+    // if (normalized === "successful" || normalized === "successfull" || normalized === "success" || normalized === "completed" || normalized === "complete") {
+    //     return "Successful";
+    // }
 
-    if (normalized === "failed" || normalized === "failure" || normalized === "unsuccessful") {
-        return "Failed";
-    }
+    // if (normalized === "failed" || normalized === "failure" || normalized === "unsuccessful") {
+    //     return "Failed";
+    // }
 
     return formatLabel(status || "Pending");
 };

@@ -1,7 +1,6 @@
 import { NavLink } from "react-router";
 import {
   BarChart2,
-  ChevronLeft,
   CircleHelp,
   LayoutDashboard,
   Package,
@@ -54,12 +53,11 @@ const secondaryNavigation: NavItem[] = [
 
 type SidebarProps = {
   isCollapsed: boolean;
-  setIsCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
+  // setIsCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export default function Sidebar({
   isCollapsed,
-  setIsCollapsed,
 }: SidebarProps) {
 
   return (
@@ -92,14 +90,10 @@ export default function Sidebar({
           ====================================================== */}
 
           <div
-            className={`flex h-[92px] items-center border-b border-white/[0.06] ${
-              isCollapsed ? "justify-center px-3" : "px-5"
-            }`}
+            className={`flex h-23 items-center border-b border-white/6`}
           >
             <div
-              className={`flex items-center ${
-                isCollapsed ? "justify-center" : "gap-3"
-              }`}
+              className={`flex items-center`}
             >
 
               {/* Brand Icon */}
@@ -112,7 +106,7 @@ export default function Sidebar({
               </div>
 
               {/* Brand Text */}
-              {!isCollapsed && (
+               
                 <div className="min-w-0 overflow-hidden">
 
                   <h1 className="whitespace-nowrap text-xl font-bold tracking-tight text-white">
@@ -127,7 +121,7 @@ export default function Sidebar({
                   </p>
 
                 </div>
-              )}
+               
 
             </div>
           </div>

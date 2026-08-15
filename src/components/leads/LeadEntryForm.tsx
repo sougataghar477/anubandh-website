@@ -7,7 +7,6 @@ import {
   SlidersHorizontal 
 } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router';
-import { toast } from 'react-toastify';
 import axios from 'axios';
 import { useAuth } from '../../auth/useAuth';
 import api from '../../utils/api';
@@ -185,7 +184,7 @@ const handleChange = (
         console.error(error);
         console.error("Failed to load lead:", error);
         if(axios.isAxiosError(error)){
-        toast.error((error.response && error.response.data.message) || "Failed to load Lead");
+          
         setShowDialog({
   type: "success",
   visible: true,
@@ -258,12 +257,21 @@ useEffect(() => {
       console.error("Failed to load lead form data:", error);
 
       if (axios.isAxiosError(error)) {
-        toast.error(
-          error.response?.data?.message ||
-            "Failed to load lead form data"
-        );
+       setShowDialog({
+  type: "failure",
+  visible: true,
+  title: "Error",
+  message:error.response?.data?.message ||
+            "Failed to load lead form data",
+});
+      
       } else {
-        toast.error("Something went wrong");
+               setShowDialog({
+  type: "failure",
+  visible: true,
+  title: "Error",
+  message:"Something went wrong",
+});
       }
     } finally {
       if (isMounted) {
