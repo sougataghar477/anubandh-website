@@ -312,7 +312,7 @@ const handleLeadsUpload = async () => {
 
 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
   {/* Download Button */}
-  <a href="/template/1_002_-ey4.gif" download className="h-full">
+  <a href="/template/lead_bulk_upload_template_single_row.xlsx" download className="h-full">
     <Button
       label="Download Lead Excel File Template"
       loading={submitLoading}

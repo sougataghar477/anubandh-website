@@ -257,7 +257,7 @@ export default function LoginPage() {
       const { data } = await api.post("/auth/login", {
         email,
         password,
-        deviceType: "phone",
+        deviceType: "pc",
       });
 
       console.log("Successful Login");
