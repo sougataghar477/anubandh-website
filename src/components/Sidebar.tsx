@@ -1,7 +1,6 @@
 import { NavLink } from "react-router";
 import {
   BarChart2,
-  ChevronLeft,
   CircleHelp,
   LayoutDashboard,
   Package,
@@ -54,12 +53,11 @@ const secondaryNavigation: NavItem[] = [
 
 type SidebarProps = {
   isCollapsed: boolean;
-  setIsCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
+  // setIsCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export default function Sidebar({
   isCollapsed,
-  setIsCollapsed,
 }: SidebarProps) {
 
   return (
@@ -69,9 +67,7 @@ export default function Sidebar({
       ====================================================== */}
 
       <aside
-        className={`group fixed left-0 top-0 z-50 flex h-screen flex-col border-r border-white/[0.07] bg-[#0D0F12]/95 font-sans shadow-[10px_0_50px_rgba(0,0,0,0.25)] backdrop-blur-2xl transition-all duration-300 ease-in-out ${
-          isCollapsed ? "w-[82px]" : "w-64"
-        }`}
+        className={`group hidden fixed left-0 top-0 z-50 lg:flex h-screen flex-col border-r border-white/[0.07] bg-[#0D0F12]/95 font-sans shadow-[10px_0_50px_rgba(0,0,0,0.25)] backdrop-blur-2xl transition-all duration-300 ease-in-out md:w-64`}
       >
         {/* =====================================================
             BACKGROUND GLOW
@@ -94,14 +90,10 @@ export default function Sidebar({
           ====================================================== */}
 
           <div
-            className={`flex h-[92px] items-center border-b border-white/[0.06] ${
-              isCollapsed ? "justify-center px-3" : "px-5"
-            }`}
+            className={`flex h-23 items-center border-b border-white/6`}
           >
             <div
-              className={`flex items-center ${
-                isCollapsed ? "justify-center" : "gap-3"
-              }`}
+              className={`flex items-center`}
             >
 
               {/* Brand Icon */}
@@ -114,7 +106,7 @@ export default function Sidebar({
               </div>
 
               {/* Brand Text */}
-              {!isCollapsed && (
+               
                 <div className="min-w-0 overflow-hidden">
 
                   <h1 className="whitespace-nowrap text-xl font-bold tracking-tight text-white">
@@ -129,7 +121,7 @@ export default function Sidebar({
                   </p>
 
                 </div>
-              )}
+               
 
             </div>
           </div>
@@ -138,65 +130,7 @@ export default function Sidebar({
               COLLAPSE BUTTON
           ====================================================== */}
 
-      <button
-  type="button"
-  onClick={() => setIsCollapsed((prev) => !prev)}
-  aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
-  className="
-    group absolute -right-3 top-[76px] z-50
-    flex h-7 w-7 items-center justify-center
-    rounded-full
-    border border-white/[0.10]
-    bg-[#171A1F]
-    text-slate-400
-    shadow-[0_5px_20px_rgba(0,0,0,0.4)]
-    backdrop-blur-xl
-    transition-all duration-500 ease-out
-    hover:scale-110
-    hover:border-lime-400/40
-    hover:bg-lime-400/[0.10]
-    hover:text-lime-300
-    hover:shadow-[0_0_25px_rgba(163,230,53,0.20)]
-  "
->
-  {/* Outer Hover Ring */}
-  <span
-    className="
-      pointer-events-none absolute inset-[-4px]
-      rounded-full border border-transparent
-      opacity-0
-      transition-all duration-500
-      group-hover:scale-110
-      group-hover:border-lime-400/25
-      group-hover:opacity-100
-    "
-  />
-
-  {/* Inner Glow */}
-  <span
-    className="
-      pointer-events-none absolute inset-0
-      rounded-full bg-transparent
-      transition-all duration-500
-      group-hover:bg-lime-400/10
-      group-hover:blur-sm
-    "
-  />
-
-  {/* ONE Arrow - rotates */}
-  <span
-    className={`
-      relative z-10 flex items-center justify-center
-      transition-transform duration-500
-      ease-[cubic-bezier(0.68,-0.55,0.27,1.55)]
-      ${isCollapsed ? "rotate-180" : "rotate-0"}
-      group-hover:scale-125
-    `}
-  >
-    <ChevronLeft className="h-3.5 w-3.5 transition-all duration-300" />
-  </span>
-
-</button>
+      
 
           {/* =====================================================
               MAIN NAVIGATION
@@ -365,6 +299,87 @@ export default function Sidebar({
           </div>
         </div>
       </aside>
+
+
+{/* =====================================================
+    MOBILE NAVBAR
+    Visible below 768px
+====================================================== */}
+<nav className="fixed inset-x-0 bottom-0 z-50 flex h-[72px] border-t border-white/[0.07] bg-[#0D0F12]/95 font-sans shadow-[0_-10px_40px_rgba(0,0,0,0.35)] backdrop-blur-2xl lg:hidden">
+
+  {/* Background glows */}
+  <div className="pointer-events-none absolute inset-0 overflow-hidden">
+    <div className="absolute -left-10 -bottom-20 h-40 w-40 rounded-full bg-lime-400/[0.04] blur-[70px]" />
+    <div className="absolute -right-10 -bottom-20 h-40 w-40 rounded-full bg-purple-500/[0.04] blur-[70px]" />
+  </div>
+
+  <div className="relative flex w-full items-center justify-around px-2">
+
+    {mainNavigation.slice(0, 5).map((item) => {
+      const Icon = item.icon;
+
+      return (
+        <NavLink
+          key={item.path}
+          to={item.path}
+          end={item.path === "/"}
+          className={({ isActive }) =>
+            `group relative flex h-full min-w-0 flex-1 flex-col items-center justify-center gap-1 transition-all duration-300 ${
+              isActive
+                ? "text-lime-300"
+                : "text-slate-500 hover:text-slate-300"
+            }`
+          }
+        >
+          {({ isActive }) => (
+            <>
+              {/* Active top glow */}
+              {isActive && (
+                <span className="absolute left-1/2 top-0 h-[2px] w-10 -translate-x-1/2 rounded-full bg-lime-400 shadow-[0_0_12px_rgba(163,230,53,0.9)]" />
+              )}
+
+              {/* Icon */}
+              <div
+                className={`relative flex h-9 w-9 items-center justify-center rounded-xl transition-all duration-300 ${
+                  isActive
+                    ? "bg-lime-400/[0.10] shadow-[0_0_18px_rgba(163,230,53,0.08)]"
+                    : "bg-transparent"
+                }`}
+              >
+                <Icon
+                  className={`h-[18px] w-[18px] transition-all duration-300 ${
+                    isActive
+                      ? "text-lime-300"
+                      : "text-slate-500 group-hover:text-slate-300"
+                  }`}
+                />
+              </div>
+
+              {/* Label */}
+              <span
+                className={`max-w-[64px] truncate text-[9px] font-medium ${
+                  isActive ? "text-lime-300" : "text-slate-500"
+                }`}
+              >
+                {item.label}
+              </span>
+
+              {/* Active dot */}
+              {isActive && (
+                <span className="absolute bottom-1 h-1 w-1 rounded-full bg-lime-400 shadow-[0_0_7px_rgba(163,230,53,0.9)]" />
+              )}
+            </>
+          )}
+        </NavLink>
+      );
+    })}
+
+  </div>
+</nav>
+
+
+
+
     </>
   );
 }

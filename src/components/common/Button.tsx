@@ -32,6 +32,7 @@ export default function Button({icon, label = 'Save Changes', className = '', lo
         justify-center
         items-center
         gap-2 cursor-pointer
+        disabled:cursor-auto
         ${className}
       `}
       disabled={loading}

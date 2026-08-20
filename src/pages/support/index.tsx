@@ -10,9 +10,7 @@ import {
   MessageCircle,
   Phone,
   ShieldCheck,
-  Users,
-  BarChart3,
-  Package,
+
 } from "lucide-react";
 import { Link } from "react-router";
 

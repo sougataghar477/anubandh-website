@@ -1,10 +1,12 @@
 import { useEffect, useMemo, useState } from "react";
 import api from "../../utils/api";
 import Table from "../../components/common/Table";
-import UsersSearchHeader from "./components/UsersSearchHeader";
+import  Search from  "../../components/common/Search";
 import { Users } from "lucide-react";
 import UsersSummaryCards from "./components/UsersSummaryCards";
-
+import axios from "axios";
+import type { PopupType } from "../../components/common/Popup";
+import Popup from "../../components/common/Popup";
 type UserRow = {
   id: number;
   name: string;
@@ -12,11 +14,17 @@ type UserRow = {
   role: string;
   status: string;
 };
-
+interface PopupProps{
+  type:PopupType,
+  visible:boolean,
+  title:string,
+  message:string
+}
 const PAGE_SIZE = 3;
 
 export default function AllUsers() {
   const [users, setUsers] = useState<UserRow[]>([]);
+  const [popupOptions,setPopupOptions] = useState<PopupProps>({type:'failure',visible:false,title:'Error',message:''});
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
@@ -48,13 +56,23 @@ export default function AllUsers() {
         }));
 
         setUsers(mappedUsers);
-      } catch (err) {
-        console.error("Failed to load users:", err);
-        if (isMounted) {
-          setError("Failed to load users.");
-          setUsers([]);
-        }
-      } finally {
+      } 
+      catch (err) {
+  console.error("Failed to load users:", err);
+
+  if (isMounted) {
+    if (axios.isAxiosError(err)) {
+      setPopupOptions(prev => ({...prev,message:err.response?.data.message || "Failed to load users",visible:true}))
+
+    } else {
+      setPopupOptions(prev => ({...prev,message:"Failed to load users",visible:true}))
+
+    }
+
+    setUsers([]);
+  }
+}
+       finally {
         if (isMounted) {
           setLoading(false);
         }
@@ -89,7 +107,9 @@ export default function AllUsers() {
     const start = (currentPage - 1) * PAGE_SIZE;
     return filteredUsers.slice(start, start + PAGE_SIZE);
   }, [filteredUsers, currentPage]);
-
+  const closePopup = () => {
+    setPopupOptions(prev => ({...prev,visible:false}))
+  }
   return (
     <main className="min-h-screen bg-[#0c0d10] px-6 py-8 text-gray-100 md:px-8 lg:px-10">
       <div className="flex flex-col gap-8">
@@ -161,7 +181,7 @@ export default function AllUsers() {
 
           </div>
 
-          <UsersSearchHeader searchTerm={searchTerm} onSearchChange={setSearchTerm} />
+          <Search searchTerm={searchTerm} onSearchChange={setSearchTerm} />
         </div>
 
         <UsersSummaryCards users={users} />
@@ -211,6 +231,13 @@ export default function AllUsers() {
             onPageChange={setCurrentPage}
           />
         </section>
+        <Popup
+        type={popupOptions.type}
+        visible={popupOptions.visible}
+        title={popupOptions.title}
+        message={popupOptions.message}
+        onCancel={closePopup}
+        />
       </div>
     </main>
   );

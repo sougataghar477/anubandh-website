@@ -2,16 +2,15 @@ import { useEffect, useMemo, useState } from "react";
 
 import Table from "../../components/common/Table";
 import api from "../../utils/api";
-import { toast } from "react-toastify";
 import axios from "axios";
 import Button from "../../components/common/Button";
-import { Check, Plus, SaveIcon, Trash2, Upload, Users, Activity, UserPlus, DollarSign } from "lucide-react";
+import { Check, Plus, SaveIcon, Trash2, Upload, Users, Activity, UserPlus, DollarSign, Clock } from "lucide-react";
 import { fileToObject } from "../../utils/helper";
 import Filter from "../../components/common/Filter";
 import { Link } from "react-router";
 import SearchInput from "../../components/common/Search";
 import Tooltip from "../../components/common/TooltipWrapper";
-import TooltipWrapper from "../../components/common/TooltipWrapper";
+import Popup from "../../components/common/Popup";
 const PAGE_SIZE = 3;
 
  const SUMMARY_CARDS = [
@@ -30,6 +29,14 @@ const PAGE_SIZE = 3;
     badgeClass: "text-sky-300",
     icon: Activity,
     iconBg: "bg-sky-500/15 text-sky-300",
+  },
+  {
+    title: "Inactive Leads",
+    amount: "336",
+    note: "27% dormant",
+    badgeClass: "text-rose-300",
+    icon: Clock,
+    iconBg: "bg-rose-500/15 text-rose-300",
   },
   {
     title: "New Leads",
@@ -62,9 +69,16 @@ type Lead = {
   created_at: string;
   updated_at: string;
 };
+interface PopupProps{
+  type:string,
+  visible:boolean,
+  title:string,
+  message:string
 
+}
 export default function AllLeadsPage() {
   const [submitLoading,setIsSubmitLoading] = useState<boolean>(false);
+  const [popupOptions,setPopupOptions] = useState<PopupProps>({type:'failure',visible:false,title:'Error',message:''});
   const [allLeads,setAllLeads] = useState<Lead[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filtersOpen, setFiltersOpen] = useState(false);
@@ -137,15 +151,51 @@ useEffect(()=>{
         setAllLeads(response.data.leads);
     } catch (error) { 
         if (axios.isAxiosError(error)) {
-    toast.error(error.response?.data?.message || "Error fetching leads");
+         setPopupOptions({
+          type:'failure',
+          visible:true,
+          title:'Error',
+          message:error.response?.data.message
+         }); 
+          
   } else {
-    toast.error("Something went wrong");
+    setPopupOptions({
+          type:'failure',
+          visible:true,
+          title:'Error',
+          message:"Something went wrong"
+         });
   }
       
     }
   }
   fetchAllLeads();
 },[]);
+  const fetchAllLeads = async () => {
+    try {
+        const response = await api.get("/leads/all");
+        console.log(response.data);
+        setAllLeads(response.data.leads);
+    } catch (error) { 
+        if (axios.isAxiosError(error)) {
+         setPopupOptions({
+          type:'failure',
+          visible:true,
+          title:'Error',
+          message:error.response?.data.message
+         }); 
+          
+  } else {
+    setPopupOptions({
+          type:'failure',
+          visible:true,
+          title:'Error',
+          message:"Something went wrong"
+         })
+  }
+      
+    }
+  }
 const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
   const file = e.target.files?.[0];
   if (!file) return;
@@ -154,7 +204,13 @@ const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     console.log("UPLOAD WORKING")
     setSelectedFile(file);
   } else {
-    alert("Please select a valid Excel file (.xlsx or .xls)");
+    setPopupOptions({
+          type:'failure',
+          visible:true,
+          title:'Error',
+          message:"Please select a valid Excel file (.xlsx or .xls)"
+         });
+    
   }
 };
 
@@ -162,7 +218,12 @@ const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 const handleLeadsUpload = async () => {
   try {
     if (!selectedFile){
-      toast.warning("Please select a file");
+      setPopupOptions({
+          type:'failure',
+          visible:true,
+          title:'Error',
+          message:"Please select a file"
+         });
       return;
     }
     setIsSubmitLoading(true)
@@ -170,14 +231,34 @@ const handleLeadsUpload = async () => {
     const formData = new FormData();
     formData.append("file", selectedFile);
 
-    const response = await api.post("/leads/upload", formData);
-    
-    toast.success(response.data.message || "Leads uploaded successfully");
+    const leadsUploadResponse = await api.post("/leads/upload", formData);
+    setPopupOptions({
+          type:'success',
+          visible:true,
+          title:'Error',
+          message:leadsUploadResponse.data.message || "Successfully uploaded"
+         });
+    fetchAllLeads();
     setSelectedFile(null);
-    console.log(response);
   } catch (error) {
     console.error(error);
-    toast.error("Failed leads upload");
+    if(axios.isAxiosError(error)){
+    setPopupOptions({
+            type:'failure',
+            visible:true,
+            title:'Error',
+            message:error.response?.data.message
+           });
+    }
+    else{
+      setPopupOptions({
+            type:'failure',
+            visible:true,
+            title:'Error',
+            message:"Something went wrong"
+      });
+    }    
+    
   }
   finally{
     setIsSubmitLoading(false);
@@ -194,7 +275,7 @@ const handleLeadsUpload = async () => {
               Lead Inventory
             </p>
             <h1 className="mt-4 text-4xl font-semibold text-white tracking-tight">
-              Manage your <span className="bg-gradient-to-r from-lime-400 to-green-500 bg-clip-text text-transparent">leads </span> pipeline with clarity.
+              Manage your <span className="bg-linear-to-r from-lime-400 to-green-500 bg-clip-text text-transparent">leads </span> pipeline with clarity.
             </h1>
             <p className="mt-3 max-w-xl text-sm text-gray-400 leading-7">
               Track lead status, expected deal value, and ownership across your team in a polished, dark dashboard that matches your existing app theme.
@@ -208,47 +289,30 @@ const handleLeadsUpload = async () => {
         />
         </div>
 
-       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
-      {SUMMARY_CARDS.map((card) => {
-        const Icon = card.icon;
-
-        return (
-          <div
-            key={card.title}
-            className="group mk relative overflow-hidden rounded-3xl border border-[#2B2B2B] bg-[#181818] p-5 transition-all duration-300 hover:-translate-y-2 hover:border-lime-400/30 hover:shadow-[0_20px_50px_rgba(163,230,53,0.12)]"
-          >
-            <div className="absolute -right-8 -top-8 h-20 w-20 rounded-full bg-lime-400/5 blur-2xl" />
-            <div className="flex items-center gap-3">
-              <div className={`flex h-10 w-10 items-center justify-center rounded-3xl ${card.iconBg}`}>
-                <Icon size={14} />
-              </div>
-              <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-400 truncate">
-                {card.title}
-              </p>
-            </div>
-            <div className="mt-5">
-              <p className="text-3xl font-semibold text-white text-left">{card.amount}</p>
-            </div>
-            <div className="mt-4">
-              <span className={`inline-flex max-w-full items-center rounded-full bg-white/5 px-3 py-1 text-xs font-semibold ${card.badgeClass} truncate`}>
-                {card.note}
-              </span>
-            </div>
-          </div>
-        );
-      })}
-      <Link
-        to={'/leads/new'}
-        className="group flex items-center justify-center gap-2 rounded-3xl border border-[#2B2B2B] bg-gradient-to-br from-[#141414] via-[#181818] to-[#111111] p-6 text-white transition-all duration-300 hover:-translate-y-2 hover:border-lime-400/30 hover:shadow-[0_20px_50px_rgba(163,230,53,0.12)]"
-      >
-        <Plus className="text-lime-300" />
-        <span className="font-semibold text-white">Add New Lead</span>
+       <div className="grid gap-4 grid-cols-1 md:grid-cols-3 lg:grid-cols-3">
+      {SUMMARY_CARDS.map((card) => (
+        <div
+          key={card.title}
+          className="rounded-[28px] border border-[#2A2A30] bg-[#16161A] p-6 shadow-[0_30px_60px_rgba(0,0,0,0.2)]"
+        >
+          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-gray-500">
+            {card.title}
+          </p>
+          <p className="mt-5 text-4xl font-semibold text-white">{card.amount}</p>
+          <span className={`mt-3 inline-flex items-center rounded-full bg-white/5 px-3 py-1 text-xs font-semibold ${card.badgeClass}`}>
+            {card.note}
+          </span>
+        </div>
+      ))}
+      <Link to={"/leads/new"} className="grid  place-items-center  rounded-[28px] border border-[#2A2A30] bg-[#16161A] p-6 shadow-[0_30px_60px_rgba(0,0,0,0.2)]">
+       <Plus />
+        Add New Lead
       </Link>
     </div>
 
 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
   {/* Download Button */}
-  <a href="/template/1_002_-ey4.gif" download className="h-full">
+  <a href="/template/lead_bulk_upload_template_single_row.xlsx" download className="h-full">
     <Button
       label="Download Lead Excel File Template"
       loading={submitLoading}
@@ -352,6 +416,21 @@ const handleLeadsUpload = async () => {
             onPageChange={setCurrentPage}
           />
         </section>
+              <Popup
+                type={'failure'}
+                visible={popupOptions.visible}
+                title={popupOptions.title}
+                message={popupOptions.message}
+                cancelText="Exit"
+                onCancel={() =>
+                  setPopupOptions({
+                    type: "failure",
+                    visible: false,
+                    message: "",
+                    title: "Error",
+                  })
+                }
+              />
       </div>
     </main>
   );

@@ -12,7 +12,7 @@ export interface DropdownOption {
 import UserInput from "../../components/common/UserInput";
 import Label from "../../components/common/Label";
 import Button from "../../components/common/Button";
-import ConfirmationDialog from "../../components/common/ConfirmationDialog";
+import Popup from "../../components/common/Popup";
 import axios from "axios";
 
 interface Product {
@@ -172,7 +172,27 @@ useEffect(()=>{
           const { data } = await api.get<ProductsResponse>("/products/all");
 
           setProducts(data.products);
+
+          
         } catch (error) {
+          if(axios.isAxiosError(error)){
+            setShowDialog({
+        dialogType: "failure",
+        visibility: true,
+        title:'Error',
+        message:
+          error.response?.data?.message || "Failed to delete product.",
+      });
+
+          }
+          else{
+            setShowDialog({
+        dialogType: "failure",
+        visibility: true,
+        title:'Error',
+        message:"Failed to delete product.",
+      });
+          }
           console.error("Failed to load products:", error);
         }
       };
@@ -197,7 +217,7 @@ return (
       </div>
 
       {/* Add / Edit Product */}
-      <div className="group rounded-3xl border border-[#2B2B2B] bg-[#181818] mt-25 p-16 shadow-2xl transition-all duration-300 hover:-translate-y-1 hover:border-lime-400/30 hover:shadow-[0_20px_50px_rgba(163,230,53,0.12)]">
+      <div className="rounded-3xl border border-[#2B2B2B] bg-[#181818] md:mt-12 px-12 py-12 shadow-xl">
         {/* <label className="mb-2 block text-sm text-gray-400">
           Product Name
         </label> */}
@@ -211,6 +231,7 @@ return (
             }))
           }
           placeholder="Enter product name"
+          className="my-6"
         />
         {/* <input
           value={newProductName.name}
@@ -357,14 +378,12 @@ return (
 
 
 
-      <ConfirmationDialog
-        type={showDialog.dialogType}
+      <Popup
+        type={'failure'}
         visible={showDialog.visibility}
         title={showDialog.title}
         message={showDialog.message}
-        confirmText="Delete"
-        cancelText="Cancel"
-        confirmColor="#DC2626"
+        cancelText="Exit"
         onCancel={() =>
           setShowDialog({
             dialogType: "",
