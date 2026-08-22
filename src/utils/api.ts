@@ -8,8 +8,8 @@ export function setAuthFailureHandler(handler: () => void) {
   onAuthFailure = handler;
 }
 
-// const productionApiIP = "72.60.220.34";
- const secureProductionApiIP = "anubandh.dialogix.cloud";
+// const productionApiIP = "http://72.60.220.34";
+ const secureProductionApiIP = "https://anubandh.dialogix.cloud";
 
 // const localIP = "localhost";
 // Headers Below Incase we need it
@@ -17,7 +17,7 @@ export function setAuthFailureHandler(handler: () => void) {
   //   "Content-Type": "application/json",
   // },
 const api = axios.create({
-  baseURL: `https://${secureProductionApiIP}/api`,
+  baseURL: `${secureProductionApiIP}/api`,
 
   withCredentials: false,
 });
@@ -75,7 +75,7 @@ if (
 
       refreshPromise = axios
         .post(
-          `https://${secureProductionApiIP}/api/auth/refresh`,
+          `${secureProductionApiIP}/api/auth/refresh`,
           {
             refreshToken,
           }
