@@ -32,7 +32,7 @@ export default function ProtectedLayout() {
 
   if (authStatus === "unavailable") {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#0c0d10] text-white gap-2">
+      <div className="min-h-screen flex items-center justify-center bg-white text-black gap-2">
         Unable to verify your session. Please check your connection.
       </div>
     );

@@ -111,7 +111,7 @@ export default function AllUsers() {
     setPopupOptions(prev => ({...prev,visible:false}))
   }
   return (
-    <main className="min-h-screen bg-[#0c0d10] px-6 py-8 text-gray-100 md:px-8 lg:px-10">
+    <main className="min-h-screen bg-white px-6 py-8 text-gray-100 md:px-8 lg:px-10">
       <div className="flex flex-col gap-8">
         <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-3xl">
@@ -134,7 +134,7 @@ export default function AllUsers() {
             </div>
 
             {/* Main Heading */}
-            <h1 className="text-4xl font-bold leading-[1.1] tracking-tight text-white md:text-5xl">
+            <h1 className="text-4xl font-bold leading-[1.1] tracking-tight text-black md:text-5xl">
 
               Manage your{" "}
 
@@ -201,7 +201,7 @@ export default function AllUsers() {
         User Table
       </p>
 
-      <h2 className="mt-1 text-2xl font-bold tracking-tight text-white">
+      <h2 className="mt-1 text-2xl font-bold tracking-tight text-black">
         All{" "}
         <span className="bg-gradient-to-r from-lime-300 to-emerald-400 bg-clip-text text-transparent">
           users

@@ -6,7 +6,7 @@ export default function RootLayout() {
   const [isSidebarCollapsed] = useState(false);
 
   return (
-    <div className="min-h-screen overflow-x-hidden bg-[#08090C]">
+    <div className="min-h-screen overflow-x-hidden bg-white">
 
       <Sidebar
         isCollapsed={isSidebarCollapsed}

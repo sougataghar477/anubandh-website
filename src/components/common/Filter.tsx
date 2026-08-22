@@ -31,13 +31,13 @@ export default function Filter({
         <button
           type="button"
           onClick={onToggleFilters}
-          className="rounded-2xl border border-[#2A2A30] bg-white/5 px-4 py-3 text-sm font-semibold text-gray-200 transition hover:border-lime-primary hover:text-white"
+          className="rounded-2xl border border-blue-200 bg-blue-50 px-4 py-3 text-sm font-semibold text-slate-700 transition hover:border-blue-primary hover:text-blue-primary"
         >
           Filter By Status
         </button>
         
       {filtersOpen && (
-        <div className="border-b border-[#2A2A30] bg-[#141418] px-6 py-5">
+        <div className="border-b border-blue-100 bg-blue-50 px-6 py-5">
           <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
             <div className="flex flex-col gap-6 sm:flex-row sm:items-center">
               {filterGroups.map((group) => (
@@ -52,8 +52,8 @@ export default function Filter({
                         onClick={() => group.onToggle(option.value)}
                         className={`rounded-full border px-4 py-2 text-sm font-semibold transition ${
                           group.activeValues.includes(option.value)
-                            ? "border-lime-primary bg-lime-primary/15 text-lime-primary"
-                            : "border-[#2A2A30] bg-white/5 text-gray-200 hover:border-lime-primary"
+                            ? "border-blue-primary bg-blue-100 text-blue-primary"
+                            : "border-blue-200 bg-white text-slate-600 hover:border-blue-primary hover:bg-blue-50"
                         }`}
                       >
                         {formatLabel(option.label)}
@@ -66,7 +66,7 @@ export default function Filter({
               <button
                 type="button"
                 onClick={onClearFilters}
-                className="rounded-2xl border border-[#2A2A30] bg-white/5 px-4 py-3 text-sm font-semibold text-gray-200 transition hover:border-lime-primary hover:text-white"
+                className="rounded-2xl border border-[#2A2A30] bg-white/5 px-4 py-3 text-sm font-semibold text-gray-200 transition hover:border-lime-primary hover:text-black"
               >
                 Clear all
               </button>

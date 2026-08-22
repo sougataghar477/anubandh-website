@@ -267,15 +267,20 @@ const handleLeadsUpload = async () => {
 
 
   return (
-    <main className="min-h-screen bg-[#0c0d10] text-gray-100 px-6 py-8 md:px-8 lg:px-10">
+    <main className="min-h-screen bg-white text-gray-100 px-6 py-8 md:px-8 lg:px-10">
       <div className="flex flex-col gap-8">
         <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-2xl">
             <p className="inline-flex items-center gap-2 rounded-full bg-lime-500/10 border border-lime-500/20 px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-lime-400">
               Lead Inventory
             </p>
+<<<<<<< Updated upstream
             <h1 className="mt-4 text-4xl font-semibold text-white tracking-tight">
               Manage your <span className="bg-linear-to-r from-lime-400 to-green-500 bg-clip-text text-transparent">leads </span> pipeline with clarity.
+=======
+            <h1 className="mt-4 text-4xl font-semibold text-black tracking-tight">
+              Manage your <span className="bg-gradient-to-r from-lime-400 to-green-500 bg-clip-text text-transparent">leads </span> pipeline with clarity.
+>>>>>>> Stashed changes
             </h1>
             <p className="mt-3 max-w-xl text-sm text-gray-400 leading-7">
               Track lead status, expected deal value, and ownership across your team in a polished, dark dashboard that matches your existing app theme.
@@ -293,12 +298,12 @@ const handleLeadsUpload = async () => {
       {SUMMARY_CARDS.map((card) => (
         <div
           key={card.title}
-          className="rounded-[28px] border border-[#2A2A30] bg-[#16161A] p-6 shadow-[0_30px_60px_rgba(0,0,0,0.2)]"
+          className="rounded-[28px] border border-[#2A2A30] bg-white p-6 shadow-[0_30px_60px_rgba(0,0,0,0.2)]"
         >
           <p className="text-xs font-semibold uppercase tracking-[0.3em] text-gray-500">
             {card.title}
           </p>
-          <p className="mt-5 text-4xl font-semibold text-white">{card.amount}</p>
+          <p className="mt-5 text-4xl font-semibold text-black">{card.amount}</p>
           <span className={`mt-3 inline-flex items-center rounded-full bg-white/5 px-3 py-1 text-xs font-semibold ${card.badgeClass}`}>
             {card.note}
           </span>
@@ -365,7 +370,7 @@ const handleLeadsUpload = async () => {
           <div className="flex flex-col gap-4 border-b border-[#2A2A30] p-6 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <p className="text-sm uppercase tracking-[0.28em] text-lime-300">Lead table</p>
-              <h2 className="mt-2 text-2xl font-semibold text-white">All active leads</h2>
+              <h2 className="mt-2 text-2xl font-semibold text-black">All active leads</h2>
               
             </div>
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center">

@@ -196,7 +196,7 @@ export default function DashboardPage() {
                                 CRM Dashboard
                             </span>
 
-                            <h1 className="mt-5 text-5xl font-bold leading-tight text-white">
+                            <h1 className="mt-5 text-5xl font-bold leading-tight text-black">
                                 Welcome Back 👋
                             </h1>
 
@@ -220,7 +220,7 @@ export default function DashboardPage() {
 
                                 </button>
 
-                                {/* <button className="rounded-2xl border border-[#323232] bg-[#121212] px-6 py-3 text-white transition hover:border-lime-400">
+                                {/* <button className="rounded-2xl border border-[#323232] bg-[#121212] px-6 py-3 text-black transition hover:border-lime-400">
 
                                     View Reports
 
@@ -244,7 +244,7 @@ export default function DashboardPage() {
 
                                         </p>
 
-                                        <h2 className="mt-2 text-6xl font-bold text-white">
+                                        <h2 className="mt-2 text-6xl font-bold text-black">
 
                                             84%
 
@@ -303,7 +303,7 @@ export default function DashboardPage() {
 
                                 {/* Value */}
                                 <div className="mt-10">
-                                    <h2 className="text-5xl font-bold text-white">
+                                    <h2 className="text-5xl font-bold text-black">
                                         {item.value}
                                     </h2>
 
@@ -320,7 +320,7 @@ export default function DashboardPage() {
 
                     <div className="flex items-center justify-between mb-6">
 
-                        <h2 className="text-2xl font-bold text-white">
+                        <h2 className="text-2xl font-bold text-black">
 
                             Quick Actions
 
@@ -357,19 +357,19 @@ export default function DashboardPage() {
                                             >
 
                                                 <Icon
-                                                    className="text-white"
+                                                    className="text-black"
                                                     size={28}
                                                 />
 
                                             </div>
 
                                             <ArrowUpRight
-                                                className="text-gray-500 group-hover:text-white transition"
+                                                className="text-gray-500 group-hover:text-black transition"
                                             />
 
                                         </div>
 
-                                        <h3 className="mt-6 text-2xl font-bold text-white">
+                                        <h3 className="mt-6 text-2xl font-bold text-black">
 
                                             {item.title}
 
@@ -397,7 +397,7 @@ export default function DashboardPage() {
 
                     <div className="flex items-center justify-between mb-6">
 
-                        <h2 className="text-2xl font-bold text-white">
+                        <h2 className="text-2xl font-bold text-black">
                             Recent Leads
                         </h2>
 
@@ -429,7 +429,7 @@ export default function DashboardPage() {
 
                                         <div>
 
-                                            <h3 className="text-lg font-semibold text-white">
+                                            <h3 className="text-lg font-semibold text-black">
                                                 {lead.name}
                                             </h3>
 

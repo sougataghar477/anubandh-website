@@ -434,7 +434,7 @@ if(pageLoading){
   return <Loader/>
 }
   return (
-    <div className="min-h-screen bg-[#111111] p-8 text-white flex items-center">
+    <div className="min-h-screen bg-[#111111] p-8 text-black flex items-center">
 
       <div className="mx-auto max-w-5xl flex-1">
 
@@ -627,7 +627,7 @@ if(pageLoading){
               type="button"
               label="Logout"
               onClick={logout}
-              className="bg-transparent border border-red-500 text-red-400 hover:bg-red-500 hover:text-white"
+              className="bg-transparent border border-red-500 text-red-400 hover:bg-red-500 hover:text-black"
               icon={<LogOut/>}
               />
 

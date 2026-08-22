@@ -303,6 +303,7 @@ export default function LoginPage() {
   };
 
   return (
+<<<<<<< Updated upstream
     <AuthForm
       mode="login"
       onSubmit={handleLogin}
@@ -310,5 +311,113 @@ export default function LoginPage() {
       popupOptions={popupOptions}
       onClosePopup={closePopup}
     />
+=======
+    <div className="min-h-screen bg-[#111111] flex items-center justify-center p-6">
+      <div className="w-full max-w-md rounded-3xl border border-[#2B2B2B] bg-[#181818] p-8 shadow-2xl">
+        <div className="mb-8 text-center">
+          <p className="text-sm uppercase tracking-[0.3em] text-lime-primary">
+            CRM Portal
+          </p>
+
+          <h1 className="mt-2 text-3xl font-semibold text-black">
+            Welcome Back
+          </h1>
+
+          <p className="mt-2 text-sm text-gray-400">
+            Sign in to continue.
+          </p>
+        </div>
+
+        <form
+          onSubmit={handleSubmit}
+          className="space-y-5"
+        >
+          <div>
+            <label className="mb-2 block text-sm font-medium text-gray-300">
+              Email
+            </label>
+
+            <input
+              type="email"
+              value={email}
+              onChange={(e) =>
+                setEmail(e.target.value)
+              }
+              placeholder="Enter your email"
+              className="w-full rounded-xl border border-[#2B2B2B] bg-[#121212] px-4 py-3 text-black outline-none focus:border-lime-primary"
+            />
+          </div>
+
+          <div>
+            <label className="mb-2 block text-sm font-medium text-gray-300">
+              Password
+            </label>
+
+            <input
+              type="password"
+              value={password}
+              onChange={(e) =>
+                setPassword(e.target.value)
+              }
+              placeholder="Enter your password"
+              className="w-full rounded-xl border border-[#2B2B2B] bg-[#121212] px-4 py-3 text-black outline-none focus:border-lime-primary"
+            />
+          </div>
+
+          <div className="flex items-center justify-between text-sm text-gray-400">
+            {/* <label className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                checked={keepSignedIn}
+                onChange={() =>
+                  setKeepSignedIn((v) => !v)
+                }
+              />
+
+              Keep me signed in
+            </label> */}
+
+            <button
+              type="button"
+              onClick={() =>
+                navigate("/forgot-password")
+              }
+              className="text-lime-primary hover:underline"
+            >
+              Forgot password?
+            </button>
+          </div>
+
+          {/* <button
+            type="submit"
+            disabled={loading}
+            className="w-full rounded-xl bg-lime-primary px-4 py-3 font-semibold text-black transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
+          >
+            {loading ? "Signing In..." : "Sign In"}
+          </button> */}
+          <Button type="submit" label="Sign In" loading={loading}/>
+          <div className="text-center text-sm text-gray-400">
+            Don't have an account?{" "}
+            <button
+              type="button"
+              onClick={() =>
+                navigate("/signup")
+              }
+              className="font-semibold text-lime-primary hover:underline"
+            >
+              Sign up
+            </button>
+          </div>
+        </form>
+        <Popup 
+        type={popupOptions.type}
+        visible={popupOptions.visible}
+        message={popupOptions.message}
+        title={popupOptions.title}
+        onCancel={closePopup}
+        />
+      </div>
+    </div>
+>>>>>>> Stashed changes
   );
 }

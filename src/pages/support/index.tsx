@@ -74,7 +74,7 @@ export default function SupportPage() {
   };
 
   return (
-    <div className="min-h-full bg-[#0F0F12] text-white">
+    <div className="min-h-full bg-[#0F0F12] text-black">
 
       {/* =====================================================
           HEADER
@@ -103,7 +103,7 @@ export default function SupportPage() {
                   Enterprise Support
                 </p>
 
-                <h1 className="text-2xl font-bold tracking-tight text-white">
+                <h1 className="text-2xl font-bold tracking-tight text-black">
                   Help & Support
                 </h1>
 
@@ -153,7 +153,7 @@ export default function SupportPage() {
                 </span>
               </div>
 
-              <h2 className="text-2xl font-semibold text-white lg:text-3xl">
+              <h2 className="text-2xl font-semibold text-black lg:text-3xl">
                 How can we help you today?
               </h2>
 
@@ -182,7 +182,7 @@ export default function SupportPage() {
               Direct Assistance
             </p>
 
-            <h2 className="mt-1.5 text-xl font-semibold text-white">
+            <h2 className="mt-1.5 text-xl font-semibold text-black">
               Contact Support
             </h2>
 
@@ -213,7 +213,7 @@ export default function SupportPage() {
 
                     <a
                       href={`tel:${supportPhone.replace(/\s/g, "")}`}
-                      className="mt-1 block text-lg font-semibold text-white transition-colors hover:text-lime-primary"
+                      className="mt-1 block text-lg font-semibold text-black transition-colors hover:text-lime-primary"
                     >
                       {supportPhone}
                     </a>
@@ -230,7 +230,7 @@ export default function SupportPage() {
                   onClick={() =>
                     handleCopy(supportPhone, "phone")
                   }
-                  className="flex h-9 w-9 items-center justify-center rounded-lg border border-[#2A2A30] text-gray-500 transition-all hover:border-[#44444C] hover:bg-[#25252B] hover:text-white"
+                  className="flex h-9 w-9 items-center justify-center rounded-lg border border-[#2A2A30] text-gray-500 transition-all hover:border-[#44444C] hover:bg-[#25252B] hover:text-black"
                   title="Copy phone number"
                 >
                   {copied === "phone" ? (
@@ -285,7 +285,7 @@ export default function SupportPage() {
 
                     <a
                       href={`mailto:${supportEmail}`}
-                      className="mt-1 block break-all text-lg font-semibold text-white transition-colors hover:text-blue-400"
+                      className="mt-1 block break-all text-lg font-semibold text-black transition-colors hover:text-blue-400"
                     >
                       {supportEmail}
                     </a>
@@ -303,7 +303,7 @@ export default function SupportPage() {
                   onClick={() =>
                     handleCopy(supportEmail, "email")
                   }
-                  className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-[#2A2A30] text-gray-500 transition-all hover:border-[#44444C] hover:bg-[#25252B] hover:text-white"
+                  className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-[#2A2A30] text-gray-500 transition-all hover:border-[#44444C] hover:bg-[#25252B] hover:text-black"
                   title="Copy email address"
                 >
                   {copied === "email" ? (
@@ -327,7 +327,7 @@ export default function SupportPage() {
 
                 <a
                   href={`mailto:${supportEmail}`}
-                  className="inline-flex items-center gap-2 rounded-lg border border-[#35353C] bg-[#25252B] px-4 py-2 text-xs font-semibold text-white transition-colors hover:bg-[#303037]"
+                  className="inline-flex items-center gap-2 rounded-lg border border-[#35353C] bg-[#25252B] px-4 py-2 text-xs font-semibold text-black transition-colors hover:bg-[#303037]"
                 >
                   <Mail className="h-3.5 w-3.5" />
                   Send Email
@@ -350,7 +350,7 @@ export default function SupportPage() {
               Assistance Areas
             </p>
 
-            <h2 className="mt-1.5 text-xl font-semibold text-white">
+            <h2 className="mt-1.5 text-xl font-semibold text-black">
               What can we help with?
             </h2>
           </div>
@@ -362,7 +362,7 @@ export default function SupportPage() {
                 <BarChart3 className="h-5 w-5 text-lime-primary" />
               </div>
 
-              <h3 className="font-semibold text-white">
+              <h3 className="font-semibold text-black">
                 Lead Management
               </h3>
 
@@ -376,7 +376,7 @@ export default function SupportPage() {
                 <Package className="h-5 w-5 text-blue-400" />
               </div>
 
-              <h3 className="font-semibold text-white">
+              <h3 className="font-semibold text-black">
                 Products
               </h3>
 
@@ -390,7 +390,7 @@ export default function SupportPage() {
                 <Users className="h-5 w-5 text-purple-400" />
               </div>
 
-              <h3 className="font-semibold text-white">
+              <h3 className="font-semibold text-black">
                 User Management
               </h3>
 
@@ -404,7 +404,7 @@ export default function SupportPage() {
                 <ShieldCheck className="h-5 w-5 text-orange-400" />
               </div>
 
-              <h3 className="font-semibold text-white">
+              <h3 className="font-semibold text-black">
                 Account & Access
               </h3>
 
@@ -430,7 +430,7 @@ export default function SupportPage() {
               </div>
 
               <div>
-                <p className="font-medium text-white">
+                <p className="font-medium text-black">
                   Support Availability
                 </p>
 
@@ -452,7 +452,7 @@ export default function SupportPage() {
               </div>
 
               <div>
-                <p className="font-medium text-white">
+                <p className="font-medium text-black">
                   Customer Assistance
                 </p>
 
@@ -477,7 +477,7 @@ export default function SupportPage() {
               Knowledge Base
             </p>
 
-            <h2 className="mt-1.5 text-xl font-semibold text-white">
+            <h2 className="mt-1.5 text-xl font-semibold text-black">
               Frequently Asked Questions
             </h2>
 

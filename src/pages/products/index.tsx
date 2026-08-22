@@ -236,7 +236,7 @@ return (
         {/* <input
           value={newProductName.name}
           
-          className="w-full rounded-2xl border border-[#2B2B2B] bg-[#121212] px-5 py-4 text-white outline-none focus:border-lime-400"
+          className="w-full rounded-2xl border border-[#2B2B2B] bg-[#121212] px-5 py-4 text-black outline-none focus:border-lime-400"
         /> */}
 
         {isEditing && (
@@ -316,7 +316,7 @@ return (
         />
       </div>
         <div className="mb-8">
-        <h2 className="mb-5 text-2xl font-semibold text-white">
+        <h2 className="mb-5 text-2xl font-semibold text-black">
           Existing Products
         </h2>
 
@@ -359,7 +359,7 @@ return (
                     </div>
 
                     <div>
-                      <h3 className="text-lg font-semibold text-white">
+                      <h3 className="text-lg font-semibold text-black">
                         {product.name}
                       </h3>
 
