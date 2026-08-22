@@ -434,11 +434,11 @@ if(pageLoading){
   return <Loader/>
 }
   return (
-    <div className="min-h-screen bg-[#111111] p-8 text-white flex items-center">
+    <div className="min-h-screen bg-white p-8 text-black flex items-center">
 
       <div className="mx-auto max-w-5xl flex-1">
 
-        <form onSubmit={(e) => formHandler(e)} className="rounded-3xl border border-[#2b2b2b] bg-[#181818] shadow-xl overflow-x-hidden">
+        <form onSubmit={(e) => formHandler(e)} className="rounded-3xl  bg-white shadow-xl overflow-x-hidden">
 
           {/* Header */}
 
@@ -450,14 +450,14 @@ if(pageLoading){
             <div className="flex flex-col items-center">
 
               <div className="relative">
-                    <div className="w-36 h-36 rounded-full border-4 border-lime-400 overflow-x-hidden">
+                    <div className="w-36 h-36 rounded-full border-4 border-blue-600 overflow-x-hidden">
                     {image ? (
                         <img
                         src={image}
                         className="w-full h-full object-cover"
                         />
                     ) : (
-                        <div className="w-full h-full bg-black flex items-center justify-center text-6xl font-bold text-black">
+                        <div className="w-full h-full bg-white flex items-center justify-center text-6xl font-bold text-black">
                         {/* Initials or icon */}
                         </div>
                     )}
@@ -627,7 +627,7 @@ if(pageLoading){
               type="button"
               label="Logout"
               onClick={logout}
-              className="bg-transparent border border-red-500 text-red-400 hover:bg-red-500 hover:text-white"
+              className="bg-transparent border border-red-500 text-red-400 hover:bg-red-500 hover:text-black"
               icon={<LogOut/>}
               />
 

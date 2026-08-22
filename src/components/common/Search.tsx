@@ -10,14 +10,14 @@ export default function SearchInput({
   placeholder = "Search...",
 }: SearchInputProps) {
   return (
-      <div className="flex flex-col sm:flex-row sm:items-center md:w-80  items-center gap-2 rounded-2xl border border-[#2A2A30] bg-[#141418] px-4 py-3 shadow-sm shadow-black/10 w-full">
+    <div className="flex flex-col sm:flex-row sm:items-center md:w-80 items-center gap-2 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 shadow-sm text-slate-800 transition-all focus-within:border-blue-500 focus-within:bg-white focus-within:ring-1 focus-within:ring-blue-500 w-full">
       <input
         type="search"
         value={searchTerm}
         onChange={(event) => onSearchChange(event.target.value)}
         placeholder={placeholder}
-        className="w-full bg-transparent text-sm text-gray-100 placeholder:text-gray-500 outline-none"
+        className="w-full bg-transparent text-sm text-slate-800 placeholder:text-slate-400 outline-none"
       />
-      </div>
+    </div>
   );
 }

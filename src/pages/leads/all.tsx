@@ -11,6 +11,7 @@ import { Link } from "react-router";
 import SearchInput from "../../components/common/Search";
 import Tooltip from "../../components/common/TooltipWrapper";
 import Popup from "../../components/common/Popup";
+import LeadSummaryCard from "../../components/leads/LeadSummaryCard";
 const PAGE_SIZE = 3;
 
  const SUMMARY_CARDS = [
@@ -267,15 +268,15 @@ const handleLeadsUpload = async () => {
 
 
   return (
-    <main className="min-h-screen bg-[#0c0d10] text-gray-100 px-6 py-8 md:px-8 lg:px-10">
+    <main className="min-h-screen bg-white text-black px-6 py-8 md:px-8 lg:px-10">
       <div className="flex flex-col gap-8">
         <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-2xl">
-            <p className="inline-flex items-center gap-2 rounded-full bg-lime-500/10 border border-lime-500/20 px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-lime-400">
+            <p className="inline-flex items-center gap-2 rounded-full bg-blue-500/10 border border-blue-500/20 px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-blue-400">
               Lead Inventory
             </p>
-            <h1 className="mt-4 text-4xl font-semibold text-white tracking-tight">
-              Manage your <span className="bg-linear-to-r from-lime-400 to-green-500 bg-clip-text text-transparent">leads </span> pipeline with clarity.
+            <h1 className="mt-4 text-4xl font-semibold text-black tracking-tight">
+              Manage your  leads pipeline with clarity.
             </h1>
             <p className="mt-3 max-w-xl text-sm text-gray-400 leading-7">
               Track lead status, expected deal value, and ownership across your team in a polished, dark dashboard that matches your existing app theme.
@@ -290,21 +291,15 @@ const handleLeadsUpload = async () => {
         </div>
 
        <div className="grid gap-4 grid-cols-1 md:grid-cols-3 lg:grid-cols-3">
-      {SUMMARY_CARDS.map((card) => (
-        <div
-          key={card.title}
-          className="rounded-[28px] border border-[#2A2A30] bg-[#16161A] p-6 shadow-[0_30px_60px_rgba(0,0,0,0.2)]"
-        >
-          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-gray-500">
-            {card.title}
-          </p>
-          <p className="mt-5 text-4xl font-semibold text-white">{card.amount}</p>
-          <span className={`mt-3 inline-flex items-center rounded-full bg-white/5 px-3 py-1 text-xs font-semibold ${card.badgeClass}`}>
-            {card.note}
-          </span>
-        </div>
-      ))}
-      <Link to={"/leads/new"} className="grid  place-items-center  rounded-[28px] border border-[#2A2A30] bg-[#16161A] p-6 shadow-[0_30px_60px_rgba(0,0,0,0.2)]">
+{SUMMARY_CARDS.map((card) => (
+  <LeadSummaryCard
+    key={card.title}
+    title={card.title}
+    amount={card.amount}
+    note={card.note}
+  />
+))}
+      <Link to={"/leads/new"} className="grid  place-items-center  rounded-[28px]  bg-white p-6 shadow-[0_30px_60px_rgba(0,0,0,0.2)]">
        <Plus />
         Add New Lead
       </Link>
@@ -322,9 +317,9 @@ const handleLeadsUpload = async () => {
   {/* Upload Field Container */}
 {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-4"> */}
   {!selectedFile ? (
-    <label className="group flex h-full min-h-12 w-full cursor-pointer items-center justify-center gap-2 rounded-3xl border-2 border-dashed border-[#3F3F46] bg-[#111115] p-3 text-center transition-all hover:border-lime-primary hover:bg-[#18181C]">
-      <Upload className="h-5 w-5 text-gray-400 transition-colors group-hover:text-lime-primary" />
-      <p className="text-sm font-semibold text-gray-200">Upload Files Here</p>
+    <label className="group flex h-full min-h-12 w-full cursor-pointer items-center justify-center gap-2 rounded-3xl border-2 border-dashed border-black bg-gray-200 p-3 text-center transition-all hover:border-blue-900">
+      <Upload className="h-5 w-5 text-black transition-colors group-hover:text-blue-600" />
+      <p className="text-sm font-semibold text-black">Upload Files Here</p>
 
       <input
         type="file"
@@ -361,15 +356,15 @@ const handleLeadsUpload = async () => {
   <Button type="button" label="Save Leads" icon={<SaveIcon/>} loading={submitLoading} onClick={handleLeadsUpload}/>
 {/* </div> */}
 </div>
-        <section className="overflow-x-hidden rounded-4xl border border-[#2A2A30] bg-[#111115] shadow-[0_35px_80px_rgba(0,0,0,0.35)]">
-          <div className="flex flex-col gap-4 border-b border-[#2A2A30] p-6 sm:flex-row sm:items-center sm:justify-between">
+        <section className="overflow-x-hidden rounded-4xl  bg-white shadow-[0_35px_80px_rgba(0,0,0,0.35)]">
+          <div className="flex flex-col gap-4  p-6 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <p className="text-sm uppercase tracking-[0.28em] text-lime-300">Lead table</p>
-              <h2 className="mt-2 text-2xl font-semibold text-white">All active leads</h2>
+              <p className="text-sm uppercase tracking-[0.28em] text-blue-300">Lead table</p>
+              <h2 className="mt-2 text-2xl font-semibold text-black">All active leads</h2>
               
             </div>
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-              <div className="rounded-3xl border border-lime-primary/30 bg-[#181818] px-4 py-3 text-sm text-gray-200 shadow-[0_15px_40px_rgba(0,0,0,0.15)]">
+              <div className="rounded-3xl border border-blue-600/30 bg-white px-4 py-3 text-sm text-black">
                 Showing {startIndex}-{endIndex} of {filteredLeads.length}
               </div>
               <div>

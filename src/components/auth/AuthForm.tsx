@@ -87,7 +87,7 @@ const handleSubmit = async (
             ANUBANDH
           </p>
           
-          <h1 className="mt-2 text-3xl font-semibold text-white">
+          <h1 className="mt-2 text-3xl font-semibold text-black">
             {isLogin ? "Welcome Back" : isRegister ? "Create Account" : "Reset Password Here"}
           </h1>
 

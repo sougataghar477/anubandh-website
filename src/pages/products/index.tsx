@@ -201,13 +201,13 @@ useEffect(()=>{
 
   
 return (
-  <div className="min-h-screen bg-[#111111] p-6 text-[#E0E0E0] md:p-10">
+  <div className="min-h-screen bg-white p-6 text-black md:p-10">
     <div className="mx-auto max-w-6xl">
       <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-      <div className="flex min-h-[360px] items-start justify-center md:min-h-[500px]">
+      <div className="flex min-h-90 items-start justify-center md:min-h-125">
       <div className="w-full">
       <div className="mb-8">
-        <h2 className="text-4xl bg-gradient-to-r from-lime-400 to-green-500 bg-clip-text text-transparent font-bold">
+        <h2 className="text-4xl   text-black font-bold">
           Add Product
         </h2>
 
@@ -217,7 +217,7 @@ return (
       </div>
 
       {/* Add / Edit Product */}
-      <div className="rounded-3xl border border-[#2B2B2B] bg-[#181818] md:mt-12 px-12 py-12 shadow-xl">
+      <div className="rounded-3xl bg-white md:mt-12 px-12 py-12 shadow-2xl">
         {/* <label className="mb-2 block text-sm text-gray-400">
           Product Name
         </label> */}
@@ -236,7 +236,7 @@ return (
         {/* <input
           value={newProductName.name}
           
-          className="w-full rounded-2xl border border-[#2B2B2B] bg-[#121212] px-5 py-4 text-white outline-none focus:border-lime-400"
+          className="w-full rounded-2xl border border-[#2B2B2B] bg-[#121212] px-5 py-4 text-black outline-none focus:border-lime-400"
         /> */}
 
         {isEditing && (
@@ -292,9 +292,9 @@ return (
       </div>
       </div>
       {/* Products */}
-      <div>
+      <div className=" p-4 rounded-2xl border border-blue-400">
         <div className="mb-8">
-        <h1 className="text-4xl font-bold bg-gradient-to-r from-lime-400 to-green-500 bg-clip-text text-transparent">
+        <h1 className="text-4xl font-bold  text-black">
           Search Existing Products
         </h1>
 
@@ -302,7 +302,7 @@ return (
           Search through your product catalog
         </p>
       </div>
-              <div className="group mb-8 rounded-3xl border border-[#2B2B2B] bg-[#181818] p-5 transition-all duration-300 hover:-translate-y-1 hover:border-lime-400/30 hover:shadow-[0_20px_50px_rgba(163,230,53,0.12)]">
+              <div className="group mb-8 rounded-3xl bg-white p-5 transition-all duration-300 hover:-translate-y-1 hover:border-blue-400/30 hover:shadow-blue-200 shadow-xs">
 
         <UserInput
         element={"input"}
@@ -316,7 +316,7 @@ return (
         />
       </div>
         <div className="mb-8">
-        <h2 className="mb-5 text-2xl font-semibold text-white">
+        <h2 className="mb-5 text-2xl font-semibold text-black">
           Existing Products
         </h2>
 
@@ -325,7 +325,7 @@ return (
         </p>
         </div>
 
-        <div className="max-h-[280px] overflow-y-auto pr-2 scrollbar-thin scrollbar-track-[#181818] scrollbar-thumb-lime-500/70 hover:scrollbar-thumb-lime-400">
+        <div className="max-h-70 overflow-y-auto pr-2 scrollbar-thin scrollbar-track-[#181818] scrollbar-thumb-blue-500/70 hover:scrollbar-thumb-blue-400">
           <div className="grid gap-5">
             {products
               .filter((product) =>
@@ -348,18 +348,18 @@ return (
                       product.name
                     );
                   }}
-                  className="cursor-pointer rounded-3xl border border-[#2B2B2B] bg-[#181818] p-4 transition hover:border-lime-400"
+                  className="cursor-pointer rounded-3xl bg-white p-4 transition hover:border-blue-400"
                 >
                   <div className="flex items-center gap-4">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-lime-500/10">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-500/10">
                       <Package
                         size={24}
-                        className="text-lime-400"
+                        className="text-blue-400"
                       />
                     </div>
 
                     <div>
-                      <h3 className="text-lg font-semibold text-white">
+                      <h3 className="text-lg font-semibold text-black">
                         {product.name}
                       </h3>
 

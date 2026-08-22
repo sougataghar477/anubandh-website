@@ -10,7 +10,6 @@ import {
   MessageCircle,
   Phone,
   ShieldCheck,
-
 } from "lucide-react";
 import { Link } from "react-router";
 
@@ -74,17 +73,17 @@ export default function SupportPage() {
   };
 
   return (
-    <div className="min-h-full bg-[#0F0F12] text-white">
+    <div className="min-h-full bg-slate-50 text-slate-900">
 
       {/* =====================================================
           HEADER
       ===================================================== */}
-      <header className="border-b border-[#29292F] bg-[#121214]">
+      <header className="bg-white shadow-sm shadow-slate-200/60">
         <div className="px-6 py-6 lg:px-8">
 
           <Link
             to="/"
-            className="inline-flex items-center gap-2 rounded-full bg-lime-500/10 border border-lime-500/20 px-4 py-2 mb-6 text-xs font-semibold uppercase tracking-[0.3em] text-lime-400"
+            className="inline-flex items-center gap-2 rounded-full bg-blue-50 px-4 py-2 mb-6 text-xs font-semibold uppercase tracking-[0.3em] text-blue-600 shadow-sm transition hover:bg-blue-100"
           >
             <ArrowLeft className="h-4 w-4" />
             Back to Dashboard
@@ -94,20 +93,20 @@ export default function SupportPage() {
 
             <div className="flex items-center gap-4">
 
-              <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-lime-primary/20 bg-lime-primary/10 shadow-[0_0_30px_rgba(180,255,0,0.05)]">
-                <HelpCircle className="h-7 w-7 text-lime-primary" />
+              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-600 text-white shadow-md shadow-blue-600/20">
+                <HelpCircle className="h-7 w-7" />
               </div>
 
               <div>
-                <p className="mb-1 text-xs font-semibold uppercase tracking-[0.2em] text-lime-primary">
+                <p className="mb-1 text-xs font-semibold uppercase tracking-[0.2em] text-blue-600">
                   Enterprise Support
                 </p>
 
-                <h1 className="text-2xl font-bold tracking-tight text-white">
+                <h1 className="text-2xl font-bold tracking-tight text-slate-900">
                   Help & Support
                 </h1>
 
-                <p className="mt-1 text-sm text-gray-500">
+                <p className="mt-1 text-sm text-slate-500">
                   We're here to help you get the most from CRM Portal.
                 </p>
               </div>
@@ -115,10 +114,10 @@ export default function SupportPage() {
             </div>
 
             {/* Online Status */}
-            <div className="hidden items-center gap-2 rounded-full border border-[#2A2A30] bg-[#1A1A1F] px-4 py-2 sm:flex">
-              <span className="h-2 w-2 rounded-full bg-lime-primary shadow-[0_0_8px_rgba(180,255,0,0.8)]" />
+            <div className="hidden items-center gap-2 rounded-full bg-slate-100 px-4 py-2 sm:flex shadow-inner">
+              <span className="h-2 w-2 rounded-full bg-blue-500 shadow-sm shadow-blue-500" />
 
-              <span className="text-xs font-medium text-gray-300">
+              <span className="text-xs font-medium text-slate-600">
                 Support Available
               </span>
             </div>
@@ -136,28 +135,28 @@ export default function SupportPage() {
         {/* =====================================================
             WELCOME BANNER
         ===================================================== */}
-        <section className="relative mb-8 overflow-hidden rounded-3xl border border-[#2A2A30] bg-gradient-to-br from-[#1B1B21] via-[#16161A] to-[#121214] p-7">
+        <section className="relative mb-8 overflow-hidden rounded-3xl bg-white p-7 shadow-xl shadow-slate-200/60">
 
           {/* Decorative Glow */}
-          <div className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full bg-lime-primary/5 blur-3xl" />
+          <div className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full bg-blue-500/10 blur-3xl" />
 
           <div className="relative flex flex-col justify-between gap-6 md:flex-row md:items-center">
 
             <div className="max-w-2xl">
 
-              <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-[#303038] bg-[#202026] px-3 py-1.5">
-                <ShieldCheck className="h-3.5 w-3.5 text-lime-primary" />
+              <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1.5 shadow-sm">
+                <ShieldCheck className="h-3.5 w-3.5 text-blue-600" />
 
-                <span className="text-xs font-medium text-gray-400">
+                <span className="text-xs font-medium text-slate-600">
                   Dedicated Customer Assistance
                 </span>
               </div>
 
-              <h2 className="text-2xl font-semibold text-white lg:text-3xl">
+              <h2 className="text-2xl font-semibold text-slate-900 lg:text-3xl">
                 How can we help you today?
               </h2>
 
-              <p className="mt-3 text-sm leading-6 text-gray-400">
+              <p className="mt-3 text-sm leading-6 text-slate-600">
                 Whether you need help managing leads, products,
                 users, or your account, our support team is ready
                 to assist you.
@@ -165,8 +164,8 @@ export default function SupportPage() {
 
             </div>
 
-            <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl border border-lime-primary/10 bg-lime-primary/5">
-              <MessageCircle className="h-9 w-9 text-lime-primary" />
+            <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl bg-blue-50 text-blue-600 shadow-md shadow-blue-500/10">
+              <MessageCircle className="h-9 w-9" />
             </div>
 
           </div>
@@ -178,47 +177,45 @@ export default function SupportPage() {
         <section className="mb-9">
 
           <div className="mb-5">
-            <p className="inline-flex items-center gap-2 rounded-full bg-lime-500/10 border border-lime-500/20 px-4 py-2  mb-4 text-xs font-semibold uppercase tracking-[0.3em] text-lime-400">
+            <p className="inline-flex items-center gap-2 rounded-full bg-blue-50 px-4 py-2 mb-4 text-xs font-semibold uppercase tracking-[0.3em] text-blue-600 shadow-sm">
               Direct Assistance
             </p>
 
-            <h2 className="mt-1.5 text-xl font-semibold text-white">
+            <h2 className="mt-1.5 text-xl font-semibold text-slate-900">
               Contact Support
             </h2>
 
-            <p className="mt-1 text-sm text-gray-500">
+            <p className="mt-1 text-sm text-slate-500">
               Connect with our support team using your preferred method.
             </p>
           </div>
 
           <div className="grid grid-cols-1 gap-5 xl:grid-cols-2">
 
-            {/* =================================================
-                PHONE
-            ================================================= */}
-            <div className="group rounded-3xl border border-[#2B2B2B] bg-[#181818] p-5 transition-all duration-300 hover:-translate-y-1 hover:border-lime-400/30 hover:shadow-[0_20px_50px_rgba(163,230,53,0.12)]">
+            {/* PHONE */}
+            <div className="group rounded-3xl bg-white p-5 transition-all duration-300 hover:-translate-y-1 shadow-lg shadow-slate-200/60 hover:shadow-xl hover:shadow-blue-500/10">
 
               <div className="flex items-start justify-between gap-5">
 
                 <div className="flex items-center gap-4">
 
-                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-lime-primary/10 bg-lime-primary/10">
-                    <Phone className="h-6 w-6 text-lime-primary" />
+                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-50 text-blue-600 shadow-sm">
+                    <Phone className="h-6 w-6" />
                   </div>
 
                   <div>
-                    <p className="text-xs font-medium uppercase tracking-wider text-gray-500">
+                    <p className="text-xs font-medium uppercase tracking-wider text-slate-400">
                       Phone Support
                     </p>
 
                     <a
                       href={`tel:${supportPhone.replace(/\s/g, "")}`}
-                      className="mt-1 block text-lg font-semibold text-white transition-colors hover:text-lime-primary"
+                      className="mt-1 block text-lg font-semibold text-slate-900 transition-colors hover:text-blue-600"
                     >
                       {supportPhone}
                     </a>
 
-                    <p className="mt-1 text-xs text-gray-500">
+                    <p className="mt-1 text-xs text-slate-500">
                       Tap the number to call our support team
                     </p>
                   </div>
@@ -230,11 +227,11 @@ export default function SupportPage() {
                   onClick={() =>
                     handleCopy(supportPhone, "phone")
                   }
-                  className="flex h-9 w-9 items-center justify-center rounded-lg border border-[#2A2A30] text-gray-500 transition-all hover:border-[#44444C] hover:bg-[#25252B] hover:text-white"
+                  className="flex h-9 w-9 items-center justify-center rounded-lg bg-slate-100 text-slate-500 transition-all hover:bg-slate-200 hover:text-slate-900 shadow-sm"
                   title="Copy phone number"
                 >
                   {copied === "phone" ? (
-                    <Check className="h-4 w-4 text-lime-primary" />
+                    <Check className="h-4 w-4 text-blue-600" />
                   ) : (
                     <Copy className="h-4 w-4" />
                   )}
@@ -242,19 +239,19 @@ export default function SupportPage() {
 
               </div>
 
-              <div className="mt-5 flex items-center justify-between border-t border-[#29292F] pt-4">
+              <div className="mt-5 flex items-center justify-between border-t border-slate-100 pt-4">
 
                 <div className="flex items-center gap-2">
-                  <span className="h-2 w-2 rounded-full bg-lime-primary" />
+                  <span className="h-2 w-2 rounded-full bg-blue-500" />
 
-                  <span className="text-xs text-gray-500">
+                  <span className="text-xs text-slate-500">
                     Available during business hours
                   </span>
                 </div>
 
                 <a
                   href={`tel:${supportPhone.replace(/\s/g, "")}`}
-                  className="inline-flex items-center gap-2 rounded-lg bg-lime-primary px-4 py-2 text-xs font-semibold text-[#111113] transition-colors hover:bg-lime-hover"
+                  className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-xs font-semibold text-white transition-colors hover:bg-blue-700 shadow-md shadow-blue-600/20"
                 >
                   <Phone className="h-3.5 w-3.5" />
                   Call Support
@@ -264,33 +261,31 @@ export default function SupportPage() {
 
             </div>
 
-            {/* =================================================
-                EMAIL
-            ================================================= */}
-            <div className="group rounded-3xl border border-[#2B2B2B] bg-[#181818] p-5 transition-all duration-300 hover:-translate-y-1 hover:border-lime-400/30 hover:shadow-[0_20px_50px_rgba(163,230,53,0.12)]">
+            {/* EMAIL */}
+            <div className="group rounded-3xl bg-white p-5 transition-all duration-300 hover:-translate-y-1 shadow-lg shadow-slate-200/60 hover:shadow-xl hover:shadow-blue-500/10">
 
               <div className="flex items-start justify-between gap-5">
 
                 <div className="flex min-w-0 items-center gap-4">
 
-                  <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-blue-500/10 bg-blue-500/10">
-                    <Mail className="h-6 w-6 text-blue-400" />
+                  <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-blue-50 text-blue-600 shadow-sm">
+                    <Mail className="h-6 w-6" />
                   </div>
 
                   <div className="min-w-0">
 
-                    <p className="text-xs font-medium uppercase tracking-wider text-gray-500">
+                    <p className="text-xs font-medium uppercase tracking-wider text-slate-400">
                       Email Support
                     </p>
 
                     <a
                       href={`mailto:${supportEmail}`}
-                      className="mt-1 block break-all text-lg font-semibold text-white transition-colors hover:text-blue-400"
+                      className="mt-1 block break-all text-lg font-semibold text-slate-900 transition-colors hover:text-blue-600"
                     >
                       {supportEmail}
                     </a>
 
-                    <p className="mt-1 text-xs text-gray-500">
+                    <p className="mt-1 text-xs text-slate-500">
                       Send your query directly to our support team
                     </p>
 
@@ -303,11 +298,11 @@ export default function SupportPage() {
                   onClick={() =>
                     handleCopy(supportEmail, "email")
                   }
-                  className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-[#2A2A30] text-gray-500 transition-all hover:border-[#44444C] hover:bg-[#25252B] hover:text-white"
+                  className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-500 transition-all hover:bg-slate-200 hover:text-slate-900 shadow-sm"
                   title="Copy email address"
                 >
                   {copied === "email" ? (
-                    <Check className="h-4 w-4 text-lime-primary" />
+                    <Check className="h-4 w-4 text-blue-600" />
                   ) : (
                     <Copy className="h-4 w-4" />
                   )}
@@ -315,19 +310,19 @@ export default function SupportPage() {
 
               </div>
 
-              <div className="mt-5 flex items-center justify-between border-t border-[#29292F] pt-4">
+              <div className="mt-5 flex items-center justify-between border-t border-slate-100 pt-4">
 
                 <div className="flex items-center gap-2">
-                  <Mail className="h-3.5 w-3.5 text-gray-600" />
+                  <Mail className="h-3.5 w-3.5 text-slate-400" />
 
-                  <span className="text-xs text-gray-500">
+                  <span className="text-xs text-slate-500">
                     Response through email
                   </span>
                 </div>
 
                 <a
                   href={`mailto:${supportEmail}`}
-                  className="inline-flex items-center gap-2 rounded-lg border border-[#35353C] bg-[#25252B] px-4 py-2 text-xs font-semibold text-white transition-colors hover:bg-[#303037]"
+                  className="inline-flex items-center gap-2 rounded-lg bg-slate-900 px-4 py-2 text-xs font-semibold text-white transition-colors hover:bg-slate-800 shadow-md shadow-slate-900/20"
                 >
                   <Mail className="h-3.5 w-3.5" />
                   Send Email
@@ -341,100 +336,24 @@ export default function SupportPage() {
         </section>
 
         {/* =====================================================
-            SUPPORT AREAS
-        ===================================================== */}
-        {/* <section className="mb-9">
-
-          <div className="mb-5">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-lime-primary">
-              Assistance Areas
-            </p>
-
-            <h2 className="mt-1.5 text-xl font-semibold text-white">
-              What can we help with?
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-
-            <div className="group rounded-3xl border border-[#2B2B2B] bg-[#181818] p-5 transition-all duration-300 hover:-translate-y-1 hover:border-lime-400/30 hover:shadow-[0_20px_50px_rgba(163,230,53,0.12)]">
-              <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-lime-primary/10">
-                <BarChart3 className="h-5 w-5 text-lime-primary" />
-              </div>
-
-              <h3 className="font-semibold text-white">
-                Lead Management
-              </h3>
-
-              <p className="mt-2 text-xs leading-5 text-gray-500">
-                Leads, status, ownership and pipeline assistance.
-              </p>
-            </div>
-
-            <div className="group rounded-3xl border border-[#2B2B2B] bg-[#181818] p-5 transition-all duration-300 hover:-translate-y-1 hover:border-lime-400/30 hover:shadow-[0_20px_50px_rgba(163,230,53,0.12)]">
-              <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-blue-500/10">
-                <Package className="h-5 w-5 text-blue-400" />
-              </div>
-
-              <h3 className="font-semibold text-white">
-                Products
-              </h3>
-
-              <p className="mt-2 text-xs leading-5 text-gray-500">
-                Product information and CRM product management.
-              </p>
-            </div>
-
-            <div className="group rounded-3xl border border-[#2B2B2B] bg-[#181818] p-5 transition-all duration-300 hover:-translate-y-1 hover:border-lime-400/30 hover:shadow-[0_20px_50px_rgba(163,230,53,0.12)]">
-              <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-purple-500/10">
-                <Users className="h-5 w-5 text-purple-400" />
-              </div>
-
-              <h3 className="font-semibold text-white">
-                User Management
-              </h3>
-
-              <p className="mt-2 text-xs leading-5 text-gray-500">
-                User accounts, access and administration support.
-              </p>
-            </div>
-
-            <div className="group rounded-3xl border border-[#2B2B2B] bg-[#181818] p-5 transition-all duration-300 hover:-translate-y-1 hover:border-lime-400/30 hover:shadow-[0_20px_50px_rgba(163,230,53,0.12)]">
-              <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-orange-500/10">
-                <ShieldCheck className="h-5 w-5 text-orange-400" />
-              </div>
-
-              <h3 className="font-semibold text-white">
-                Account & Access
-              </h3>
-
-              <p className="mt-2 text-xs leading-5 text-gray-500">
-                Profile, permissions and account-related assistance.
-              </p>
-            </div>
-
-          </div>
-        </section> */}
-
-        {/* =====================================================
             SUPPORT INFORMATION
         ===================================================== */}
         <section className="mb-9 grid grid-cols-1 gap-4 md:grid-cols-2">
 
-          <div className="rounded-2xl border border-[#2A2A30] bg-[#17171B] p-5">
+          <div className="rounded-2xl bg-white p-5 shadow-lg shadow-slate-200/60">
 
             <div className="flex items-center gap-4">
 
-              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-lime-primary/10">
-                <Clock3 className="h-5 w-5 text-lime-primary" />
+              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-50 text-blue-600 shadow-sm">
+                <Clock3 className="h-5 w-5" />
               </div>
 
               <div>
-                <p className="font-medium text-white">
+                <p className="font-medium text-slate-900">
                   Support Availability
                 </p>
 
-                <p className="mt-1 text-sm text-gray-500">
+                <p className="mt-1 text-sm text-slate-500">
                   Monday – Friday · Business Hours
                 </p>
               </div>
@@ -443,20 +362,20 @@ export default function SupportPage() {
 
           </div>
 
-          <div className="rounded-2xl border border-[#2A2A30] bg-[#17171B] p-5">
+          <div className="rounded-2xl bg-white p-5 shadow-lg shadow-slate-200/60">
 
             <div className="flex items-center gap-4">
 
-              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-500/10">
-                <MessageCircle className="h-5 w-5 text-blue-400" />
+              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-50 text-blue-600 shadow-sm">
+                <MessageCircle className="h-5 w-5" />
               </div>
 
               <div>
-                <p className="font-medium text-white">
+                <p className="font-medium text-slate-900">
                   Customer Assistance
                 </p>
 
-                <p className="mt-1 text-sm text-gray-500">
+                <p className="mt-1 text-sm text-slate-500">
                   Dedicated support for your CRM workspace
                 </p>
               </div>
@@ -473,47 +392,47 @@ export default function SupportPage() {
         <section>
 
           <div className="mb-5">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-lime-primary">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-blue-600">
               Knowledge Base
             </p>
 
-            <h2 className="mt-1.5 text-xl font-semibold text-white">
+            <h2 className="mt-1.5 text-xl font-semibold text-slate-900">
               Frequently Asked Questions
             </h2>
 
-            <p className="mt-1 text-sm text-gray-500">
+            <p className="mt-1 text-sm text-slate-500">
               Quick answers to common CRM questions.
             </p>
           </div>
 
-          <div className="overflow-hidden rounded-3xl border border-[#2B2B2B] bg-[#181818]">
+          <div className="overflow-hidden rounded-3xl bg-white shadow-xl shadow-slate-200/60">
 
             {faqs.map((faq, index) => (
               <div
                 key={faq.question}
-                className="border-b border-[#29292F] last:border-b-0"
+                className="border-b border-slate-100 last:border-b-0"
               >
 
                 <button
                   type="button"
                   onClick={() => toggleFaq(index)}
-                  className="flex w-full items-center justify-between gap-5 px-5 py-5 text-left transition-colors hover:bg-[#1D1D22]"
+                  className="flex w-full items-center justify-between gap-5 px-6 py-5 text-left transition-colors hover:bg-slate-50"
                 >
-                  <span className="text-sm font-medium text-gray-200">
+                  <span className="text-sm font-semibold text-slate-800">
                     {faq.question}
                   </span>
 
                   <ChevronDown
-                    className={`h-4 w-4 shrink-0 text-gray-500 transition-transform duration-200 ${
-                      openFaq === index ? "rotate-180 text-lime-primary" : ""
+                    className={`h-4 w-4 shrink-0 text-slate-400 transition-transform duration-200 ${
+                      openFaq === index ? "rotate-180 text-blue-600" : ""
                     }`}
                   />
                 </button>
 
                 {openFaq === index && (
-                  <div className="px-5 pb-5">
-                    <div className="rounded-xl bg-[#202025] px-4 py-3">
-                      <p className="text-sm leading-6 text-gray-400">
+                  <div className="px-6 pb-5">
+                    <div className="rounded-2xl bg-slate-50 p-4 shadow-inner">
+                      <p className="text-sm leading-6 text-slate-600">
                         {faq.answer}
                       </p>
                     </div>

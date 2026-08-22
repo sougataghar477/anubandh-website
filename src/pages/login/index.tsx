@@ -95,7 +95,7 @@
 //             CRM Portal
 //           </p>
 
-//           <h1 className="mt-2 text-3xl font-semibold text-white">
+//           <h1 className="mt-2 text-3xl font-semibold text-black">
 //             Welcome Back
 //           </h1>
 
@@ -120,7 +120,7 @@
 //                 setEmail(e.target.value)
 //               }
 //               placeholder="Enter your email"
-//               className="w-full rounded-xl border border-[#2B2B2B] bg-[#121212] px-4 py-3 text-white outline-none focus:border-lime-primary"
+//               className="w-full rounded-xl border border-[#2B2B2B] bg-[#121212] px-4 py-3 text-black outline-none focus:border-lime-primary"
 //             />
 //           </div>
 
@@ -136,7 +136,7 @@
 //                 setPassword(e.target.value)
 //               }
 //               placeholder="Enter your password"
-//               className="w-full rounded-xl border border-[#2B2B2B] bg-[#121212] px-4 py-3 text-white outline-none focus:border-lime-primary"
+//               className="w-full rounded-xl border border-[#2B2B2B] bg-[#121212] px-4 py-3 text-black outline-none focus:border-lime-primary"
 //             />
 //           </div>
 

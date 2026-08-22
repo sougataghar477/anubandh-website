@@ -182,109 +182,69 @@ export default function DashboardPage() {
     setPopupOptions(prev => ({...prev,visible:false}))
   }
     return (
-       <div className="min-h-screen bg-[#111111] p-6 text-[#E0E0E0] md:p-8 lg:p-10">
+       <div className="min-h-screen bg-white p-6 text-black md:p-8 lg:p-10">
     <div className="w-full space-y-6">
-                <section className="relative overflow-x-hidden rounded-[32px] border border-[#2B2B2B] bg-[#181818] shadow-2xl">
+<section className="relative overflow-x-hidden rounded-[32px] bg-white shadow-2xl shadow-slate-200/60">
+  {/* Soft lime radial glow overlay */}
 
-                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(163,230,53,.20),transparent_40%)]" />
+  <div className="relative grid grid-cols-1 lg:grid-cols-2 gap-10 p-8 lg:p-12">
+    {/* Left Column */}
+    <div className="w-full">
+      <span className="inline-flex items-center gap-2 rounded-full bg-blue-100 px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-blue-700 shadow-sm">
+        CRM Dashboard
+      </span>
 
-                    <div className="relative grid grid-cols-1 lg:grid-cols-2 gap-10 p-8 lg:p-12">
+      <h1 className="mt-5 text-5xl font-bold leading-tight text-slate-900">
+        Welcome Back 👋
+      </h1>
 
-                        <div className="w-full">
+      <p className="mt-4 text-slate-600 leading-8 max-w-xl">
+        Monitor your business performance, track leads, manage customers and
+        grow your revenue from one beautiful dashboard.
+      </p>
 
-                            <span className="inline-flex items-center gap-2 rounded-full bg-lime-500/10 border border-lime-500/20 px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-lime-400">
-                                CRM Dashboard
-                            </span>
+      <div className="mt-8 flex flex-wrap gap-4">
+        <button className="rounded-2xl bg-gradient-to-r from-blue-400 to-blue-500 px-6 py-3 font-semibold text-slate-950 transition hover:scale-105 shadow-lg shadow-blue-500/25">
+          <span className="flex items-center gap-2">
+            <Plus size={18} />
+            New Lead
+          </span>
+        </button>
 
-                            <h1 className="mt-5 text-5xl font-bold leading-tight text-white">
-                                Welcome Back 👋
-                            </h1>
+        <button className="rounded-2xl bg-slate-100 px-6 py-3 font-semibold text-slate-700 transition hover:bg-slate-200 shadow-md shadow-slate-200/50">
+          View Reports
+        </button>
+      </div>
+    </div>
 
-                            <p className="mt-4 text-[#A8A8A8] leading-8 max-w-xl">
-                                Monitor your business performance, track leads,
-                                manage customers and grow your revenue from one
-                                beautiful dashboard.
-                            </p>
+    {/* Right Column / Card */}
+    <div className="w-full">
+      <div className="rounded-3xl bg-slate-50/80 p-8 shadow-lg shadow-slate-200/70 backdrop-blur-sm">
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="text-sm font-medium text-slate-500">Success Rate</p>
+            <h2 className="mt-2 text-6xl font-bold text-slate-900">84%</h2>
+            <p className="mt-3 text-sm font-semibold text-blue-600">
+              ▲ +12.8% this month
+            </p>
+          </div>
 
-                            <div className="mt-8 flex flex-wrap gap-4">
+          <div className="hidden md:flex h-20 w-20 items-center justify-center rounded-2xl bg-blue-500 text-slate-950 shadow-md shadow-lime-500/30">
+            <TrendingUp size={36} />
+          </div>
+        </div>
 
-                                <button className="rounded-2xl bg-gradient-to-r from-lime-400 to-green-500 px-6 py-3 font-semibold text-black transition hover:scale-105">
-
-                                    <span className="flex items-center gap-2">
-
-                                        <Plus size={18} />
-
-                                        New Lead
-
-                                    </span>
-
-                                </button>
-
-                                {/* <button className="rounded-2xl border border-[#323232] bg-[#121212] px-6 py-3 text-white transition hover:border-lime-400">
-
-                                    View Reports
-
-                                </button> */}
-
-                            </div>
-
-                        </div>
-
-                        <div className="w-full">
-
-                            <div className="rounded-3xl border border-lime-400/20 bg-gradient-to-br from-lime-500/15 via-[#202020] to-[#151515] p-8">
-
-                                <div className="flex items-center justify-between">
-
-                                    <div>
-
-                                        <p className="text-sm text-gray-400">
-
-                                            Success Rate
-
-                                        </p>
-
-                                        <h2 className="mt-2 text-6xl font-bold text-white">
-
-                                            84%
-
-                                        </h2>
-
-                                        <p className="mt-3 text-lime-400">
-
-                                            ▲ +12.8% this month
-
-                                        </p>
-
-                                    </div>
-
-                                    <div className="hidden md:flex h-24 w-24 items-center justify-center rounded-full border-4 border-lime-400 bg-[#111]">
-
-                                        <TrendingUp
-                                            className="text-lime-400"
-                                            size={40}
-                                        />
-
-                                    </div>
-
-                                </div>
-
-                                <div className="mt-8 h-3 rounded-full bg-[#2b2b2b]">
-
-                                    <div
-                                        className="h-3 rounded-full bg-gradient-to-r from-lime-400 via-green-500 to-emerald-400"
-                                        style={{ width: "84%" }}
-                                    />
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </section>
+        {/* Progress Bar */}
+        <div className="mt-8 h-3.5 rounded-full bg-slate-200/80 overflow-hidden shadow-inner">
+          <div
+            className="h-full rounded-full bg-gradient-to-r from-blue-400 to-blue-500 shadow-sm"
+            style={{ width: "84%" }}
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
                 <section className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
                     {stats.map((item) => {
                         const Icon = item.icon;
@@ -292,7 +252,7 @@ export default function DashboardPage() {
                         return (
                             <div
                                 key={item.title}
-                                className="group rounded-3xl border border-[#2B2B2B] bg-[#181818] p-6 transition-all duration-300 hover:-translate-y-2 hover:border-lime-400/30 hover:shadow-[0_20px_50px_rgba(163,230,53,0.12)]"
+                                className="group rounded-3xl border border-[#2B2B2B] bg-white p-6 transition-all duration-300 hover:-translate-y-2 hover:border-lime-400/30 hover:shadow-[0_20px_50px_rgba(163,230,53,0.12)]"
                             >
                                 {/* Icon */}
                                 <div
@@ -303,7 +263,7 @@ export default function DashboardPage() {
 
                                 {/* Value */}
                                 <div className="mt-10">
-                                    <h2 className="text-5xl font-bold text-white">
+                                    <h2 className="text-5xl font-bold text-black">
                                         {item.value}
                                     </h2>
 
@@ -320,13 +280,13 @@ export default function DashboardPage() {
 
                     <div className="flex items-center justify-between mb-6">
 
-                        <h2 className="text-2xl font-bold text-white">
+                        <h2 className="text-2xl font-bold text-black">
 
                             Quick Actions
 
                         </h2>
 
-                        <span className="text-lime-400">
+                        <span className="text-blue-600">
 
                             Fast Navigation
 
@@ -348,7 +308,7 @@ export default function DashboardPage() {
                                     className={`group rounded-3xl bg-gradient-to-br ${item.color} p-[1px] hover:scale-[1.03] transition duration-300`}
                                 >
 
-                                    <div className="rounded-3xl bg-[#181818] p-6 h-full">
+                                    <div className="rounded-3xl bg-white p-6 h-full">
 
                                         <div className="flex items-center justify-between">
 
@@ -357,19 +317,19 @@ export default function DashboardPage() {
                                             >
 
                                                 <Icon
-                                                    className="text-white"
+                                                    className="text-black"
                                                     size={28}
                                                 />
 
                                             </div>
 
                                             <ArrowUpRight
-                                                className="text-gray-500 group-hover:text-white transition"
+                                                className="text-gray-500 group-hover:text-black transition"
                                             />
 
                                         </div>
 
-                                        <h3 className="mt-6 text-2xl font-bold text-white">
+                                        <h3 className="mt-6 text-2xl font-bold text-black">
 
                                             {item.title}
 
@@ -393,17 +353,17 @@ export default function DashboardPage() {
 
                 </section>
 
-                <section className="rounded-3xl border border-[#2B2B2B] bg-[#181818] p-6">
+                <section className="rounded-3xl shadow-2xl bg-white p-6">
 
                     <div className="flex items-center justify-between mb-6">
 
-                        <h2 className="text-2xl font-bold text-white">
+                        <h2 className="text-2xl font-bold text-black">
                             Recent Leads
                         </h2>
 
                         <Link
                             to="/leads/all"
-                            className="text-lime-400 text-sm hover:underline"
+                            className="text-blue-600 text-sm hover:underline"
                         >
                             View All
                         </Link>
@@ -416,20 +376,20 @@ export default function DashboardPage() {
 
                             <div
                                 key={lead.id}
-                                className="rounded-2xl border border-[#2B2B2B] bg-[#121212] p-5 hover:border-lime-400 transition"
+                                className="rounded-2xl shadow-md hover:shadow-xl bg-white p-5 hover:border-blue-400 transition"
                             >
 
                                 <div className="flex items-center justify-between">
 
                                     <div className="flex items-center gap-4">
 
-                                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-lime-500 text-black font-bold">
+                                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-blue-600 text-white font-bold">
                                             {lead.name.charAt(0)}
                                         </div>
 
                                         <div>
 
-                                            <h3 className="text-lg font-semibold text-white">
+                                            <h3 className="text-lg font-semibold text-black">
                                                 {lead.name}
                                             </h3>
 

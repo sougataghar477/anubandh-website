@@ -72,7 +72,7 @@ export default function UsersSummaryCards({
           {/* Value */}
           <div className="mt-1 flex items-end justify-between">
 
-            <h3 className="text-3xl font-bold tracking-tight text-white">
+            <h3 className="text-3xl font-bold tracking-tight text-black">
               {totalUsers}
             </h3>
 
@@ -113,7 +113,7 @@ export default function UsersSummaryCards({
           {/* Value */}
           <div className="mt-1 flex items-end justify-between">
 
-            <h3 className="text-3xl font-bold tracking-tight text-white">
+            <h3 className="text-3xl font-bold tracking-tight text-black">
               {activeUsers}
             </h3>
 
@@ -154,7 +154,7 @@ export default function UsersSummaryCards({
           {/* Value */}
           <div className="mt-1 flex items-end justify-between">
 
-            <h3 className="text-3xl font-bold tracking-tight text-white">
+            <h3 className="text-3xl font-bold tracking-tight text-black">
               {inactiveUsers}
             </h3>
 
@@ -195,7 +195,7 @@ export default function UsersSummaryCards({
           {/* Value */}
           <div className="mt-1 flex items-end justify-between">
 
-            <h3 className="text-3xl font-bold tracking-tight text-white">
+            <h3 className="text-3xl font-bold tracking-tight text-black">
               {adminUsers}
             </h3>
 

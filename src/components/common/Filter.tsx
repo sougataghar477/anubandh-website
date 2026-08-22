@@ -31,19 +31,17 @@ export default function Filter({
         <button
           type="button"
           onClick={onToggleFilters}
-          className="rounded-2xl border border-[#2A2A30] bg-white/5 px-4 py-3 text-sm font-semibold text-gray-200 transition hover:border-lime-primary hover:text-white"
+          className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-700 transition hover:border-blue-500 hover:text-blue-600"
         >
           Filter By Status
         </button>
         
       {filtersOpen && (
-        <div className="border-b border-[#2A2A30] bg-[#141418] px-6 py-5">
+        <div className="border-b border-slate-200 bg-slate-50/50 px-6 py-5 rounded-xl">
           <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
             <div className="flex flex-col gap-6 sm:flex-row sm:items-center">
               {filterGroups.map((group) => (
                 <div key={group.label}>
-
-
                   <div className="flex flex-wrap gap-3">
                     {group.options.map((option) => (
                       <button
@@ -52,8 +50,8 @@ export default function Filter({
                         onClick={() => group.onToggle(option.value)}
                         className={`rounded-full border px-4 py-2 text-sm font-semibold transition ${
                           group.activeValues.includes(option.value)
-                            ? "border-lime-primary bg-lime-primary/15 text-lime-primary"
-                            : "border-[#2A2A30] bg-white/5 text-gray-200 hover:border-lime-primary"
+                            ? "border-blue-500 bg-blue-50 text-blue-600"
+                            : "border-slate-200 bg-white text-slate-600 hover:border-blue-400"
                         }`}
                       >
                         {formatLabel(option.label)}
@@ -66,7 +64,7 @@ export default function Filter({
               <button
                 type="button"
                 onClick={onClearFilters}
-                className="rounded-2xl border border-[#2A2A30] bg-white/5 px-4 py-3 text-sm font-semibold text-gray-200 transition hover:border-lime-primary hover:text-white"
+                className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-600 transition hover:border-red-400 hover:text-red-500"
               >
                 Clear all
               </button>
@@ -75,7 +73,6 @@ export default function Filter({
         </div>
       )}
       </div>
-
     </>
   );
 }

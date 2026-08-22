@@ -100,7 +100,7 @@ const Popup: React.FC<PopupProps> = ({
             type="button"
             onClick={onCancel}
             disabled={loading}
-            className="flex-1 rounded-xl border border-zinc-700/60 py-2.5 text-sm font-medium text-zinc-300 transition hover:bg-zinc-700 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex-1 rounded-xl border border-zinc-700/60 py-2.5 text-sm font-medium text-zinc-300 transition hover:bg-zinc-700 hover:text-black disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {cancelText}
           </button>
@@ -111,7 +111,7 @@ const Popup: React.FC<PopupProps> = ({
               onClick={onConfirm}
               disabled={loading}
               style={confirmColor ? { backgroundColor: confirmColor } : undefined}
-              className={`flex-1 border border-zinc-700/60 rounded-xl py-2.5 text-sm font-semibold text-white transition hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed ${
+              className={`flex-1 border border-zinc-700/60 rounded-xl py-2.5 text-sm font-semibold text-black transition hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed ${
                 !confirmColor ? styles.defaultConfirmBg : ""
               }`}
             >

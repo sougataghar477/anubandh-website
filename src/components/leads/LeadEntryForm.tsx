@@ -303,13 +303,13 @@ if(loading.fetching){
   return <Loader/>
 }
 if(!lead && isEditable){
-  return <div className="min-h-screen flex items-center justify-center bg-[#0c0d10] text-white gap-2">
+  return <div className="min-h-screen flex items-center justify-center bg-[#0c0d10] text-black gap-2">
         <span>Lead Not Found</span> 
         
       </div>
 }
   return (
-    <main className="flex-1 bg-[#121214] text-[#E1E1E6] min-h-screen p-8 flex flex-col justify-between font-sans">
+    <main className="flex-1 bg-white text-black min-h-screen p-8 flex flex-col justify-between font-sans">
       <div className="max-w-4xl w-full mx-auto">
         {/* Header & Action Buttons */}
         <div className="flex items-center justify-between mb-8">
@@ -317,7 +317,7 @@ if(!lead && isEditable){
             <nav className="text-xs font-bold text-lime-primary tracking-wider uppercase mb-1">
               LEADS &gt; <span className="text-lime-primary">NEW LEAD</span>
             </nav>
-            <h1 className="text-3xl font-serif text-white tracking-wide">
+            <h1 className="text-3xl font-serif text-black tracking-wide">
               Create New Lead
             </h1>
           </div>
@@ -333,8 +333,8 @@ if(!lead && isEditable){
         >
           {/* Card Header */}
           <div className="flex items-center gap-3 pb-4 border-b border-[#2A2A30]">
-            <SlidersHorizontal className="w-5 h-5 text-lime-primary" />
-            <h2 className="text-xl font-serif italic font-medium text-white">
+            <SlidersHorizontal className="w-5 h-5 text-blue-400" />
+            <h2 className="text-xl font-serif italic font-medium text-black">
               Lead Details
             </h2>
           </div>
@@ -444,7 +444,7 @@ if(!lead && isEditable){
             loading={loading.submitting}
             />
 {isEditable && (lead && lead.history.length>0) && <div>
-  <h2 className="text-xl font-bold text-white mb-4">Lead History</h2>
+  <h2 className="text-xl font-bold text-black mb-4">Lead History</h2>
   <ul className="space-y-6">
     {(lead && lead.history.length>0) && lead.history.map((h, index) => {
       const isLast = index === history.length - 1;
@@ -457,11 +457,11 @@ if(!lead && isEditable){
           <div>
             {/* Action Title */}
             {!h.previous_status && h.new_status ? (
-              <h3 className="text-white text-base font-bold">
+              <h3 className="text-black text-base font-bold">
                 New Lead Created
               </h3>
             ) : h.previous_status !== h.new_status ? (
-              <h3 className="text-white text-base font-bold">
+              <h3 className="text-black text-base font-bold">
                 Lead Status Updated From{" "}
                 <span
                 >
@@ -474,7 +474,7 @@ if(!lead && isEditable){
                 </span>
               </h3>
             ) : (
-              <h3 className="text-white text-base font-bold">
+              <h3 className="text-black text-base font-bold">
                 New Comment Made
               </h3>
             )}

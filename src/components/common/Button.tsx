@@ -22,7 +22,7 @@ export default function Button({icon, label = 'Save Changes', className = '', lo
       className={`
         w-full py-3.5 px-6 
         rounded-2xl 
-        bg-lime-primary hover:bg-lime-hover active:bg-lime-active
+        bg-blue-600 hover:bg-blue-700 active:bg-blue-800
         text-white font-semibold text-base 
         shadow-lg shadow-emerald-900/20 
         active:scale-[0.99] 

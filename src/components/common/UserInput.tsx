@@ -20,7 +20,7 @@ export default function UserInput(props: UserInputProps) {
 
   const isTextarea = element === "textarea";
   const inputClassName = `
-    w-full bg-[#121214] border border-[#2A2A30] text-gray-200 placeholder-gray-600 rounded-lg py-3 pr-4 text-sm focus:outline-none focus:border-lime-primary transition-colors
+    w-full bg-slate-50 border border-slate-200 text-slate-800 placeholder-slate-400 rounded-lg py-3 pr-4 text-sm focus:outline-none focus:border-blue-500 focus:bg-white transition-all
     ${icon ? "pl-10" : "pl-4"}
     ${className}
   `.trim();
@@ -28,7 +28,7 @@ export default function UserInput(props: UserInputProps) {
   const iconElement = icon && (
     <span
       className={`
-        w-4 h-4 absolute left-3.5 text-gray-500 pointer-events-none flex items-center justify-center
+        w-4 h-4 absolute left-3.5 text-slate-400 pointer-events-none flex items-center justify-center
         ${isTextarea ? "top-3.5" : "top-1/2 -translate-y-1/2"}
       `}
     >
